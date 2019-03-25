@@ -2,3 +2,7 @@
 /.idea
 /.vscode
 /.vagrant
+
+
+docker-compose.yml
+env

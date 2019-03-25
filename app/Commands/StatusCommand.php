@@ -22,7 +22,7 @@ class StatusCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Check the status of your Laradock configuration';
+    protected $description = 'Check the status of your Laradock configuration.';
 
     /**
      * Execute the console command.
@@ -31,17 +31,11 @@ class StatusCommand extends Command
      */
     public function handle()
     {
-        $this->task('Parse docker-compose.yml', new ParseDockerComposeYaml, Emoji::rocket() . "\n");
+        $laradockCompose = invoke(new ParseDockerComposeYaml());
+
+        $this->table(['Service', 'Context'], collect($laradockCompose['services'])->map(function($service, $key) {
+            return [$key, $service['build']['context']];
+        }));
     }
 
-    /**
-     * Define the command's schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
-     * @return void
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
-    }
 }

@@ -27,12 +27,12 @@ class ParseDockerComposeYaml
     public function __invoke()
     {
         if (!invoke(new CheckDockerComposeYamlExists($this->path))) {
+            Log::warning('Missing ' . $this->path . ' file.');
             return false;
         }
 
-        Log::info('Attempting to load docker-compose file at ' . $this->path);
         $pr = Yaml::parseFile($this->path);
-        Log::info('Found docker-compose file, parsing contents.');
+        Log::info('Parsed contents.');
         return $pr;
     }
 }
