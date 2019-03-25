@@ -31,6 +31,7 @@
     ],
     "require": {
         "php": "^7.1.3",
+        "illuminate/database": "^5.8",
         "illuminate/log": "^5.8",
         "laradock/laradock": "7.1.4",
         "laravel-zero/framework": "^5.8",

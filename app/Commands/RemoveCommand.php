@@ -10,16 +10,16 @@ use LaravelZero\Framework\Commands\Command;
 use Spatie\Emoji\Emoji;
 use Symfony\Component\Yaml\Yaml;
 
-class AddCommand extends Command
+class RemoveCommand extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'add 
-    {service : The name of the service to add (required)}
-    {--context= : The location of your docker files (optional)}
+    protected $signature = 'remove
+     {service : The name of the service to remove (required)}
+     {--context= : The location of your docker files (optional)}
     ';
 
     /**
@@ -27,7 +27,7 @@ class AddCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Add a Laradock service to your project.';
+    protected $description = 'Remove a Laradock service from your project.';
 
     /**
      * Execute the console command.
@@ -42,7 +42,7 @@ class AddCommand extends Command
             $laradock->setContext($this->option('context'));
         }
 
-        $laradock->addService($service);
+        $laradock->removeService($service);
 
         $this->call('status');
     }

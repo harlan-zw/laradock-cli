@@ -2,6 +2,7 @@
 namespace App\Tasks;
 
 
+use App\Models\DockerCompose;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Yaml\Yaml;
 
@@ -19,7 +20,7 @@ class ParseDockerComposeYaml
     public function __construct($path = false)
     {
         if (empty($path)) {
-            $path = base_path() . '/' . self::DOCKER_COMPOSE_FILE;
+            $path = base_path( './' . self::DOCKER_COMPOSE_FILE);
         }
         $this->path = $path;
     }
@@ -31,8 +32,8 @@ class ParseDockerComposeYaml
             return false;
         }
 
-        $pr = Yaml::parseFile($this->path);
-        Log::info('Parsed contents.');
-        return $pr;
+        $compose = new DockerCompose(Yaml::parseFile($this->path));
+        $compose->path = $this->path;
+        return $compose;
     }
 }
