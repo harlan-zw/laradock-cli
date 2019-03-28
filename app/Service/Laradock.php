@@ -58,13 +58,12 @@ class Laradock {
     }
 
     public function addService($service) {
-        if (!$this->isValidService($service)) {
-            return false;
+        if (!$this->laradockDockerCompose->isValidService($service)) {
+            return;
         }
-        $services = $this->ourDockerCompose->services;
-        $services[$service] = $this->laradockDockerCompose->services[$service];
-        $services[$service]['build']['context'] = $this->ourDockerCompose->contextPath($service);
-        $this->ourDockerCompose->services = $services;
+
+        $services = $this->ourDockerCompose->services();
+        $services->offsetSet($service, $this->laradockDockerCompose->services()->get($service));
         $this->ourDockerCompose->save();
     }
 

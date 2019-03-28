@@ -39,7 +39,7 @@ class AddCommand extends Command
         $service = $this->argument('service');
 
         if ($this->hasOption('context')) {
-            $laradock->setContext($this->option('context'));
+            $laradock->setContext($this->option('context') ?? './');
         }
 
         $laradock->addService($service);

@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
 
@@ -21,8 +22,24 @@ class DockerCompose extends OfflineModel {
         return $this->context . '/' . $path;
     }
 
-    public function save()
-    {
+    public function services() : Collection {
+        return collect($this->services)->mapWithKeys(function($data, $service) {
+            // need to programmatically add network and storage as well
+            $data = array_merge([
+                'container_name' => 'laradock_' . $service,
+                'networks' => [ $this->networks[$service] ?? false ],
+                'volumes' => [ $this->volumes[$service] ?? false ]
+            ], $data);
+            return [$service => new Service($data)];
+        });
+    }
+
+    public function isValidService($service) {
+        return $this->services()->has($service);
+    }
+
+    public function save() {
+        dd($this->services());
         // save the docker-compose.yml file
         $this->writeToDockerComposeYaml();
         // check for missing folders
@@ -55,9 +72,11 @@ class DockerCompose extends OfflineModel {
 
     /**
      * @param string $context
+     * @return DockerCompose
      */
-    public function setContext(string $context): void {
+    public function setContext(string $context): DockerCompose {
         $this->context = $context;
+        return $this;
     }
 
 }

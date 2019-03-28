@@ -2,6 +2,6 @@
 namespace App\Models;
 
 
-class Service {
+class Service extends OfflineModel {
 
 }
