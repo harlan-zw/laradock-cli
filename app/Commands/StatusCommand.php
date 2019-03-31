@@ -3,10 +3,7 @@
 namespace App\Commands;
 
 use App\Tasks\ParseDockerComposeYaml;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
-use Spatie\Emoji\Emoji;
-use Symfony\Component\Yaml\Yaml;
 
 class StatusCommand extends Command
 {
@@ -34,7 +31,7 @@ class StatusCommand extends Command
         $laradockCompose = invoke(new ParseDockerComposeYaml());
 
         $this->table(['Service', 'Context'], collect($laradockCompose['services'])->map(function($service, $key) {
-            return [$key, $service['build']['context']];
+            return [$key, $service['build']['context'] ?? $service['build']];
         }));
     }
 

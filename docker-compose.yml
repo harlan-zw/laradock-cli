@@ -1,14 +1,12 @@
 version: '3.3'
 networks:
-  mysql:
-    external: true
+  frontend:
+    driver: '${NETWORKS_DRIVER}'
   backend:
-    driver: bridge
-  proxy:
-    external: true
+    driver: '${NETWORKS_DRIVER}'
 volumes:
   mysql:
-    driver: local
+    driver: '${VOLUMES_DRIVER}'
 services:
   workspace:
     container_name: apollo-workspace
@@ -65,8 +63,11 @@ services:
       - '~/.config/composer:/home/laradock/.config/composer:cached'
       - '~/.aws:/home/laradock/.aws:cached'
       - './env/docker/fonts:/usr/share/fonts/truetype'
+    dependencies:
+      volumes:
+        workspace:
+          - false
   mysql:
-    container_name: apollo-mysql
     build:
       context: ./env/docker/mysql
       args:
@@ -78,12 +79,11 @@ services:
       - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
       - 'TZ=${WORKSPACE_TIMEZONE}'
     volumes:
-      - '${DATA_SAVE_PATH}/mysql:/var/lib/mysql'
+      - '${DATA_PATH_HOST}/mysql:/var/lib/mysql'
       - '${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d'
     ports:
       - '${MYSQL_PORT}:3306'
     networks:
-      - mysql
       - backend
   apache2:
     container_name: apollo-apache2
@@ -108,47 +108,65 @@ services:
     networks:
       - backend
       - proxy
+    dependencies:
+      volumes:
+        apache2:
+          - false
   php-fpm:
-    container_name: apollo-php-fpm
     build:
       context: ./env/docker/php-fpm
       args:
-        - 'PHP_VERSION=${PHP_VERSION}'
+        - 'LARADOCK_PHP_VERSION=${PHP_VERSION}'
+        - 'LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}'
         - 'INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}'
         - 'INSTALL_PHPDBG=${PHP_FPM_INSTALL_PHPDBG}'
+        - 'INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}'
+        - 'INSTALL_SSH2=${PHP_FPM_INSTALL_SSH2}'
         - 'INSTALL_SOAP=${PHP_FPM_INSTALL_SOAP}'
+        - 'INSTALL_XSL=${PHP_FPM_INSTALL_XSL}'
         - 'INSTALL_IMAP=${PHP_FPM_INSTALL_IMAP}'
         - 'INSTALL_MONGO=${PHP_FPM_INSTALL_MONGO}'
         - 'INSTALL_AMQP=${PHP_FPM_INSTALL_AMQP}'
         - 'INSTALL_MSSQL=${PHP_FPM_INSTALL_MSSQL}'
-        - 'INSTALL_ZIP_ARCHIVE=${PHP_FPM_INSTALL_ZIP_ARCHIVE}'
         - 'INSTALL_BCMATH=${PHP_FPM_INSTALL_BCMATH}'
         - 'INSTALL_GMP=${PHP_FPM_INSTALL_GMP}'
         - 'INSTALL_PHPREDIS=${PHP_FPM_INSTALL_PHPREDIS}'
         - 'INSTALL_MEMCACHED=${PHP_FPM_INSTALL_MEMCACHED}'
         - 'INSTALL_OPCACHE=${PHP_FPM_INSTALL_OPCACHE}'
         - 'INSTALL_EXIF=${PHP_FPM_INSTALL_EXIF}'
+        - 'INSTALL_AEROSPIKE=${PHP_FPM_INSTALL_AEROSPIKE}'
         - 'INSTALL_MYSQLI=${PHP_FPM_INSTALL_MYSQLI}'
         - 'INSTALL_PGSQL=${PHP_FPM_INSTALL_PGSQL}'
         - 'INSTALL_PG_CLIENT=${PHP_FPM_INSTALL_PG_CLIENT}'
-        - 'INSTALL_TOKENIZER=${PHP_FPM_INSTALL_TOKENIZER}'
         - 'INSTALL_INTL=${PHP_FPM_INSTALL_INTL}'
         - 'INSTALL_GHOSTSCRIPT=${PHP_FPM_INSTALL_GHOSTSCRIPT}'
         - 'INSTALL_LDAP=${PHP_FPM_INSTALL_LDAP}'
+        - 'INSTALL_PHALCON=${PHP_FPM_INSTALL_PHALCON}'
         - 'INSTALL_SWOOLE=${PHP_FPM_INSTALL_SWOOLE}'
         - 'INSTALL_IMAGE_OPTIMIZERS=${PHP_FPM_INSTALL_IMAGE_OPTIMIZERS}'
         - 'INSTALL_IMAGEMAGICK=${PHP_FPM_INSTALL_IMAGEMAGICK}'
+        - 'INSTALL_CALENDAR=${PHP_FPM_INSTALL_CALENDAR}'
+        - 'INSTALL_FAKETIME=${PHP_FPM_INSTALL_FAKETIME}'
+        - 'INSTALL_IONCUBE=${PHP_FPM_INSTALL_IONCUBE}'
+        - 'INSTALL_APCU=${PHP_FPM_INSTALL_APCU}'
+        - 'INSTALL_YAML=${PHP_FPM_INSTALL_YAML}'
+        - 'INSTALL_ADDITIONAL_LOCALES=${PHP_FPM_INSTALL_ADDITIONAL_LOCALES}'
+        - 'INSTALL_MYSQL_CLIENT=${PHP_FPM_INSTALL_MYSQL_CLIENT}'
+        - 'ADDITIONAL_LOCALES=${PHP_FPM_ADDITIONAL_LOCALES}'
     volumes:
-      - './env/docker/php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini'
-      - '${APP_CODE_PATH_HOST}:/var/www:rw,delegated'
-      - './env/docker/fonts:/usr/share/fonts/truetype'
+      - './php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini'
+      - '${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}'
     expose:
       - '9000'
-    depends_on:
-      - workspace
     extra_hosts:
       - 'dockerhost:${DOCKER_HOST_IP}'
     environment:
       - 'PHP_IDE_CONFIG=${PHP_IDE_CONFIG}'
+      - 'DOCKER_HOST=tcp://docker-in-docker:2375'
+      - 'FAKETIME=${PHP_FPM_FAKETIME}'
+    depends_on:
+      - workspace
     networks:
       - backend
+    links:
+      - docker-in-docker

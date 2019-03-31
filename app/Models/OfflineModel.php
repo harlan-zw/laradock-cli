@@ -10,6 +10,19 @@ abstract class OfflineModel implements ArrayAccess, Arrayable {
 
     use HasAttributes;
 
+    public function getVisible() {
+        return $this->attributes;
+    }
+
+    public function relationsToArray() {
+        return [];
+    }
+
+    public function getArrayableItems($values) {
+        return $values;
+    }
+
+
     public function usesTimestamps() {
         return false;
     }

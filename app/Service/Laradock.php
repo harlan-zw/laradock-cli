@@ -49,6 +49,10 @@ class Laradock {
         return collect($this->laradockDockerCompose['services'])->sortKeys()->keys()->toArray();
     }
 
+    public function hasService($service) {
+        return isset($this->ourDockerCompose['services'][$service]);
+    }
+
     public function isValidService($service) {
         return \in_array($service, $this->services(), true);
     }
@@ -59,12 +63,25 @@ class Laradock {
 
     public function addService($service) {
         if (!$this->laradockDockerCompose->isValidService($service)) {
-            return;
+            return false;
         }
 
-        $services = $this->ourDockerCompose->services();
-        $services->offsetSet($service, $this->laradockDockerCompose->services()->get($service));
+        $serviceToAdd = $this->laradockDockerCompose->services[$service];
+        // fix context
+        if (isset($serviceToAdd['build']['context'])) {
+            $serviceToAdd['build']['context'] = $this->ourDockerCompose->contextPath($service);
+        } else if ($serviceToAdd['build']) {
+            $serviceToAdd['build'] = $this->ourDockerCompose->contextPath($service);
+        }
+        $newServices = array_merge($this->ourDockerCompose->services, [ $service => $serviceToAdd ]);
+        $this->ourDockerCompose->services = $newServices;
+        $this->ourDockerCompose->networks = $this->laradockDockerCompose->networks;
+        if (isset($this->laradockDockerCompose->volumes[$service])) {
+            $newVolumes = array_merge($this->ourDockerCompose->volumes, [$service => $this->laradockDockerCompose->volumes[$service]]);
+            $this->ourDockerCompose->volumes = $newVolumes;
+        }
         $this->ourDockerCompose->save();
+        return true;
     }
 
     public function removeService($service) {
@@ -73,11 +90,16 @@ class Laradock {
         }
         $services = $this->ourDockerCompose->services;
         // does not exist in our configuration
-        if (!isset($services[$service])) {
-            return false;
+        if (isset($services[$service])) {
+            unset($services[$service]);
+            $this->ourDockerCompose->services = $services;
         }
-        unset($services[$service]);
-        $this->ourDockerCompose->services = $services;
+        // remove the volume for the service we're removing
+        $newVolumes =  $this->ourDockerCompose->volumes;
+        if (isset($newVolumes[$service])) {
+            unset($newVolumes[$service]);
+            $this->ourDockerCompose->volumes = $newVolumes;
+        }
         $this->ourDockerCompose->save();
     }
 

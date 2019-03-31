@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -10,6 +11,7 @@ use Symfony\Component\Yaml\Yaml;
  * @property string context
  */
 class DockerCompose extends OfflineModel {
+
 
     /**
      * DockerCompose constructor.
@@ -22,34 +24,62 @@ class DockerCompose extends OfflineModel {
         return $this->context . '/' . $path;
     }
 
-    public function services() : Collection {
-        return collect($this->services)->mapWithKeys(function($data, $service) {
-            // need to programmatically add network and storage as well
-            $data = array_merge([
-                'container_name' => 'laradock_' . $service,
-                'networks' => [ $this->networks[$service] ?? false ],
-                'volumes' => [ $this->volumes[$service] ?? false ]
-            ], $data);
-            return [$service => new Service($data)];
-        });
-    }
 
     public function isValidService($service) {
-        return $this->services()->has($service);
+        return isset($this->services[$service]);
     }
 
     public function save() {
-        dd($this->services());
         // save the docker-compose.yml file
         $this->writeToDockerComposeYaml();
         // check for missing folders
         $this->addMissingFoldersForServices();
         // handle dirty services, which were removed
         $this->deleteFoldersForServices();
+        // write the env file changes
+        $this->writeEnvFile();
+    }
+
+    public function writeEnvFile() {
+        $envExamplePath = vendor_path('laradock/laradock/env-example');
+        $envExample = file_get_contents($envExamplePath);
+        preg_match_all('/\$\{(.*?)\}/m', json_encode($this->getAttributes()), $matches, PREG_SET_ORDER, 0);
+        $environmentVariables = collect($matches)->map(function($res) {
+            return $res[1];
+        })->unique()->sort()->flip()->toArray();
+        $dotEnv = collect(explode("\n", $envExample))->map(function($line) use ($environmentVariables) {
+           if (Str::contains($line, '=')) {
+               $key = substr($line, 0, strpos($line, '='));
+
+               if (!isset($environmentVariables[$key])) {
+                   return '';
+               }
+
+               $value = substr($line, strpos($line, '=') + 1);
+               if ($key === 'APP_CODE_PATH_HOST') {
+                   $value = './';
+               }
+               if (Str::contains($key, 'PUID')) {
+                   $value = getmyuid();
+               }
+               if (Str::contains($key, 'PGID')) {
+                   $value = getmygid();
+               }
+               return $key . '=' . $value;
+           }
+           return '';
+        })
+            ->filter(function($line) {
+                return !empty($line);
+            })
+            ->implode("\n");
+        file_put_contents(base_path('laradock-env'), $dotEnv);
     }
 
     public function writeToDockerComposeYaml() {
-        $safeAttributes = collect($this->getAttributes())->except(['context', 'path'])->toArray();
+        $safeAttributes = collect($this->getAttributes())
+            ->except(['context', 'path'])
+            ->toArray();
         File::put($this->path, Yaml::dump($safeAttributes, 6, 2));
     }
 
