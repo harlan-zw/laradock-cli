@@ -58,6 +58,9 @@ class Laradock {
     }
 
     public function setContext($context) {
+        if (empty($context)) {
+            $context =  config('laradock.context');
+        }
         $this->ourDockerCompose->setContext($context);
     }
 

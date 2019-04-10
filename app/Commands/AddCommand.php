@@ -39,7 +39,7 @@ class AddCommand extends Command
         $service = $this->argument('service');
 
         if ($this->hasOption('context')) {
-            $laradock->setContext($this->option('context') ?? './');
+            $laradock->setContext($this->option('context'));
         }
 
         // if it already exists within their docker-compose.yaml file we should confirm the re-add

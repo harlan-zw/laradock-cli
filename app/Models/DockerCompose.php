@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Dotenv\Dotenv;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -12,24 +13,19 @@ use Symfony\Component\Yaml\Yaml;
  */
 class DockerCompose extends OfflineModel {
 
-
-    /**
-     * DockerCompose constructor.
-     */
-    public function __construct(array $attributes = []) {
-        parent::__construct($attributes);
-    }
+    public $envAttributes = [];
+    public $laradockAttributes = [];
 
     public function contextPath($path) {
         return $this->context . '/' . $path;
     }
-
 
     public function isValidService($service) {
         return isset($this->services[$service]);
     }
 
     public function save() {
+        $this->readCurrentEnvFile();
         // save the docker-compose.yml file
         $this->writeToDockerComposeYaml();
         // check for missing folders
@@ -40,6 +36,13 @@ class DockerCompose extends OfflineModel {
         $this->writeEnvFile();
     }
 
+    public function readCurrentEnvFile() {
+        $dotEnv = Dotenv::create(base_path());
+        $this->envAttributes =$dotEnv->load();
+//        $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
+//        $this->laradockAttributes = $laradockEnv->safeLoad();
+    }
+
     public function writeEnvFile() {
         $envExamplePath = vendor_path('laradock/laradock/env-example');
         $envExample = file_get_contents($envExamplePath);
@@ -47,28 +50,52 @@ class DockerCompose extends OfflineModel {
         $environmentVariables = collect($matches)->map(function($res) {
             return $res[1];
         })->unique()->sort()->flip()->toArray();
-        $dotEnv = collect(explode("\n", $envExample))->map(function($line) use ($environmentVariables) {
-           if (Str::contains($line, '=')) {
-               $key = substr($line, 0, strpos($line, '='));
+        $dotEnv = collect(explode("\n", $envExample))
+            ->map(function($line) use ($environmentVariables) {
+                if (Str::startsWith($line, '### ')) {
+                    $keys = collect($this->services)->keys()->map(function($s) {
+                        return strtoupper($s);
+                    })->toArray();
+                    foreach($keys as $key) {
+                        // we add the comments in to be nice
+                        if (Str::contains($line, $key) ||
+                            Str::contains($line, str_replace('-', '_', $key)) ||
+                            // apache2
+                            Str::contains($line, str_replace('2', '', $key)) ||
+                            Str::contains($line, 'Paths') ||
+                            Str::contains($line, 'Drivers')
+                        ) {
+                            return $line;
+                        }
+                    }
+                }
+                if (!Str::contains($line, '=')) {
+                    return '';
+                }
+                $key = substr($line, 0, strpos($line, '='));
 
-               if (!isset($environmentVariables[$key])) {
-                   return '';
-               }
+                if (!isset($environmentVariables[$key])) {
+                    return '';
+                }
 
-               $value = substr($line, strpos($line, '=') + 1);
-               if ($key === 'APP_CODE_PATH_HOST') {
-                   $value = './';
-               }
-               if (Str::contains($key, 'PUID')) {
-                   $value = getmyuid();
-               }
-               if (Str::contains($key, 'PGID')) {
-                   $value = getmygid();
-               }
-               return $key . '=' . $value;
-           }
-           return '';
-        })
+                $value = substr($line, strpos($line, '=') + 1);
+                if ($key === 'APP_CODE_PATH_HOST') {
+                    $value = $attributes['APP_URL'] ?? './';
+                }
+                if (Str::contains($key, 'PUID')) {
+                    $value = getmyuid();
+                }
+                if (Str::contains($key, 'PGID')) {
+                    $value = getmygid();
+                }
+                // we shouldn't override the values
+                if (isset($this->laradockAttributes[$key])) {
+                    $value = $this->laradockAttributes[$key];
+                } else if (isset($this->envAttributes[$key])) {
+                    $value = $this->envAttributes[$key];
+                }
+                return $key . '=' . $value;
+            })
             ->filter(function($line) {
                 return !empty($line);
             })
