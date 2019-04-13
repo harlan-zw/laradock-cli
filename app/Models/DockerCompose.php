@@ -39,8 +39,8 @@ class DockerCompose extends OfflineModel {
     public function readCurrentEnvFile() {
         $dotEnv = Dotenv::create(base_path());
         $this->envAttributes =$dotEnv->load();
-//        $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
-//        $this->laradockAttributes = $laradockEnv->safeLoad();
+        $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
+        $this->laradockAttributes = $laradockEnv->safeLoad();
     }
 
     public function writeEnvFile() {
@@ -93,6 +93,10 @@ class DockerCompose extends OfflineModel {
                     $value = $this->laradockAttributes[$key];
                 } else if (isset($this->envAttributes[$key])) {
                     $value = $this->envAttributes[$key];
+                }
+                // if the value has a space we need to wrap it in double-quotes
+                if (Str::contains(' ', $value)) {
+                    $value = '"' . $value . '"';
                 }
                 return $key . '=' . $value;
             })
