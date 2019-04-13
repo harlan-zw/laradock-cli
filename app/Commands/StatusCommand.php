@@ -31,7 +31,7 @@ class StatusCommand extends Command
         $laradockCompose = invoke(new ParseDockerComposeYaml());
 
         $this->table(['Service', 'Context'], collect($laradockCompose['services'])->map(function($service, $key) {
-            return [$key, $service['build']['context'] ?? $service['build']];
+            return [$key, $service['build']['context'] ?? $service['build'] ?? 'Image: ' . $service['image']];
         }));
     }
 

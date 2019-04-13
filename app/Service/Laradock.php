@@ -73,7 +73,7 @@ class Laradock {
         // fix context
         if (isset($serviceToAdd['build']['context'])) {
             $serviceToAdd['build']['context'] = $this->ourDockerCompose->contextPath($service);
-        } else if ($serviceToAdd['build']) {
+        } else if (!empty($serviceToAdd['build'])) {
             $serviceToAdd['build'] = $this->ourDockerCompose->contextPath($service);
         }
         $newServices = array_merge($this->ourDockerCompose->services, [ $service => $serviceToAdd ]);
