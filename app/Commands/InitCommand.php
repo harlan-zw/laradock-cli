@@ -2,10 +2,8 @@
 
 namespace App\Commands;
 
-use App\Models\DockerCompose;
 use App\Service\Laradock;
 use App\Tasks\CheckDockerComposeYamlExists;
-use App\Tasks\ParseDockerComposeYaml;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
