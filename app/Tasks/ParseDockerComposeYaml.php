@@ -32,7 +32,14 @@ class ParseDockerComposeYaml
             return false;
         }
 
-        $compose = new DockerCompose(Yaml::parseFile($this->path));
+        $content = Yaml::parseFile($this->path);
+
+        if (empty($content)) {
+            Log::warning('Inalid docker-compose file  ' . $this->path . '.');
+            return new DockerCompose();
+        }
+
+        $compose = new DockerCompose($content);
         $compose->path = $this->path;
         return $compose;
     }

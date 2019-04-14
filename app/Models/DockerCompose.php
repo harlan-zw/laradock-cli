@@ -2,7 +2,6 @@
 namespace App\Models;
 
 use Dotenv\Dotenv;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Symfony\Component\Yaml\Yaml;
@@ -15,6 +14,27 @@ class DockerCompose extends OfflineModel {
 
     public $envAttributes = [];
     public $laradockAttributes = [];
+
+    /**
+     * DockerCompose constructor.
+     * @param $attributes
+     */
+    public function __construct($attributes = []) {
+        parent::__construct($attributes);
+        if (empty($attributes['networks'])) {
+            $this->setAttribute('networks', []);
+        }
+        if (empty($attributes['volumes'])) {
+            $this->setAttribute('volumes', []);
+        }
+        if (empty($attributes['services'])) {
+            $this->setAttribute('services', []);
+        }
+        if (empty($attributes['path'])) {
+            $this->setAttribute('path', config('laradock.compose_file'));
+        }
+    }
+
 
     public function contextPath($path) {
         return $this->context . '/' . $path;
@@ -95,7 +115,7 @@ class DockerCompose extends OfflineModel {
                     $value = $this->envAttributes[$key];
                 }
                 // if the value has a space we need to wrap it in double-quotes
-                if (Str::contains(' ', $value)) {
+                if (Str::contains($value, ' ') && !Str::startsWith($value, '"')) {
                     $value = '"' . $value . '"';
                 }
                 return $key . '=' . $value;
@@ -111,6 +131,7 @@ class DockerCompose extends OfflineModel {
         $safeAttributes = collect($this->getAttributes())
             ->except(['context', 'path'])
             ->toArray();
+        $safeAttributes['version'] = '3';
         File::put($this->path, Yaml::dump($safeAttributes, 6, 2));
     }
 
@@ -124,6 +145,9 @@ class DockerCompose extends OfflineModel {
     }
 
     public function deleteFoldersForServices() {
+        if (empty($this->original['services'])) {
+            return;
+        }
         collect($this->original['services'])->keys()->filter(function($key) {
             return !isset($this->services[$key]);
         })->each(function($key) {

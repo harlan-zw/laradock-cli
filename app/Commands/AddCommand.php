@@ -37,8 +37,8 @@ class AddCommand extends Command
             $laradock->setContext($this->option('context'));
         }
 
-        if (!$laradock->addService($service)) {
-            $this->error('Invalid service: ' . $service);
+        if (empty($laradock->getOurDockerCompose())) {
+            $this->error('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock init');
             return;
         }
 
@@ -48,6 +48,12 @@ class AddCommand extends Command
             !$this->confirm('It looks like you already have a ' . $service . ' service. Would you like to re-add it?')) {
             return;
         }
+
+        if (!$laradock->addService($service)) {
+            $this->error('Invalid service: ' . $service);
+            return;
+        }
+
 
         $this->call('status');
     }

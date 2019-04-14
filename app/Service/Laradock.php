@@ -3,6 +3,7 @@ namespace App\Service;
 
 use App\Models\DockerCompose;
 use App\Tasks\ParseDockerComposeYaml;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class Laradock {
 
@@ -17,9 +18,9 @@ class Laradock {
     private $ourDockerCompose;
 
     /**
-     * @return DockerCompose
+     * @return DockerCompose|Boolean
      */
-    public function getOurDockerCompose(): DockerCompose {
+    public function getOurDockerCompose() {
         return $this->ourDockerCompose;
     }
 
@@ -61,7 +62,9 @@ class Laradock {
         if (empty($context)) {
             $context =  config('laradock.context');
         }
-        $this->ourDockerCompose->setContext($context);
+        if (!empty($this->ourDockerCompose)) {
+            $this->ourDockerCompose->setContext($context);
+        }
     }
 
     public function addService($service) {
@@ -80,7 +83,10 @@ class Laradock {
         $this->ourDockerCompose->services = $newServices;
         $this->ourDockerCompose->networks = $this->laradockDockerCompose->networks;
         if (isset($this->laradockDockerCompose->volumes[$service])) {
-            $newVolumes = array_merge($this->ourDockerCompose->volumes, [$service => $this->laradockDockerCompose->volumes[$service]]);
+            $newVolumes = array_merge(
+                $this->ourDockerCompose->volumes,
+                [ $service => $this->laradockDockerCompose->volumes[$service] ]
+            );
             $this->ourDockerCompose->volumes = $newVolumes;
         }
         $this->ourDockerCompose->save();

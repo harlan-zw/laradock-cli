@@ -1,11 +1,12 @@
-version: '3.3'
+version: '3'
+
 networks:
   frontend:
     driver: '${NETWORKS_DRIVER}'
   backend:
     driver: '${NETWORKS_DRIVER}'
 volumes:
-  mysql:
+  redis:
     driver: '${VOLUMES_DRIVER}'
 services:
   workspace:
@@ -86,44 +87,6 @@ services:
       - backend
     links:
       - docker-in-docker
-  mysql:
-    build:
-      context: ./env/docker/mysql
-      args:
-        - 'MYSQL_VERSION=${MYSQL_VERSION}'
-    environment:
-      - 'MYSQL_DATABASE=${MYSQL_DATABASE}'
-      - 'MYSQL_USER=${MYSQL_USER}'
-      - 'MYSQL_PASSWORD=${MYSQL_PASSWORD}'
-      - 'MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}'
-      - 'TZ=${WORKSPACE_TIMEZONE}'
-    volumes:
-      - '${DATA_PATH_HOST}/mysql:/var/lib/mysql'
-      - '${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d'
-    ports:
-      - '${MYSQL_PORT}:3306'
-    networks:
-      - backend
-  apache2:
-    build:
-      context: ./env/docker/apache2
-      args:
-        - 'PHP_UPSTREAM_CONTAINER=${APACHE_PHP_UPSTREAM_CONTAINER}'
-        - 'PHP_UPSTREAM_PORT=${APACHE_PHP_UPSTREAM_PORT}'
-        - 'PHP_UPSTREAM_TIMEOUT=${APACHE_PHP_UPSTREAM_TIMEOUT}'
-        - 'DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT}'
-    volumes:
-      - '${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}'
-      - '${APACHE_HOST_LOG_PATH}:/var/log/apache2'
-      - '${APACHE_SITES_PATH}:/etc/apache2/sites-available'
-    ports:
-      - '${APACHE_HOST_HTTP_PORT}:80'
-      - '${APACHE_HOST_HTTPS_PORT}:443'
-    depends_on:
-      - php-fpm
-    networks:
-      - frontend
-      - backend
   php-fpm:
     build:
       context: ./env/docker/php-fpm
@@ -189,5 +152,33 @@ services:
       - '${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}'
     expose:
       - 2375
+    networks:
+      - backend
+  apache2:
+    build:
+      context: ./env/docker/apache2
+      args:
+        - 'PHP_UPSTREAM_CONTAINER=${APACHE_PHP_UPSTREAM_CONTAINER}'
+        - 'PHP_UPSTREAM_PORT=${APACHE_PHP_UPSTREAM_PORT}'
+        - 'PHP_UPSTREAM_TIMEOUT=${APACHE_PHP_UPSTREAM_TIMEOUT}'
+        - 'DOCUMENT_ROOT=${APACHE_DOCUMENT_ROOT}'
+    volumes:
+      - '${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}'
+      - '${APACHE_HOST_LOG_PATH}:/var/log/apache2'
+      - '${APACHE_SITES_PATH}:/etc/apache2/sites-available'
+    ports:
+      - '${APACHE_HOST_HTTP_PORT}:80'
+      - '${APACHE_HOST_HTTPS_PORT}:443'
+    depends_on:
+      - php-fpm
+    networks:
+      - frontend
+      - backend
+  redis:
+    build: ./env/docker/redis
+    volumes:
+      - '${DATA_PATH_HOST}/redis:/data'
+    ports:
+      - '${REDIS_PORT}:6379'
     networks:
       - backend

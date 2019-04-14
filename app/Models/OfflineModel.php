@@ -4,11 +4,11 @@ namespace App\Models;
 use ArrayAccess;
 use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 
 abstract class OfflineModel implements ArrayAccess, Arrayable {
 
-    use HasAttributes;
+    use HasAttributes, HasRelationships;
 
     public function getVisible() {
         return $this->attributes;
