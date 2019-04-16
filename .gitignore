@@ -8,3 +8,6 @@ docker-compose.yml
 env
 laradock-env
 .env
+
+
+!bin/laradock-7.14/**/**
