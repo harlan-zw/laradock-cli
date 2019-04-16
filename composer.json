@@ -1,13 +1,13 @@
 {
-    "name": "laravel-zero/laravel-zero",
-    "description": "The Laravel Zero Framework.",
-    "keywords": ["framework", "laravel", "laravel zero", "console", "cli"],
-    "homepage": "https://laravel-zero.com",
+    "name": "loonpwn/laradock-cli",
+    "description": "Unofficial Laradock Command Line Tool (CLI).",
+    "keywords": ["framework", "laradock", "laravel", "laravel zero", "console", "cli"],
+    "homepage": "https://github.com/loonpwn/laradock-cli",
     "type": "project",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/laravel-zero/laravel-zero/issues",
-        "source": "https://github.com/laravel-zero/laravel-zero"
+        "issues": "https://github.com/loonpwn/laradock-cli/issues",
+        "source": "https://github.com/loonpwn/laradock-cli"
     },
     "repositories": [
         {
@@ -25,8 +25,8 @@
     ],
     "authors": [
         {
-            "name": "Nuno Maduro",
-            "email": "enunomaduro@gmail.com"
+            "name": "Harlan Wilton",
+            "email": "harlan@harlanzw.com"
         }
     ],
     "require": {
@@ -41,7 +41,6 @@
         "zendframework/zend-text": "^2.7"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.6",
         "mockery/mockery": "^1.0",
         "phpunit/phpunit": "^7.3"
     },

@@ -2,6 +2,11 @@
     <img title="Laradock CLI" height="91" src="https://github.com/loonpwn/laradock-cli/raw/master/assets/images/laradock-cli-logo.png" />
 </p>
 
+
+[![Total Downloads](https://img.shields.io/packagist/vpre/loonpwn/laradock-cli.svg?style=flat)](https://packagist.org/packages/loonpwn/laradock-cli)
+[![Total Downloads](https://img.shields.io/packagist/dt/loonpwn/laradock-cli.svg?style=flat)](https://packagist.org/packages/loonpwn/laradock-cli)
+[![StyleCI](https://github.styleci.io/repos/155632347/shield?branch=master)](https://github.styleci.io/repos/155632347)
+
 Note: This package is in active development. A release is coming soon where it will be usable, for now it's just work in progress commits. 
 
 Laradock CLI is an unofficial package built with [Laravel Zero](https://laravel-zero.com/). It's built on top of [Laradock](https://laradock.io/) to address common issues
@@ -20,6 +25,14 @@ and only commit code that is essential.
 - Handle alternative laradock paths without headaches
 
 ------
+
+## Installation
+
+Via Composer
+
+``` bash
+composer require --dev loonpwn/laradock-cli
+```
 
 ## Documentation
 
