@@ -6,9 +6,9 @@ use Spatie\Emoji\Emoji;
 use Laradock\Service\Laradock;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
-use Laradock\Tasks\CheckDockerComposeYamlExists;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
+use Laradock\Tasks\CheckDockerComposeYamlExists;
 
 class InitCommand extends Command
 {

@@ -74,7 +74,7 @@ class DockerCompose extends OfflineModel
 
     public function writeEnvFile()
     {
-        $envExamplePath = config('laradock.laradock_path') . 'env-example';
+        $envExamplePath = config('laradock.laradock_path').'env-example';
         $envExample = file_get_contents($envExamplePath);
         preg_match_all('/\$\{(.*?)\}/m', json_encode($this->getAttributes()), $matches, PREG_SET_ORDER, 0);
         $environmentVariables = collect($matches)->map(function ($res) {
@@ -152,7 +152,7 @@ class DockerCompose extends OfflineModel
         collect($this->services)->keys()->each(function ($key) {
             $path = $this->contextPath($key);
             if (! File::isDirectory($path)) {
-                $laradockPath = config('laradock.laradock_path') . $key;
+                $laradockPath = config('laradock.laradock_path').$key;
                 File::copyDirectory($laradockPath, $path);
             }
         });
