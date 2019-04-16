@@ -34,6 +34,20 @@ Via Composer
 composer require --dev loonpwn/laradock-cli
 ```
 
+## Usage
+
+### Existing Laradock projects
+
+Laradock CLI works slightly different to Laradock in terms of its paths. Laradock CLI out of the box exists in your `env/docker` folder.
+
+You are welcome to change the context of your laradock folder by setting an environment variable.
+
+`LARADOCK_CLI_PATH=./laradock/`
+
+The first step to using Laradock CLI is to run the `./laradock init` command. 
+
+
+
 ## Documentation
 
 
