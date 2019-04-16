@@ -2,13 +2,13 @@
 
 namespace App\Commands;
 
+use Spatie\Emoji\Emoji;
 use App\Service\Laradock;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 use App\Tasks\CheckDockerComposeYamlExists;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use LaravelZero\Framework\Commands\Command;
-use Spatie\Emoji\Emoji;
 
 class InitCommand extends Command
 {
@@ -38,19 +38,19 @@ class InitCommand extends Command
         }
 
         $envFolder = base_path('env');
-        Log::info('Making directory ' . $envFolder);
+        Log::info('Making directory '.$envFolder);
         File::delete(['docker-compose.yml']);
         File::deleteDirectory('env', false);
         File::makeDirectory($envFolder, 0755, true, true);
         touch(base_path('docker-compose.yml'));
 
         $servicesAvailableToAdd = collect($laradock->services())->filter(function ($v) {
-            return !in_array($v, config('laradock.default_services'));
+            return ! in_array($v, config('laradock.default_services'));
         })->toArray();
         $selectedServices = config('laradock.default_services');
-        foreach($selectedServices as $service) {
+        foreach ($selectedServices as $service) {
             $laradock->addService($service);
-            $this->info(Emoji::heavyCheckMark() . ' We have enabled ' . $service . ' service for you.');
+            $this->info(Emoji::heavyCheckMark().' We have enabled '.$service.' service for you.');
         }
 
         while ($this->confirm('Would you like to add another service?', true)) {
@@ -59,14 +59,14 @@ class InitCommand extends Command
                 $servicesAvailableToAdd
             );
             $laradock->addService($selectedService);
-            $this->info(Emoji::heavyCheckMark() . ' Added service ' . $selectedService);
+            $this->info(Emoji::heavyCheckMark().' Added service '.$selectedService);
             $selectedServices[] = $selectedService;
-            $this->info(Emoji::notebook() . ' Selected services: ' . implode(', ', $selectedServices));
+            $this->info(Emoji::notebook().' Selected services: '.implode(', ', $selectedServices));
         }
 
         $this->call('status');
 
-        $this->info(Emoji::confettiBall() . ' Laradock is finished. Get started with:');
+        $this->info(Emoji::confettiBall().' Laradock is finished. Get started with:');
 
         $this->comment('./laradock up');
     }

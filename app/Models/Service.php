@@ -1,7 +1,7 @@
 <?php
+
 namespace App\Models;
 
-
-class Service extends OfflineModel {
-
+class Service extends OfflineModel
+{
 }
