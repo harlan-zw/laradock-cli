@@ -32,12 +32,12 @@ class StatusCommand extends Command
 
         if (empty($laradockCompose)) {
             $this->info('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock init');
+
             return;
         }
 
-        $this->table(['Service', 'Context'], collect($laradockCompose['services'])->map(function($service, $key) {
-            return [$key, $service['build']['context'] ?? $service['build'] ?? 'Image: ' . $service['image']];
+        $this->table(['Service', 'Context'], collect($laradockCompose['services'])->map(function ($service, $key) {
+            return [$key, $service['build']['context'] ?? $service['build'] ?? 'Image: '.$service['image']];
         }));
     }
-
 }

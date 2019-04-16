@@ -1,33 +1,38 @@
 <?php
+
 namespace App\Models;
 
 use ArrayAccess;
-use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Concerns\HasAttributes;
 use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 
-abstract class OfflineModel implements ArrayAccess, Arrayable {
-
+abstract class OfflineModel implements ArrayAccess, Arrayable
+{
     use HasAttributes, HasRelationships;
 
-    public function getVisible() {
+    public function getVisible()
+    {
         return $this->attributes;
     }
 
-    public function relationsToArray() {
+    public function relationsToArray()
+    {
         return [];
     }
 
-    public function getArrayableItems($values) {
+    public function getArrayableItems($values)
+    {
         return $values;
     }
 
-
-    public function usesTimestamps() {
+    public function usesTimestamps()
+    {
         return false;
     }
 
-    public function getIncrementing() {
+    public function getIncrementing()
+    {
         return false;
     }
 
@@ -168,5 +173,4 @@ abstract class OfflineModel implements ArrayAccess, Arrayable {
     {
         return array_merge($this->attributesToArray(), $this->relationsToArray());
     }
-
 }

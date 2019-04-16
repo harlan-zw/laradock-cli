@@ -3,9 +3,9 @@
 namespace App\Commands;
 
 use Dotenv\Dotenv;
+use Symfony\Component\Process\Process;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
-use Symfony\Component\Process\Process;
 
 class UpCommand extends Command
 {
@@ -31,13 +31,13 @@ class UpCommand extends Command
     public function handle()
     {
         $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
-        $this->line('Loading in laradock-env file at: ' . base_path());
+        $this->line('Loading in laradock-env file at: '.base_path());
         $laradockAttributes = $laradockEnv->safeLoad();
 
         $process = new Process('docker-compose up -d', base_path(), $laradockAttributes, null, 60000);
 
         $this->info('We are starting docker, this may take a while if you haven\'t ran this command before.');
-        $process->run(function($response, $output) {
+        $process->run(function ($response, $output) {
             $this->output->write($output);
         });
     }

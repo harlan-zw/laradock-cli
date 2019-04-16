@@ -3,12 +3,7 @@
 namespace App\Commands;
 
 use App\Service\Laradock;
-use App\Tasks\ParseDockerComposeYaml;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\File;
 use LaravelZero\Framework\Commands\Command;
-use Spatie\Emoji\Emoji;
-use Symfony\Component\Yaml\Yaml;
 
 class RemoveCommand extends Command
 {
@@ -46,5 +41,4 @@ class RemoveCommand extends Command
 
         $this->call('status');
     }
-
 }

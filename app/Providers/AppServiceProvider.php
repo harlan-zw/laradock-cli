@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\DockerCompose;
 use App\Service\Laradock;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
-        $this->app->singleton(Laradock::class, function() {
+        $this->app->singleton(Laradock::class, function () {
             return new Laradock(config('laradock'));
         });
     }

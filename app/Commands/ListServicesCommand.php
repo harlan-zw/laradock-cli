@@ -28,9 +28,8 @@ class ListServicesCommand extends Command
      */
     public function handle(Laradock $laradock)
     {
-        $this->table(['Service'], collect($laradock->services())->map(function($service) {
+        $this->table(['Service'], collect($laradock->services())->map(function ($service) {
             return [$service];
         }));
     }
-
 }

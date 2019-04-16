@@ -11,6 +11,6 @@ return [
     'default_services' => [
         'workspace',
         'php-fpm',
-        'docker-in-docker'
-    ]
+        'docker-in-docker',
+    ],
 ];
