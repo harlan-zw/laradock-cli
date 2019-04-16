@@ -6,3 +6,5 @@
 
 docker-compose.yml
 env
+laradock-env
+.env
