@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Commands;
+namespace Laradock\Commands;
 
 use Spatie\Emoji\Emoji;
-use App\Service\Laradock;
+use Laradock\Service\Laradock;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
-use App\Tasks\CheckDockerComposeYamlExists;
+use Laradock\Tasks\CheckDockerComposeYamlExists;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
@@ -33,7 +33,7 @@ class InitCommand extends Command
      */
     public function handle(Laradock $laradock)
     {
-        if (\invoke(new CheckDockerComposeYamlExists)) {
+        if (\Laradock\invoke(new CheckDockerComposeYamlExists)) {
             $this->warn('You have already installed laradock.');
         }
 

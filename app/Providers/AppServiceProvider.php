@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Providers;
+namespace Laradock\Providers;
 
-use App\Service\Laradock;
+use Laradock\Service\Laradock;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

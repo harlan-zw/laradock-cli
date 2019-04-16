@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Laradock\Models;
 
 use ArrayAccess;
 use Illuminate\Contracts\Support\Arrayable;

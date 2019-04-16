@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace Laradock\Commands;
 
 use Dotenv\Dotenv;
 use Symfony\Component\Process\Process;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Laradock\Models;
 
 use Dotenv\Dotenv;
 use Illuminate\Support\Str;
@@ -62,15 +62,19 @@ class DockerCompose extends OfflineModel
 
     public function readCurrentEnvFile()
     {
-        $dotEnv = Dotenv::create(base_path());
-        $this->envAttributes = $dotEnv->load();
-        $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
-        $this->laradockAttributes = $laradockEnv->safeLoad();
+        if (file_exists(base_path('.env'))) {
+            $dotEnv = Dotenv::create(base_path());
+            $this->envAttributes = $dotEnv->load();
+        }
+        if (file_exists(base_path('laradock-env'))) {
+            $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
+            $this->laradockAttributes = $laradockEnv->safeLoad();
+        }
     }
 
     public function writeEnvFile()
     {
-        $envExamplePath = vendor_path('laradock/laradock/env-example');
+        $envExamplePath = config('laradock.laradock_path') . 'env-example';
         $envExample = file_get_contents($envExamplePath);
         preg_match_all('/\$\{(.*?)\}/m', json_encode($this->getAttributes()), $matches, PREG_SET_ORDER, 0);
         $environmentVariables = collect($matches)->map(function ($res) {
@@ -148,7 +152,8 @@ class DockerCompose extends OfflineModel
         collect($this->services)->keys()->each(function ($key) {
             $path = $this->contextPath($key);
             if (! File::isDirectory($path)) {
-                File::copyDirectory(vendor_path('laradock/laradock/'.$key), $path);
+                $laradockPath = config('laradock.laradock_path') . $key;
+                File::copyDirectory($laradockPath, $path);
             }
         });
     }

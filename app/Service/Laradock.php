@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Service;
+namespace Laradock\Service;
 
-use App\Models\DockerCompose;
-use App\Tasks\ParseDockerComposeYaml;
+use Laradock\Models\DockerCompose;
+use Laradock\Tasks\ParseDockerComposeYaml;
 
 class Laradock
 {
@@ -38,14 +38,14 @@ class Laradock
      */
     public function __construct($config)
     {
-        $this->laradockDockerCompose = $this->parseDockerComposeYaml($config['laradock_path']);
+        $this->laradockDockerCompose = $this->parseDockerComposeYaml($config['laradock_path'] . 'docker-compose.yml');
         $this->ourDockerCompose = $this->parseDockerComposeYaml();
         $this->ourDockerCompose->setContext($config['context']);
     }
 
     private function parseDockerComposeYaml($path = '')
     {
-        return invoke(
+        return \Laradock\invoke(
             new ParseDockerComposeYaml($path)
         );
     }

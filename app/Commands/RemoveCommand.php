@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Commands;
+namespace Laradock\Commands;
 
-use App\Service\Laradock;
+use Laradock\Service\Laradock;
 use LaravelZero\Framework\Commands\Command;
 
 class RemoveCommand extends Command

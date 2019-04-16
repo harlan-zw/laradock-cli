@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tasks;
+namespace Laradock\Tasks;
 
-use App\Models\DockerCompose;
+use Laradock\Models\DockerCompose;
 use Symfony\Component\Yaml\Yaml;
 use Illuminate\Support\Facades\Log;
 
@@ -26,16 +26,18 @@ class ParseDockerComposeYaml
 
     public function __invoke()
     {
-        if (! invoke(new CheckDockerComposeYamlExists($this->path))) {
+        if (!\Laradock\invoke(new CheckDockerComposeYamlExists($this->path))) {
             Log::warning('Missing '.$this->path.' file.');
 
-            return false;
+            return new DockerCompose([
+                'path' => $this->path
+            ]);
         }
 
         $content = Yaml::parseFile($this->path);
 
         if (empty($content)) {
-            Log::warning('Inalid docker-compose file  '.$this->path.'.');
+            Log::warning('Invalid docker-compose file  '.$this->path.'.');
 
             return new DockerCompose();
         }

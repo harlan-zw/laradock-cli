@@ -2,24 +2,26 @@
 
 namespace Laradock\Commands;
 
+use Dotenv\Dotenv;
+use Symfony\Component\Process\Process;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
-class WorkspaceCommand extends Command
+class DownCommand extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'workspace';
+    protected $signature = 'down';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Mounts yourself to the workspace container as Laradock user';
+    protected $description = 'Runs `docker-compose down` with the `laradock-env` loaded in.';
 
     /**
      * Execute the console command.
@@ -28,7 +30,15 @@ class WorkspaceCommand extends Command
      */
     public function handle()
     {
-        passthru('docker-compose exec workspace bash');
+        $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
+        $this->line('Loading in laradock-env file at: '.base_path());
+        $laradockAttributes = $laradockEnv->safeLoad();
+
+        $process = new Process('docker-compose down', base_path(), $laradockAttributes, null, 60000);
+
+        $process->run(function ($response, $output) {
+            $this->output->write($output);
+        });
     }
 
     /**

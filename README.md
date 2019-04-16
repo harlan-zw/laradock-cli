@@ -65,5 +65,7 @@ Add a specific service
 Remove a specific service
 - `laradock up` 
 Runs `docker-compose up -d` with the `laradock-env` loaded in.
+- `laradock down` 
+Runs `docker-compose down` with the `laradock-env` loaded in.
 - `laradock workspace` 
 Mounts yourself to the workspace container as Laradock user

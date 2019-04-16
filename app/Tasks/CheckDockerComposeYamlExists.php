@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tasks;
+namespace Laradock\Tasks;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;

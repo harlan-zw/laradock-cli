@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Commands;
+namespace Laradock\Commands;
 
-use App\Tasks\ParseDockerComposeYaml;
+use Laradock\Tasks\ParseDockerComposeYaml;
 use LaravelZero\Framework\Commands\Command;
 
 class StatusCommand extends Command
@@ -28,7 +28,7 @@ class StatusCommand extends Command
      */
     public function handle()
     {
-        $laradockCompose = invoke(new ParseDockerComposeYaml());
+        $laradockCompose = \Laradock\invoke(new ParseDockerComposeYaml());
 
         if (empty($laradockCompose)) {
             $this->info('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock init');
