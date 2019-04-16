@@ -2,8 +2,8 @@
 
 namespace Laradock\Tasks;
 
-use Laradock\Models\DockerCompose;
 use Symfony\Component\Yaml\Yaml;
+use Laradock\Models\DockerCompose;
 use Illuminate\Support\Facades\Log;
 
 class ParseDockerComposeYaml
@@ -26,11 +26,11 @@ class ParseDockerComposeYaml
 
     public function __invoke()
     {
-        if (!\Laradock\invoke(new CheckDockerComposeYamlExists($this->path))) {
+        if (! \Laradock\invoke(new CheckDockerComposeYamlExists($this->path))) {
             Log::warning('Missing '.$this->path.' file.');
 
             return new DockerCompose([
-                'path' => $this->path
+                'path' => $this->path,
             ]);
         }
 
