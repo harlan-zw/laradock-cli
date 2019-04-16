@@ -38,7 +38,7 @@ class Laradock
      */
     public function __construct($config)
     {
-        $this->laradockDockerCompose = $this->parseDockerComposeYaml($config['laradock_path'] . 'docker-compose.yml');
+        $this->laradockDockerCompose = $this->parseDockerComposeYaml($config['laradock_path'].'docker-compose.yml');
         $this->ourDockerCompose = $this->parseDockerComposeYaml();
         $this->ourDockerCompose->setContext($config['context']);
     }

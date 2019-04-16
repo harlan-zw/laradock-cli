@@ -1,4 +1,5 @@
 <?php
+
 namespace Laradock;
 
 function invoke($class)
