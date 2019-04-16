@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca290b448fac3487dd8fcb33f9c24b89",
+    "content-hash": "83c199f83c691e466c5a71b7001708f8",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -858,17 +858,6 @@
                 "windows"
             ],
             "time": "2019-02-26T18:10:50+00:00"
-        },
-        {
-            "name": "laradock/laradock",
-            "version": "7.1.4",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/laradock/laradock/archive/v7.14.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "type": "library"
         },
         {
             "name": "laravel-zero/foundation",
