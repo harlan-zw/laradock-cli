@@ -34,22 +34,30 @@ Via Composer
 composer require --dev loonpwn/laradock-cli
 ```
 
+Add to .gitignore
+`.laradock-env`
+
 ## Usage
 
-### Existing Laradock projects
+### New Laravel Projects
+
+1. Setup files `./vendor/bin/laradock init`
+2. Install & Start docker containers. Note that this may take quite a few minutes. `./vendor/bin/laradock up`
+3. Once you're up and running you can mount on to workspace with `./vendir/bin/laradock mount`
+
+### Existing projects
+
+
+
+## Documentation
+
+### Paths
 
 Laradock CLI works slightly different to Laradock in terms of its paths. Laradock CLI out of the box exists in your `env/docker` folder.
 
 You are welcome to change the context of your laradock folder by setting an environment variable.
 
 `LARADOCK_CLI_PATH=./laradock/`
-
-The first step to using Laradock CLI is to run the `./laradock init` command. 
-
-
-
-## Documentation
-
 
 ### Commands
 

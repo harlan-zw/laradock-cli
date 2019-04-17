@@ -65,7 +65,7 @@ class DockerCompose extends OfflineModel
     public function readCurrentEnvFile()
     {
         $this->envAttributes = \Laradock\invoke(new ParseDotEnvFile());
-        $this->laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath()));
+        $this->laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
         $this->laradockExampleContents  = File::get(getLaradockEnvExamplePath());
         preg_match_all('/\$\{(.*?)\}/m', json_encode([
             'services' => $this->services,
@@ -88,7 +88,7 @@ class DockerCompose extends OfflineModel
             })
             ->implode("\n");
 
-        File::put(getLaradockCLIEnvPath(), $dotEnv);
+        File::put(getLaradockCLIEnvPath('.laradock-env'), $dotEnv);
     }
 
     public function writeToDockerComposeYaml()

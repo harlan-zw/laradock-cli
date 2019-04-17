@@ -32,8 +32,8 @@ class DownCommand extends Command
      */
     public function handle()
     {
-        $this->line('Loading in laradock-env file at: ' . getLaradockCLIEnvPath());
-        $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath()));
+        $this->line('Loading in laradock-env file at: ' . getLaradockCLIEnvPath('.laradock-env'));
+        $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
 
         $process = new Process('docker-compose down', \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 

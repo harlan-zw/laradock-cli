@@ -26,7 +26,8 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         $this->app->singleton(Laradock::class, function () {
-            return new Laradock(config('laradock'));
+            return new Laradock();
         });
+
     }
 }

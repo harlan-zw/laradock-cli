@@ -18,9 +18,9 @@ function getDockerComposePath()
 {
     return workingDirectory('docker-compose.yml');
 }
-function getLaradockCLIEnvPath()
+function getLaradockCLIEnvPath($path = '')
 {
-    return workingDirectory('.laradock-env');
+    return workingDirectory($path);
 }
 function getDotEnvPath()
 {
