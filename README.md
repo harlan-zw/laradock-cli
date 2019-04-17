@@ -15,15 +15,16 @@ and only commit code that is essential.
 
 ## Features
 
-*Clean project*
+#### Clean project
 
-By loading Laradock services on demand, we only commit files we will actually use.
+Laradock CLI is built for the people who like tidy projects. Whenever you interact with Laradock CLI it will always try and add the minimal amount of configuration and files required.
 
-*Clean .env* 
+
+#### Clean .env*
 
 Moves all Laradock environment variables to their own `laradock-env` file.
 
-*No configuration*
+#### No configuration
 
 Laradock CLI reads your project like a book. The end goal is a zero-configuration docker setup. Some examples:
 - Fixes User and Group IDs
@@ -32,11 +33,11 @@ Laradock CLI reads your project like a book. The end goal is a zero-configuratio
 - Updates your environment variables for docker credentials (coming soon)
 - Updates host files for SITE_URL (coming soon)
 
-*Easier Upgrades*
+#### Easier Upgrades
 
 Simple command to add additional services, Laradock CLI takes care of all files and configurations for you.
 
-*Your Laradock*
+#### Your Laradock
 
 Easily choose where you want to install the files, don't need locked into the laradock folder.
 
