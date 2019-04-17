@@ -30,11 +30,11 @@ class UpCommand extends Command
      */
     public function handle()
     {
-        $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
-        $this->line('Loading in laradock-env file at: '.base_path());
+        $laradockEnv = Dotenv::create(\Laradock\workingDirectory(), 'laradock-env');
+        $this->line('Loading in laradock-env file at: '.\Laradock\workingDirectory());
         $laradockAttributes = $laradockEnv->safeLoad();
 
-        $process = new Process('docker-compose up -d', base_path(), $laradockAttributes, null, 60000);
+        $process = new Process('docker-compose up -d', \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
         $this->info('We are starting docker, this may take a while if you haven\'t ran this command before.');
         $process->run(function ($response, $output) {

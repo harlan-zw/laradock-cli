@@ -2,6 +2,7 @@
 
 namespace Laradock\Service;
 
+use function Laradock\getLaradockDockerComposePath;
 use Laradock\Models\DockerCompose;
 use Laradock\Tasks\ParseDockerComposeYaml;
 
@@ -36,11 +37,10 @@ class Laradock
     /**
      * Laradock constructor.
      */
-    public function __construct($config)
+    public function __construct()
     {
-        $this->laradockDockerCompose = $this->parseDockerComposeYaml($config['laradock_path'].'docker-compose.yml');
+        $this->laradockDockerCompose = $this->parseDockerComposeYaml(getLaradockDockerComposePath());
         $this->ourDockerCompose = $this->parseDockerComposeYaml();
-        $this->ourDockerCompose->setContext($config['context']);
     }
 
     private function parseDockerComposeYaml($path = '')
@@ -65,16 +65,6 @@ class Laradock
         return \in_array($service, $this->services(), true);
     }
 
-    public function setContext($context)
-    {
-        if (empty($context)) {
-            $context = config('laradock.context');
-        }
-        if (! empty($this->ourDockerCompose)) {
-            $this->ourDockerCompose->setContext($context);
-        }
-    }
-
     public function addService($service)
     {
         if (! $this->laradockDockerCompose->isValidService($service)) {
@@ -84,9 +74,9 @@ class Laradock
         $serviceToAdd = $this->laradockDockerCompose->services[$service];
         // fix context
         if (isset($serviceToAdd['build']['context'])) {
-            $serviceToAdd['build']['context'] = $this->ourDockerCompose->contextPath($service);
+            $serviceToAdd['build']['context'] = config('laradock.context') . '/' . $service;
         } elseif (! empty($serviceToAdd['build'])) {
-            $serviceToAdd['build'] = $this->ourDockerCompose->contextPath($service);
+            $serviceToAdd['build'] = config('laradock.context') . '/' . $service;
         }
         $newServices = array_merge($this->ourDockerCompose->services, [$service => $serviceToAdd]);
         $this->ourDockerCompose->services = $newServices;
@@ -99,7 +89,6 @@ class Laradock
             $this->ourDockerCompose->volumes = $newVolumes;
         }
         $this->ourDockerCompose->save();
-
         return true;
     }
 

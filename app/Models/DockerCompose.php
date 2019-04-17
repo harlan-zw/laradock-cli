@@ -4,17 +4,23 @@ namespace Laradock\Models;
 
 use Dotenv\Dotenv;
 use Illuminate\Support\Str;
+use function Laradock\getDockerComposePath;
+use function Laradock\getDotEnvPath;
+use function Laradock\getLaradockCLIEnvPath;
+use function Laradock\getLaradockEnvExamplePath;
+use Laradock\Transformers\EnvironmentConfigTransformer;
 use Symfony\Component\Yaml\Yaml;
 use Illuminate\Support\Facades\File;
 
 /**
  * @property array services
- * @property string context
  */
 class DockerCompose extends OfflineModel
 {
     public $envAttributes = [];
     public $laradockAttributes = [];
+    public $matchedLaradockEnvs = [];
+    public $laradockExampleContents = '';
 
     /**
      * DockerCompose constructor.
@@ -37,11 +43,6 @@ class DockerCompose extends OfflineModel
         }
     }
 
-    public function contextPath($path)
-    {
-        return $this->context.'/'.$path;
-    }
-
     public function isValidService($service)
     {
         return isset($this->services[$service]);
@@ -62,98 +63,62 @@ class DockerCompose extends OfflineModel
 
     public function readCurrentEnvFile()
     {
-        if (file_exists(base_path('.env'))) {
-            $dotEnv = Dotenv::create(base_path());
+        if (file_exists(getDotEnvPath())) {
+            $dotEnv = Dotenv::create(\Laradock\workingDirectory());
             $this->envAttributes = $dotEnv->load();
         }
-        if (file_exists(base_path('laradock-env'))) {
-            $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
+        if (file_exists(getLaradockCLIEnvPath())) {
+            $laradockEnv = Dotenv::create(\Laradock\workingDirectory(), 'laradock-env');
             $this->laradockAttributes = $laradockEnv->safeLoad();
         }
+        $this->laradockExampleContents  = File::get(getLaradockEnvExamplePath());
+        preg_match_all('/\$\{(.*?)\}/m', json_encode([
+            'services' => $this->services,
+            'networks' => $this->networks,
+            'volumes' => $this->volumes,
+        ]), $matches, PREG_SET_ORDER, 0);
+        $this->matchedLaradockEnvs = collect($matches)->map(function ($res) {
+            return $res[1];
+        })->unique()->sort()->flip()->toArray();
     }
 
     public function writeEnvFile()
     {
-        $envExamplePath = config('laradock.laradock_path').'env-example';
-        $envExample = file_get_contents($envExamplePath);
-        preg_match_all('/\$\{(.*?)\}/m', json_encode($this->getAttributes()), $matches, PREG_SET_ORDER, 0);
-        $environmentVariables = collect($matches)->map(function ($res) {
-            return $res[1];
-        })->unique()->sort()->flip()->toArray();
-        $dotEnv = collect(explode("\n", $envExample))
-            ->map(function ($line) use ($environmentVariables) {
-                if (Str::startsWith($line, '### ')) {
-                    $keys = collect($this->services)->keys()->map(function ($s) {
-                        return strtoupper($s);
-                    })->toArray();
-                    foreach ($keys as $key) {
-                        // we add the comments in to be nice
-                        if (Str::contains($line, $key) ||
-                            Str::contains($line, str_replace('-', '_', $key)) ||
-                            // apache2
-                            Str::contains($line, str_replace('2', '', $key)) ||
-                            Str::contains($line, 'Paths') ||
-                            Str::contains($line, 'Drivers')
-                        ) {
-                            return $line;
-                        }
-                    }
-                }
-                if (! Str::contains($line, '=')) {
-                    return '';
-                }
-                $key = substr($line, 0, strpos($line, '='));
-
-                if (! isset($environmentVariables[$key])) {
-                    return '';
-                }
-
-                $value = substr($line, strpos($line, '=') + 1);
-                if ($key === 'APP_CODE_PATH_HOST') {
-                    $value = $attributes['APP_URL'] ?? './';
-                }
-                if (Str::contains($key, 'PUID')) {
-                    $value = getmyuid();
-                }
-                if (Str::contains($key, 'PGID')) {
-                    $value = getmygid();
-                }
-                // we shouldn't override the values
-                if (isset($this->laradockAttributes[$key])) {
-                    $value = $this->laradockAttributes[$key];
-                } elseif (isset($this->envAttributes[$key])) {
-                    $value = $this->envAttributes[$key];
-                }
-                // if the value has a space we need to wrap it in double-quotes
-                if (Str::contains($value, ' ') && ! Str::startsWith($value, '"')) {
-                    $value = '"'.$value.'"';
-                }
-
-                return $key.'='.$value;
+        $dotEnv = collect(explode("\n", $this->laradockExampleContents))
+            ->map(function($line) {
+                return \Laradock\invoke(new EnvironmentConfigTransformer($this), $line);
             })
             ->filter(function ($line) {
                 return ! empty($line);
             })
             ->implode("\n");
-        file_put_contents(base_path('laradock-env'), $dotEnv);
+
+        File::put(getLaradockCLIEnvPath(), $dotEnv);
     }
 
     public function writeToDockerComposeYaml()
     {
-        $safeAttributes = collect($this->getAttributes())
-            ->except(['context', 'path'])
-            ->toArray();
-        $safeAttributes['version'] = '3';
-        File::put($this->path, Yaml::dump($safeAttributes, 6, 2));
+        $attrs = [ 'version' => '3' ];
+        $attrs = array_merge($attrs, collect($this->getAttributes())
+            ->only(['services', 'networks', 'volumes'])
+            ->toArray());
+        File::put(getDockerComposePath(), Yaml::dump($attrs, 6, 2));
     }
 
     public function addMissingFoldersForServices()
     {
+        if (!File::isDirectory(\Laradock\getServicesPath())) {
+            File::makeDirectory(\Laradock\getServicesPath());
+        }
         collect($this->services)->keys()->each(function ($key) {
-            $path = $this->contextPath($key);
-            if (! File::isDirectory($path)) {
-                $laradockPath = config('laradock.laradock_path').$key;
-                File::copyDirectory($laradockPath, $path);
+            if (empty($key)) {
+                return;
+            }
+            if (
+                !File::isDirectory(\Laradock\getServicesPath($key)) &&
+                File::isDirectory(\Laradock\getLaradockServicePath($key))
+            ) {
+                File::copyDirectory(\Laradock\getLaradockServicePath($key), \Laradock\getServicesPath($key));
             }
         });
     }
@@ -166,18 +131,8 @@ class DockerCompose extends OfflineModel
         collect($this->original['services'])->keys()->filter(function ($key) {
             return ! isset($this->services[$key]);
         })->each(function ($key) {
-            File::deleteDirectory($this->contextPath($key));
+            File::deleteDirectory(\Laradock\getServicesPath($key));
         });
     }
 
-    /**
-     * @param string $context
-     * @return DockerCompose
-     */
-    public function setContext(string $context): self
-    {
-        $this->context = $context;
-
-        return $this;
-    }
 }

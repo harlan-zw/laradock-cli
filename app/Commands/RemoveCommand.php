@@ -33,10 +33,6 @@ class RemoveCommand extends Command
     {
         $service = $this->argument('service');
 
-        if ($this->hasOption('context')) {
-            $laradock->setContext($this->option('context'));
-        }
-
         $laradock->removeService($service);
 
         $this->call('status');

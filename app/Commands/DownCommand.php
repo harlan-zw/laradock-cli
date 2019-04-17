@@ -30,11 +30,11 @@ class DownCommand extends Command
      */
     public function handle()
     {
-        $laradockEnv = Dotenv::create(base_path(), 'laradock-env');
-        $this->line('Loading in laradock-env file at: '.base_path());
+        $laradockEnv = Dotenv::create(\Laradock\workingDirectory(), 'laradock-env');
+        $this->line('Loading in laradock-env file at: '.\Laradock\workingDirectory());
         $laradockAttributes = $laradockEnv->safeLoad();
 
-        $process = new Process('docker-compose down', base_path(), $laradockAttributes, null, 60000);
+        $process = new Process('docker-compose down', \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
         $process->run(function ($response, $output) {
             $this->output->write($output);

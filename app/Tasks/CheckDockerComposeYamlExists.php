@@ -18,7 +18,7 @@ class CheckDockerComposeYamlExists
     public function __construct($path = false)
     {
         if (empty($path)) {
-            $path = base_path().'/'.self::DOCKER_COMPOSE_FILE;
+            $path = \Laradock\workingDirectory(self::DOCKER_COMPOSE_FILE);
         }
         $this->path = $path;
     }

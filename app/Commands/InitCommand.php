@@ -37,12 +37,12 @@ class InitCommand extends Command
             $this->warn('You have already installed laradock.');
         }
 
-        $envFolder = base_path('env');
+        $envFolder = \Laradock\workingDirectory('env');
         Log::info('Making directory '.$envFolder);
         File::delete(['docker-compose.yml']);
         File::deleteDirectory('env', false);
         File::makeDirectory($envFolder, 0755, true, true);
-        touch(base_path('docker-compose.yml'));
+        touch(\Laradock\workingDirectory('docker-compose.yml'));
 
         $servicesAvailableToAdd = collect($laradock->services())->filter(function ($v) {
             return ! in_array($v, config('laradock.default_services'));
