@@ -2,16 +2,13 @@
 
 namespace Laradock\Models;
 
-use Dotenv\Dotenv;
-use Illuminate\Support\Str;
+use Symfony\Component\Yaml\Yaml;
+use Laradock\Tasks\ParseDotEnvFile;
+use Illuminate\Support\Facades\File;
 use function Laradock\getDockerComposePath;
-use function Laradock\getDotEnvPath;
 use function Laradock\getLaradockCLIEnvPath;
 use function Laradock\getLaradockEnvExamplePath;
-use Laradock\Tasks\ParseDotEnvFile;
 use Laradock\Transformers\EnvironmentConfigTransformer;
-use Symfony\Component\Yaml\Yaml;
-use Illuminate\Support\Facades\File;
 
 /**
  * @property array services
@@ -66,7 +63,7 @@ class DockerCompose extends OfflineModel
     {
         $this->envAttributes = \Laradock\invoke(new ParseDotEnvFile());
         $this->laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
-        $this->laradockExampleContents  = File::get(getLaradockEnvExamplePath());
+        $this->laradockExampleContents = File::get(getLaradockEnvExamplePath());
         preg_match_all('/\$\{(.*?)\}/m', json_encode([
             'services' => $this->services,
             'networks' => $this->networks,
@@ -80,7 +77,7 @@ class DockerCompose extends OfflineModel
     public function writeEnvFile()
     {
         $dotEnv = collect(explode("\n", $this->laradockExampleContents))
-            ->map(function($line) {
+            ->map(function ($line) {
                 return \Laradock\invoke(new EnvironmentConfigTransformer($this), $line);
             })
             ->filter(function ($line) {
@@ -93,7 +90,7 @@ class DockerCompose extends OfflineModel
 
     public function writeToDockerComposeYaml()
     {
-        $attrs = [ 'version' => '3' ];
+        $attrs = ['version' => '3'];
         $attrs = array_merge($attrs, collect($this->getAttributes())
             ->only(['services', 'networks', 'volumes'])
             ->toArray());
@@ -102,7 +99,7 @@ class DockerCompose extends OfflineModel
 
     public function addMissingFoldersForServices()
     {
-        if (!File::isDirectory(\Laradock\getServicesPath())) {
+        if (! File::isDirectory(\Laradock\getServicesPath())) {
             File::makeDirectory(\Laradock\getServicesPath());
         }
         collect($this->services)->keys()->each(function ($key) {
@@ -110,7 +107,7 @@ class DockerCompose extends OfflineModel
                 return;
             }
             if (
-                !File::isDirectory(\Laradock\getServicesPath($key)) &&
+                ! File::isDirectory(\Laradock\getServicesPath($key)) &&
                 File::isDirectory(\Laradock\getLaradockServicePath($key))
             ) {
                 File::copyDirectory(\Laradock\getLaradockServicePath($key), \Laradock\getServicesPath($key));
@@ -129,5 +126,4 @@ class DockerCompose extends OfflineModel
             File::deleteDirectory(\Laradock\getServicesPath($key));
         });
     }
-
 }

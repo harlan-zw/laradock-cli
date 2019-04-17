@@ -2,12 +2,11 @@
 
 namespace Laradock\Commands;
 
-use Dotenv\Dotenv;
-use function Laradock\getLaradockCLIEnvPath;
 use Laradock\Tasks\ParseDotEnvFile;
 use Symfony\Component\Process\Process;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
+use function Laradock\getLaradockCLIEnvPath;
 
 class UpCommand extends Command
 {
@@ -32,7 +31,7 @@ class UpCommand extends Command
      */
     public function handle()
     {
-        $this->line('Loading in laradock-env file at: ' . getLaradockCLIEnvPath('.laradock-env'));
+        $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.laradock-env'));
         $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
         $process = new Process('docker-compose up -d', \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 

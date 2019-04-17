@@ -27,6 +27,7 @@ class CheckDockerComposeYamlExists
         if (! File::exists($this->path)) {
             return false;
         }
+
         return true;
     }
 }
