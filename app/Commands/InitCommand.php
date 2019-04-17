@@ -2,11 +2,11 @@
 
 namespace Laradock\Commands;
 
-use function Laradock\getDockerComposePath;
-use Laradock\Tasks\ParseDotEnvFile;
 use Spatie\Emoji\Emoji;
 use Laradock\Service\Laradock;
+use Laradock\Tasks\ParseDotEnvFile;
 use Illuminate\Support\Facades\File;
+use function Laradock\getDockerComposePath;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 use Laradock\Tasks\CheckDockerComposeYamlExists;
@@ -36,7 +36,7 @@ class InitCommand extends Command
     {
         if (\Laradock\invoke(new CheckDockerComposeYamlExists)) {
             $this->warn('It looks like you may have already installed Laradock,');
-            if (!$this->confirm(
+            if (! $this->confirm(
                 'Continuing will revert your current installation. Would you like to continue?',
                 false
             )) {
@@ -66,13 +66,13 @@ class InitCommand extends Command
             'DB_CONNECTION',
             'BROADCAST_DRIVER',
             'CACHE_DRIVER',
-            'SESSION_DRIVER'
-        ])->filter(function($v) use ($laradock) {
+            'SESSION_DRIVER',
+        ])->filter(function ($v) use ($laradock) {
             return $laradock->isValidService($v);
-        })->each(function($v, $k) use ($laradock) {
-            if (!$laradock->hasService($v)) {
+        })->each(function ($v, $k) use ($laradock) {
+            if (! $laradock->hasService($v)) {
                 $laradock->addService($v);
-                $this->info(Emoji::heavyCheckMark() . ' Enabling service ' . $v . ' because of ' . $k . ' from .env.');
+                $this->info(Emoji::heavyCheckMark().' Enabling service '.$v.' because of '.$k.' from .env.');
             }
         });
 
