@@ -32,6 +32,7 @@ class StatusCommand extends Command
 
         if (empty($laradockCompose)) {
             $this->info('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock init');
+
             return;
         }
 

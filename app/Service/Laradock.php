@@ -2,9 +2,9 @@
 
 namespace Laradock\Service;
 
-use function Laradock\getLaradockDockerComposePath;
 use Laradock\Models\DockerCompose;
 use Laradock\Tasks\ParseDockerComposeYaml;
+use function Laradock\getLaradockDockerComposePath;
 
 class Laradock
 {
@@ -74,9 +74,9 @@ class Laradock
         $serviceToAdd = $this->laradockDockerCompose->services[$service];
         // fix context
         if (isset($serviceToAdd['build']['context'])) {
-            $serviceToAdd['build']['context'] = config('laradock.context') . '/' . $service;
+            $serviceToAdd['build']['context'] = config('laradock.context').'/'.$service;
         } elseif (! empty($serviceToAdd['build'])) {
-            $serviceToAdd['build'] = config('laradock.context') . '/' . $service;
+            $serviceToAdd['build'] = config('laradock.context').'/'.$service;
         }
         $newServices = array_merge($this->ourDockerCompose->services, [$service => $serviceToAdd]);
         $this->ourDockerCompose->services = $newServices;
@@ -89,6 +89,7 @@ class Laradock
             $this->ourDockerCompose->volumes = $newVolumes;
         }
         $this->ourDockerCompose->save();
+
         return true;
     }
 
