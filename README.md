@@ -39,15 +39,9 @@ Add to .gitignore
 
 ## Usage
 
-### New Laravel Projects
-
 1. Setup files `./vendor/bin/laradock init`
 2. Install & Start docker containers. Note that this may take quite a few minutes. `./vendor/bin/laradock up`
 3. Once you're up and running you can mount on to workspace with `./vendir/bin/laradock mount`
-
-### Existing projects
-
-
 
 ## Documentation
 
