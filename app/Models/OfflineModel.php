@@ -4,12 +4,42 @@ namespace Laradock\Models;
 
 use ArrayAccess;
 use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Database\Eloquent\Concerns\HasAttributes;
-use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 
 abstract class OfflineModel implements ArrayAccess, Arrayable
 {
-    use HasAttributes, HasRelationships;
+    /**
+     * The model's attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [];
+
+    /**
+     * The model attribute's original state.
+     *
+     * @var array
+     */
+    protected $original = [];
+
+    /**
+     * The changed model attributes.
+     *
+     * @var array
+     */
+    protected $changes = [];
+
+    /**
+     * Sync the original attributes with the current.
+     *
+     * @return $this
+     */
+    public function syncOriginal()
+    {
+        $this->original = $this->attributes;
+
+        return $this;
+    }
+
 
     public function getVisible()
     {
@@ -84,6 +114,28 @@ abstract class OfflineModel implements ArrayAccess, Arrayable
     {
         $this->setAttribute($key, $value);
     }
+
+    /**
+     * Get an attribute from the model.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function getAttribute($key)
+    {
+        return $this->attributes[$key];
+    }
+    /**
+     * Get an attribute from the model.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function setAttribute($key, $value)
+    {
+        return $this->attributes[$key] = $value;
+    }
+
 
     /**
      * Determine if the given attribute exists.
@@ -164,6 +216,10 @@ abstract class OfflineModel implements ArrayAccess, Arrayable
         return (new static)->$method(...$parameters);
     }
 
+    public function getAttributes() {
+        return $this->attributes;
+    }
+
     /**
      * Convert the model instance to an array.
      *
@@ -171,6 +227,6 @@ abstract class OfflineModel implements ArrayAccess, Arrayable
      */
     public function toArray()
     {
-        return array_merge($this->attributesToArray(), $this->relationsToArray());
+        return $this->attributes;
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "83c199f83c691e466c5a71b7001708f8",
+    "content-hash": "2f9e8b27fc15937b86d3843f538fb358",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -221,16 +221,16 @@
         },
         {
             "name": "illuminate/cache",
-            "version": "v5.8.11",
+            "version": "v5.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/cache.git",
-                "reference": "8465c046a7377650848f9a0952d385c45832c259"
+                "reference": "f5f2c61956970fbfe93259a9e47a6096608377f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/cache/zipball/8465c046a7377650848f9a0952d385c45832c259",
-                "reference": "8465c046a7377650848f9a0952d385c45832c259",
+                "url": "https://api.github.com/repos/illuminate/cache/zipball/f5f2c61956970fbfe93259a9e47a6096608377f7",
+                "reference": "f5f2c61956970fbfe93259a9e47a6096608377f7",
                 "shasum": ""
             },
             "require": {
@@ -266,11 +266,11 @@
             ],
             "description": "The Illuminate Cache package.",
             "homepage": "https://laravel.com",
-            "time": "2019-04-03T08:58:07+00:00"
+            "time": "2019-04-12T12:37:19+00:00"
         },
         {
             "name": "illuminate/config",
-            "version": "v5.8.11",
+            "version": "v5.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
@@ -314,16 +314,16 @@
         },
         {
             "name": "illuminate/console",
-            "version": "v5.8.11",
+            "version": "v5.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
-                "reference": "d564dde41004662ba914531f94dd262a24585b1f"
+                "reference": "31ca5f87565db8010d29dff42b379608644adc16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/console/zipball/d564dde41004662ba914531f94dd262a24585b1f",
-                "reference": "d564dde41004662ba914531f94dd262a24585b1f",
+                "url": "https://api.github.com/repos/illuminate/console/zipball/31ca5f87565db8010d29dff42b379608644adc16",
+                "reference": "31ca5f87565db8010d29dff42b379608644adc16",
                 "shasum": ""
             },
             "require": {
@@ -361,11 +361,11 @@
             ],
             "description": "The Illuminate Console package.",
             "homepage": "https://laravel.com",
-            "time": "2019-04-08T21:38:01+00:00"
+            "time": "2019-04-11T13:00:36+00:00"
         },
         {
             "name": "illuminate/container",
-            "version": "v5.8.11",
+            "version": "v5.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -410,16 +410,16 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.8.11",
+            "version": "v5.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "384b4daa2c738455f249c7f6f368197a5118ec43"
+                "reference": "053c578b5a95fc50fa62266ff720ef74790e938e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/384b4daa2c738455f249c7f6f368197a5118ec43",
-                "reference": "384b4daa2c738455f249c7f6f368197a5118ec43",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/053c578b5a95fc50fa62266ff720ef74790e938e",
+                "reference": "053c578b5a95fc50fa62266ff720ef74790e938e",
                 "shasum": ""
             },
             "require": {
@@ -450,71 +450,11 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "https://laravel.com",
-            "time": "2019-04-03T08:58:07+00:00"
-        },
-        {
-            "name": "illuminate/database",
-            "version": "v5.8.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/database.git",
-                "reference": "78ba623ea60a93a4f33aa4fbbe003b79445444b7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/78ba623ea60a93a4f33aa4fbbe003b79445444b7",
-                "reference": "78ba623ea60a93a4f33aa4fbbe003b79445444b7",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "illuminate/container": "5.8.*",
-                "illuminate/contracts": "5.8.*",
-                "illuminate/support": "5.8.*",
-                "php": "^7.1.3"
-            },
-            "suggest": {
-                "doctrine/dbal": "Required to rename columns and drop SQLite columns (^2.6).",
-                "fzaninotto/faker": "Required to use the eloquent factory builder (^1.4).",
-                "illuminate/console": "Required to use the database commands (5.8.*).",
-                "illuminate/events": "Required to use the observers with Eloquent (5.8.*).",
-                "illuminate/filesystem": "Required to use the migrations (5.8.*).",
-                "illuminate/pagination": "Required to paginate the result set (5.8.*)."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Database\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Database package.",
-            "homepage": "https://laravel.com",
-            "keywords": [
-                "database",
-                "laravel",
-                "orm",
-                "sql"
-            ],
-            "time": "2019-04-10T10:42:53+00:00"
+            "time": "2019-04-16T12:47:20+00:00"
         },
         {
             "name": "illuminate/events",
-            "version": "v5.8.11",
+            "version": "v5.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/events.git",
@@ -559,7 +499,7 @@
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v5.8.11",
+            "version": "v5.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
@@ -610,62 +550,17 @@
             "time": "2019-04-08T12:56:11+00:00"
         },
         {
-            "name": "illuminate/log",
-            "version": "v5.8.11",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/log.git",
-                "reference": "eee4afa6c7c6636fe35f53d1c605405020df6b9d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/log/zipball/eee4afa6c7c6636fe35f53d1c605405020df6b9d",
-                "reference": "eee4afa6c7c6636fe35f53d1c605405020df6b9d",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/contracts": "5.8.*",
-                "illuminate/support": "5.8.*",
-                "monolog/monolog": "^1.11",
-                "php": "^7.1.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Log\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                }
-            ],
-            "description": "The Illuminate Log package.",
-            "homepage": "https://laravel.com",
-            "time": "2019-03-01T14:17:35+00:00"
-        },
-        {
             "name": "illuminate/support",
-            "version": "v5.8.11",
+            "version": "v5.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "601ca709bb612482848a9f330aa66490b5d85fef"
+                "reference": "5541fa4ee4b5ab4635056fae0eecad7d328b86b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/601ca709bb612482848a9f330aa66490b5d85fef",
-                "reference": "601ca709bb612482848a9f330aa66490b5d85fef",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/5541fa4ee4b5ab4635056fae0eecad7d328b86b4",
+                "reference": "5541fa4ee4b5ab4635056fae0eecad7d328b86b4",
                 "shasum": ""
             },
             "require": {
@@ -713,7 +608,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2019-04-08T12:54:41+00:00"
+            "time": "2019-04-14T05:44:06+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -1065,95 +960,17 @@
             "time": "2019-03-30T13:22:34+00:00"
         },
         {
-            "name": "monolog/monolog",
-            "version": "1.24.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
-                "reference": "bfc9ebb28f97e7a24c45bdc3f0ff482e47bb0266",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "psr/log": "~1.0"
-            },
-            "provide": {
-                "psr/log-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
-                "doctrine/couchdb": "~1.0@dev",
-                "graylog2/gelf-php": "~1.0",
-                "jakub-onderka/php-parallel-lint": "0.9",
-                "php-amqplib/php-amqplib": "~2.4",
-                "php-console/php-console": "^3.1.3",
-                "phpunit/phpunit": "~4.5",
-                "phpunit/phpunit-mock-objects": "2.3.0",
-                "ruflin/elastica": ">=0.90 <3.0",
-                "sentry/sentry": "^0.13",
-                "swiftmailer/swiftmailer": "^5.3|^6.0"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
-                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
-                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-                "ext-mongo": "Allow sending log messages to a MongoDB server",
-                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-                "mongodb/mongodb": "Allow sending log messages to a MongoDB server via PHP Driver",
-                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
-                "php-console/php-console": "Allow sending log messages to Google Chrome",
-                "rollbar/rollbar": "Allow sending log messages to Rollbar",
-                "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
-                "sentry/sentry": "Allow sending log messages to a Sentry server"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Monolog\\": "src/Monolog"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-            "homepage": "http://github.com/Seldaek/monolog",
-            "keywords": [
-                "log",
-                "logging",
-                "psr-3"
-            ],
-            "time": "2018-11-05T09:00:11+00:00"
-        },
-        {
             "name": "nesbot/carbon",
-            "version": "2.16.3",
+            "version": "2.17.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "373d9f0d58651af366435148c39beb702c2b7ef4"
+                "reference": "9b49d637ad009e5e211142bc7492adcb19dbd645"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/373d9f0d58651af366435148c39beb702c2b7ef4",
-                "reference": "373d9f0d58651af366435148c39beb702c2b7ef4",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/9b49d637ad009e5e211142bc7492adcb19dbd645",
+                "reference": "9b49d637ad009e5e211142bc7492adcb19dbd645",
                 "shasum": ""
             },
             "require": {
@@ -1163,9 +980,9 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.14 || ^3.0",
-                "kylekatarnls/multi-tester": "^0.1",
+                "kylekatarnls/multi-tester": "^1.1",
                 "phpmd/phpmd": "^2.6",
-                "phpstan/phpstan": "^0.10.8",
+                "phpstan/phpstan": "^0.11",
                 "phpunit/phpunit": "^7.5 || ^8.0",
                 "squizlabs/php_codesniffer": "^3.4"
             },
@@ -1200,7 +1017,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-04-06T17:09:23+00:00"
+            "time": "2019-04-17T08:51:36+00:00"
         },
         {
             "name": "nunomaduro/collision",
@@ -1688,7 +1505,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -1828,7 +1645,7 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
@@ -1884,7 +1701,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -2105,7 +1922,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
@@ -2154,7 +1971,7 @@
         },
         {
             "name": "symfony/translation",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
@@ -2229,16 +2046,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "f42850fa32b8d7a35a75510810f6ef597674be74"
+                "reference": "e760a38e12b15032325e64be63f7ffc1817af617"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/f42850fa32b8d7a35a75510810f6ef597674be74",
-                "reference": "f42850fa32b8d7a35a75510810f6ef597674be74",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/e760a38e12b15032325e64be63f7ffc1817af617",
+                "reference": "e760a38e12b15032325e64be63f7ffc1817af617",
                 "shasum": ""
             },
             "require": {
@@ -2301,11 +2118,11 @@
                 "debug",
                 "dump"
             ],
-            "time": "2019-04-11T11:27:41+00:00"
+            "time": "2019-04-17T14:57:01+00:00"
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
