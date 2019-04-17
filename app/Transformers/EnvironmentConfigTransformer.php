@@ -61,6 +61,15 @@ class EnvironmentConfigTransformer {
         } else if (Str::endsWith($key, 'PATH')) {
             $value = config('laradock.context') . '/' . str_replace('./', '', $value);
         }
+        if ($key === 'MYSQL_ENTRYPOINT_INITDB') {
+            $value = config('laradock.context') . '/mysql/docker-entrypoint-initdb.d';
+        }
+        // set the default php version based on CLI php version
+        if ($key === 'PHP_VERSION') {
+            if (PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION <= 3) {
+                $value = PHP_MAJOR_VERSION . '.' .PHP_MINOR_VERSION;
+            }
+        }
         // we shouldn't override the values
         if (isset($this->compose->laradockAttributes[$key])) {
             $value = $this->compose->laradockAttributes[$key];

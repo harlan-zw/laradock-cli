@@ -2,9 +2,10 @@
 
 namespace Laradock\Commands;
 
+use function Laradock\getDockerComposePath;
+use Laradock\Tasks\ParseDotEnvFile;
 use Spatie\Emoji\Emoji;
 use Laradock\Service\Laradock;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
@@ -31,27 +32,49 @@ class InitCommand extends Command
      *
      * @return mixed
      */
-    public function handle(Laradock $laradock)
+    public function handle()
     {
         if (\Laradock\invoke(new CheckDockerComposeYamlExists)) {
-            $this->warn('You have already installed laradock.');
+            $this->warn('It looks like you may have already installed Laradock,');
+            if (!$this->confirm(
+                'Continuing will revert your current installation. Would you like to continue?',
+                false
+            )) {
+                return;
+            }
         }
 
         $envFolder = \Laradock\workingDirectory('env');
-        Log::info('Making directory '.$envFolder);
-        File::delete(['docker-compose.yml']);
-        File::deleteDirectory('env', false);
+        File::delete(getDockerComposePath());
+        touch(getDockerComposePath());
+        File::deleteDirectory($envFolder, false);
         File::makeDirectory($envFolder, 0755, true, true);
-        touch(\Laradock\workingDirectory('docker-compose.yml'));
 
+        $laradock = new Laradock();
         $servicesAvailableToAdd = collect($laradock->services())->filter(function ($v) {
             return ! in_array($v, config('laradock.default_services'));
         })->toArray();
         $selectedServices = config('laradock.default_services');
         foreach ($selectedServices as $service) {
             $laradock->addService($service);
-            $this->info(Emoji::heavyCheckMark().' We have enabled '.$service.' service for you.');
+            $this->info(Emoji::heavyCheckMark().' Default service '.$service.' enabled.');
         }
+
+        // look at the drivers to figure out what services we need
+        $env = \Laradock\invoke(new ParseDotEnvFile());
+        collect($env)->only([
+            'DB_CONNECTION',
+            'BROADCAST_DRIVER',
+            'CACHE_DRIVER',
+            'SESSION_DRIVER'
+        ])->filter(function($v) use ($laradock) {
+            return $laradock->isValidService($v);
+        })->each(function($v, $k) use ($laradock) {
+            if (!$laradock->hasService($v)) {
+                $laradock->addService($v);
+                $this->info(Emoji::heavyCheckMark() . ' Enabling service ' . $v . ' because of ' . $k . ' from .env.');
+            }
+        });
 
         while ($this->confirm('Would you like to add another service?', true)) {
             $selectedService = $this->choice(

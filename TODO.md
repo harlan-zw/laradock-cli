@@ -1,9 +1,9 @@
 ## Laradock CLI - To Do
-- create some tests
-- expirement it on a couple of projects
+- Create some tests
 - More emojis
 - Documentation (readme)
 - Create some presets (LAMP, etc)
 
-- fix service paths to use context
-- move logs to a runtime folder
+- make a laradock mirror so can have dependency via composer
+- Removing Eloquent dependency
+- update .env details with docker values

@@ -8,6 +8,7 @@ use function Laradock\getDockerComposePath;
 use function Laradock\getDotEnvPath;
 use function Laradock\getLaradockCLIEnvPath;
 use function Laradock\getLaradockEnvExamplePath;
+use Laradock\Tasks\ParseDotEnvFile;
 use Laradock\Transformers\EnvironmentConfigTransformer;
 use Symfony\Component\Yaml\Yaml;
 use Illuminate\Support\Facades\File;
@@ -63,14 +64,8 @@ class DockerCompose extends OfflineModel
 
     public function readCurrentEnvFile()
     {
-        if (file_exists(getDotEnvPath())) {
-            $dotEnv = Dotenv::create(\Laradock\workingDirectory());
-            $this->envAttributes = $dotEnv->load();
-        }
-        if (file_exists(getLaradockCLIEnvPath())) {
-            $laradockEnv = Dotenv::create(\Laradock\workingDirectory(), 'laradock-env');
-            $this->laradockAttributes = $laradockEnv->safeLoad();
-        }
+        $this->envAttributes = \Laradock\invoke(new ParseDotEnvFile());
+        $this->laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath()));
         $this->laradockExampleContents  = File::get(getLaradockEnvExamplePath());
         preg_match_all('/\$\{(.*?)\}/m', json_encode([
             'services' => $this->services,

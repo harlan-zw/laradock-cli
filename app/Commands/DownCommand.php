@@ -3,6 +3,8 @@
 namespace Laradock\Commands;
 
 use Dotenv\Dotenv;
+use function Laradock\getLaradockCLIEnvPath;
+use Laradock\Tasks\ParseDotEnvFile;
 use Symfony\Component\Process\Process;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
@@ -30,9 +32,8 @@ class DownCommand extends Command
      */
     public function handle()
     {
-        $laradockEnv = Dotenv::create(\Laradock\workingDirectory(), 'laradock-env');
-        $this->line('Loading in laradock-env file at: '.\Laradock\workingDirectory());
-        $laradockAttributes = $laradockEnv->safeLoad();
+        $this->line('Loading in laradock-env file at: ' . getLaradockCLIEnvPath());
+        $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath()));
 
         $process = new Process('docker-compose down', \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
