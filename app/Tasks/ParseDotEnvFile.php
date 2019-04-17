@@ -19,6 +19,6 @@ class ParseDotEnvFile
 
     public function __invoke()
     {
-       return $this->dotEnv->safeLoad();
+        return $this->dotEnv->safeLoad();
     }
 }
