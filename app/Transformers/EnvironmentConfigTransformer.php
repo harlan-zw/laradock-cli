@@ -1,22 +1,24 @@
 <?php
-namespace Laradock\Transformers;
 
+namespace Laradock\Transformers;
 
 use Illuminate\Support\Str;
 use Laradock\Models\DockerCompose;
 
-class EnvironmentConfigTransformer {
-
+class EnvironmentConfigTransformer
+{
     private $compose;
 
     /**
      * EnvironmentConfigTransformer constructor.
      */
-    public function __construct(DockerCompose $compose) {
+    public function __construct(DockerCompose $compose)
+    {
         $this->compose = $compose;
     }
 
-    public function __invoke($line) {
+    public function __invoke($line)
+    {
         // Show comments for each services's section we're showing
         if (Str::startsWith($line, '### ')) {
             $keys = collect($this->compose->services)->keys()->map(function ($s) {
@@ -58,8 +60,8 @@ class EnvironmentConfigTransformer {
         }
         if (Str::endsWith($key, '_LOG_PATH')) {
             $value = str_replace('./logs/', './runtime/logs/', $value);
-        } else if (Str::endsWith($key, 'PATH')) {
-            $value = config('laradock.context') . '/' . str_replace('./', '', $value);
+        } elseif (Str::endsWith($key, 'PATH')) {
+            $value = config('laradock.context').'/'.str_replace('./', '', $value);
         }
         // we shouldn't override the values
         if (isset($this->compose->laradockAttributes[$key])) {
