@@ -13,16 +13,33 @@ Laradock CLI is an unofficial package built with [Laravel Zero](https://laravel-
 and workflows that you may come accross. The high-level goal of the package is to be able to setup a Laradock project in under 2 minutes 
 and only commit code that is essential.
 
-## Highlights
+## Features
 
-- Keep your project directory clean. Only have services you're using committed.
-- Keep your .env file clean. Moves all laradock environment variables to their own `laradock-env` file.
-- Make it easy to update your laradock between versions
-- Make it super easy to manage your services
-- Fix user / group id issues automatically
-- Avoid duplicate configuration (Site URL, etc)
-- Abstract docker functions (mounting, up, etc)
-- Handle alternative laradock paths without headaches
+*Clean project*
+
+By loading Laradock services on demand, we only commit files we will actually use.
+
+*Clean .env* 
+
+Moves all Laradock environment variables to their own `laradock-env` file.
+
+*No configuration*
+
+Laradock CLI reads your project like a book. The end goal is a zero-configuration docker setup. Some examples:
+- Fixes User and Group IDs
+- Checks for package.json before installing node in workspace
+- Checks your CLI php version for which php version to use
+- Updates your environment variables for docker credentials (coming soon)
+- Updates host files for SITE_URL (coming soon)
+
+*Easier Upgrades*
+
+Simple command to add additional services, Laradock CLI takes care of all files and configurations for you.
+
+*Your Laradock*
+
+Easily choose where you want to install the files, don't need locked into the laradock folder.
+
 
 ------
 

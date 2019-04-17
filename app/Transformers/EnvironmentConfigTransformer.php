@@ -4,6 +4,7 @@ namespace Laradock\Transformers;
 
 use Illuminate\Support\Str;
 use Laradock\Models\DockerCompose;
+use function Laradock\workingDirectory;
 
 class EnvironmentConfigTransformer
 {
@@ -66,6 +67,16 @@ class EnvironmentConfigTransformer
         if ($key === 'MYSQL_ENTRYPOINT_INITDB') {
             $value = config('laradock.context').'/mysql/docker-entrypoint-initdb.d';
         }
+        if ($key === 'WORKSPACE_INSTALL_YARN') {
+            $value = \Illuminate\Support\Facades\File::exists(workingDirectory('yarn.lock'));
+        }
+        if ($key === 'WORKSPACE_INSTALL_NODE') {
+            $value = \Illuminate\Support\Facades\File::exists(workingDirectory('package.json'));
+        }
+        if ($key === 'WORKSPACE_INSTALL_NPM_GULP') {
+            $value = \Illuminate\Support\Facades\File::exists(workingDirectory('gulp.json'));
+        }
+
         // set the default php version based on CLI php version
         if ($key === 'PHP_VERSION') {
             if (PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION <= 3) {
