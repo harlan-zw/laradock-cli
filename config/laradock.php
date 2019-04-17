@@ -6,7 +6,7 @@ return [
 
     'laradock_path' => base_path('bin/laradock-7.14/'),
 
-    'context' => './env/docker',
+    'context' => env('LARADOCK_CLI_PATH', './env/docker'),
 
     'default_services' => [
         'workspace',
