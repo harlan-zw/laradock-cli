@@ -40,7 +40,6 @@ abstract class OfflineModel implements ArrayAccess, Arrayable
         return $this;
     }
 
-
     public function getVisible()
     {
         return $this->attributes;
@@ -125,6 +124,7 @@ abstract class OfflineModel implements ArrayAccess, Arrayable
     {
         return $this->attributes[$key];
     }
+
     /**
      * Get an attribute from the model.
      *
@@ -135,7 +135,6 @@ abstract class OfflineModel implements ArrayAccess, Arrayable
     {
         return $this->attributes[$key] = $value;
     }
-
 
     /**
      * Determine if the given attribute exists.
@@ -216,7 +215,8 @@ abstract class OfflineModel implements ArrayAccess, Arrayable
         return (new static)->$method(...$parameters);
     }
 
-    public function getAttributes() {
+    public function getAttributes()
+    {
         return $this->attributes;
     }
 
