@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f9e8b27fc15937b86d3843f538fb358",
+    "content-hash": "ac05ad5c1010f3e09308f56bb1a30690",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -958,6 +958,34 @@
                 "storage"
             ],
             "time": "2019-03-30T13:22:34+00:00"
+        },
+        {
+            "name": "loonpwn/laradock",
+            "version": "7.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/loonpwn/laradock.git",
+                "reference": "3b0e7cacc74e90c4b0ec67ddd71d4e7aac2b16df"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/loonpwn/laradock/zipball/3b0e7cacc74e90c4b0ec67ddd71d4e7aac2b16df",
+                "reference": "3b0e7cacc74e90c4b0ec67ddd71d4e7aac2b16df",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Harlan Wilton",
+                    "email": "harlan@harlanzw.com"
+                }
+            ],
+            "description": "Unofficial mirror of laradock",
+            "time": "2019-04-18T23:43:14+00:00"
         },
         {
             "name": "nesbot/carbon",

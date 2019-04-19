@@ -4,7 +4,7 @@ return [
 
     'compose_file' => 'docker-compose.yml',
 
-    'laradock_path' => base_path('bin/laradock-7.14/'),
+    'laradock_path' => base_path('vendor/loonpwn/laradock/'),
 
     'context' => env('LARADOCK_CLI_PATH', './env/docker'),
 

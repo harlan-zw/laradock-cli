@@ -49,7 +49,7 @@ Easily choose where you want to install the files, don't need locked into the la
 Via Composer
 
 ``` bash
-composer require --dev loonpwn/laradock-cli
+composer global require loonpwn/laradock-cli
 ```
 
 Add to .gitignore
@@ -70,6 +70,8 @@ Laradock CLI works slightly different to Laradock in terms of its paths. Laradoc
 You are welcome to change the context of your laradock folder by setting an environment variable.
 
 `LARADOCK_CLI_PATH=./laradock/`
+
+Laradock CLI will also move the paths of your environment variables and set any log files to go to a runtime folder.
 
 ### Commands
 
