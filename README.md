@@ -7,8 +7,6 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/loonpwn/laradock-cli.svg?style=flat)](https://packagist.org/packages/loonpwn/laradock-cli)
 [![StyleCI](https://github.styleci.io/repos/155632347/shield?branch=master)](https://github.styleci.io/repos/155632347)
 
-Note: This package is in active development. A release is coming soon where it will be usable, for now it's just work in progress commits. 
-
 Laradock CLI is an unofficial package built with [Laravel Zero](https://laravel-zero.com/). It's built on top of [Laradock](https://laradock.io/) to address common issues
 and workflows that you may come accross. The high-level goal of the package is to be able to setup a Laradock project in under 2 minutes 
 and only commit code that is essential.
