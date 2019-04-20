@@ -33,7 +33,7 @@ class DownCommand extends Command
     {
         $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.laradock-env'));
         $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
-        $command = 'docker-compose down ' . implode(' ', $this->input->getArgument('cmd'));
+        $command = 'docker-compose down '.implode(' ', $this->input->getArgument('cmd'));
         $process = new Process($command, \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
         $this->info($command);
