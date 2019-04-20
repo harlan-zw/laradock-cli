@@ -4,3 +4,5 @@
 - Documentation (readme)
 
 - update .env details with docker values
+- Figure out to use php-worker if using queue and not sync
+- 

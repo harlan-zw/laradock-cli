@@ -8,7 +8,7 @@ return [
 
     'context' => env('LARADOCK_CLI_PATH', './env/docker'),
 
-    'runtime_folder' => env('LARADOCK_CLI_RUNTIME_PATH', './storage/docker'),
+    'runtime_folder' => env('LARADOCK_CLI_RUNTIME_PATH', './storage/docker/'),
 
     'default_services' => [
         'workspace',

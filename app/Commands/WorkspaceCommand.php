@@ -3,7 +3,10 @@
 namespace Laradock\Commands;
 
 use Illuminate\Console\Scheduling\Schedule;
+use function Laradock\getLaradockCLIEnvPath;
+use Laradock\Tasks\ParseDotEnvFile;
 use LaravelZero\Framework\Commands\Command;
+use Symfony\Component\Process\Process;
 
 class WorkspaceCommand extends Command
 {
@@ -28,7 +31,15 @@ class WorkspaceCommand extends Command
      */
     public function handle()
     {
-        passthru('docker-compose exec workspace bash');
+        $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.laradock-env'));
+        $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
+        $process = new Process('docker-compose exec workspace bash', \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
+
+        $this->info('Attempting to mount on to the workspace container..');
+        $process->setTty(true);
+        $process->run(function ($response, $output) {
+            $this->output->write($output);
+        });
     }
 
     /**
