@@ -33,9 +33,10 @@ class WorkspaceCommand extends Command
     {
         $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.laradock-env'));
         $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
-        $process = new Process('docker-compose exec workspace bash', \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
+        $command = 'docker-compose exec --user=laradock workspace bash';
+        $process = new Process($command, \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
-        $this->info('Attempting to mount on to the workspace container..');
+        $this->info($command);
         $process->setTty(true);
         $process->run(function ($response, $output) {
             $this->output->write($output);

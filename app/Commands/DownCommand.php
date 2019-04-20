@@ -15,7 +15,7 @@ class DownCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'down';
+    protected $signature = 'down {cmd?* : The docker-compose arguments}';
 
     /**
      * The description of the command.
@@ -33,9 +33,10 @@ class DownCommand extends Command
     {
         $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.laradock-env'));
         $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
+        $command = 'docker-compose down ' . implode(' ', $this->input->getArgument('cmd'));
+        $process = new Process($command, \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
-        $process = new Process('docker-compose down', \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
-
+        $this->info($command);
         $process->run(function ($response, $output) {
             $this->output->write($output);
         });

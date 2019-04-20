@@ -8,21 +8,21 @@ use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 use function Laradock\getLaradockCLIEnvPath;
 
-class UpCommand extends Command
+class ExecCommand extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'up {cmd?* : The docker-compose arguments}';
+    protected $signature = 'exec {cmd?* : The docker-compose arguments}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Runs `docker-compose up -d` with the `laradock-env` loaded in.';
+    protected $description = 'Runs `docker-compose exec` with the `laradock-env` loaded in.';
 
     /**
      * Execute the console command.
@@ -33,11 +33,10 @@ class UpCommand extends Command
     {
         $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.laradock-env'));
         $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
-        $command = 'docker-compose up -d ' . implode(' ', $this->input->getArgument('cmd'));
+        $command = 'docker-compose exec ' . implode(' ', $this->input->getArgument('cmd'));
         $process = new Process($command, \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
         $this->info($command);
-        $this->line('Note: This may take a while if you haven\'t ran this command before.');
         $process->run(function ($response, $output) {
             $this->output->write($output);
         });
