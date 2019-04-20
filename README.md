@@ -66,7 +66,7 @@ laradock init
 
 1. Setup files `./laradock init`
 2. Install & Start docker containers. Note that this may take quite a few minutes. `./laradock up`
-3. Once you're up and running you can mount on to workspace with `./laradock mount`
+3. Once you're up and running you can mount on to workspace with `./laradock workspace`
 
 ## Documentation
 
