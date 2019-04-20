@@ -3,8 +3,8 @@
 namespace Laradock\Tasks;
 
 use Dotenv\Dotenv;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
 class ParseDotEnvFile
 {
@@ -17,8 +17,8 @@ class ParseDotEnvFile
     public function __construct($path = null, $file = null)
     {
         $path = $path ?? \Laradock\workingDirectory();
-        if (!File::exists($path . '/' . $file)) {
-            Log::warning('Missing ' . $file . ' file at ' . $path);
+        if (! File::exists($path.'/'.$file)) {
+            Log::warning('Missing '.$file.' file at '.$path);
         }
         $this->dotEnv = Dotenv::create($path ?? \Laradock\workingDirectory(), $file);
     }
