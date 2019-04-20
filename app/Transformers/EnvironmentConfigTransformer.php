@@ -60,7 +60,7 @@ class EnvironmentConfigTransformer
             $value = getmygid();
         }
         if (Str::endsWith($key, '_LOG_PATH')) {
-            $value = str_replace('./logs/', './runtime/logs/', $value);
+            $value = str_replace('./logs/', config('laradock.runtime_folder'), $value);
         } elseif (Str::endsWith($key, 'PATH')) {
             $value = config('laradock.context').'/'.str_replace('./', '', $value);
         }
