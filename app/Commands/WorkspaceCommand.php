@@ -2,11 +2,11 @@
 
 namespace Laradock\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
-use function Laradock\getLaradockCLIEnvPath;
 use Laradock\Tasks\ParseDotEnvFile;
-use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Process\Process;
+use Illuminate\Console\Scheduling\Schedule;
+use LaravelZero\Framework\Commands\Command;
+use function Laradock\getLaradockCLIEnvPath;
 
 class WorkspaceCommand extends Command
 {
