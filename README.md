@@ -44,14 +44,23 @@ Easily choose where you want to install the files, don't need locked into the la
 
 ## Installation
 
-Via Composer
+### Phar
+
+``` bash
+wget https://github.com/loonpwn/laradock-cli/releases/download/0.1.1/laradock
+chmod +x ./laradock
+./laradock init
+```
+
+### Composer (alternative)
+
+You'll need your composer bin added to your PATH for this to work.
+
 
 ``` bash
 composer global require loonpwn/laradock-cli
+laradock init
 ```
-
-Add to .gitignore
-`.laradock-env`
 
 ## Usage
 
