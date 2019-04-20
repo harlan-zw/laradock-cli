@@ -1,0 +1,13 @@
+{
+    "name": "loonpwn/laradock",
+    "license": "MIT",
+    "version": "7.1.4",
+    "description": "Unofficial mirror of laradock",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Harlan Wilton",
+            "email": "harlan@harlanzw.com"
+        }
+    ]
+}

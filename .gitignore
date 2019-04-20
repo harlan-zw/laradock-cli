@@ -10,4 +10,4 @@ laradock-env
 .env
 
 
-!bin/laradock-7.14/**/**
+!bin/laradock/**/**
