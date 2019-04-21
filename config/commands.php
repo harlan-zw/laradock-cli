@@ -26,7 +26,10 @@ return [
     |
     */
 
-    'paths' => [app_path('Commands')],
+    'paths' => [
+        app_path('DockerCommands'),
+        app_path('Commands'),
+    ],
 
     /*
     |--------------------------------------------------------------------------

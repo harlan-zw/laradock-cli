@@ -2,6 +2,7 @@
 
 namespace Laradock\Transformers;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Laradock\Models\DockerCompose;
 use function Laradock\workingDirectory;
@@ -53,10 +54,10 @@ class EnvironmentConfigTransformer
         if ($key === 'APP_CODE_PATH_HOST') {
             $value = $attributes['APP_URL'] ?? './';
         }
-        if (Str::contains($key, 'PUID')) {
+        if (Str::contains($key, 'PUID') && getmyuid() >= 1000) {
             $value = getmyuid();
         }
-        if (Str::contains($key, 'PGID')) {
+        if (Str::contains($key, 'PGID') && getmygid() >= 1000) {
             $value = getmygid();
         }
         if (Str::endsWith($key, '_LOG_PATH')) {
@@ -68,13 +69,13 @@ class EnvironmentConfigTransformer
             $value = config('laradock.context').'/mysql/docker-entrypoint-initdb.d';
         }
         if ($key === 'WORKSPACE_INSTALL_YARN') {
-            $value = \Illuminate\Support\Facades\File::exists(workingDirectory('yarn.lock'));
+            $value = File::exists(workingDirectory('yarn.lock')) ? 'true' : 'false';
         }
         if ($key === 'WORKSPACE_INSTALL_NODE') {
-            $value = \Illuminate\Support\Facades\File::exists(workingDirectory('package.json'));
+            $value = File::exists(workingDirectory('package.json')) ? 'true' : 'false';
         }
         if ($key === 'WORKSPACE_INSTALL_NPM_GULP') {
-            $value = \Illuminate\Support\Facades\File::exists(workingDirectory('gulp.json'));
+            $value = File::exists(workingDirectory('gulp.json')) ? 'true' : 'false';
         }
 
         // set the default php version based on CLI php version
