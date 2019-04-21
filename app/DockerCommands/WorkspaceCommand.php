@@ -21,5 +21,4 @@ class WorkspaceCommand extends DockerComposeCommand
      * @var string
      */
     protected $description = 'Mounts yourself to the workspace container as Laradock user';
-
 }

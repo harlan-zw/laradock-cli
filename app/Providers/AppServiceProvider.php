@@ -2,12 +2,8 @@
 
 namespace Laradock\Providers;
 
-use Laradock\Commands\DockerComposeCommand;
 use Laradock\Service\Laradock;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Console\Application as Artisan;
-use ReflectionClass;
-use Symfony\Component\Console\Command\Command;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +28,5 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(Laradock::class, function () {
             return new Laradock();
         });
-
     }
 }
