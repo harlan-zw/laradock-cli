@@ -1,26 +1,27 @@
 <?php
+
 namespace Laradock\Service;
 
-use function Laradock\getLaradockCLIEnvPath;
 use Laradock\Tasks\ParseDotEnvFile;
-use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Process\Process;
+use LaravelZero\Framework\Commands\Command;
+use function Laradock\getLaradockCLIEnvPath;
 
 class DockerComposeCommand extends Command
 {
-
     public $command;
 
     /**
      * DockerComposeCommand constructor.
      * @param $command
      */
-    public function __construct() {
+    public function __construct()
+    {
         if (empty($this->signature)) {
-            $this->signature = str_replace('docker-compose ', '', $this->command) . ' {cmd?* : The docker-compose arguments}';
+            $this->signature = str_replace('docker-compose ', '', $this->command).' {cmd?* : The docker-compose arguments}';
         }
         if (empty($this->description)) {
-            $this->description = 'Runs `' . $this->command . '` with the `laradock-env` loaded in.';
+            $this->description = 'Runs `'.$this->command.'` with the `laradock-env` loaded in.';
         }
         parent::__construct();
     }
@@ -34,7 +35,7 @@ class DockerComposeCommand extends Command
     {
         $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.laradock-env'));
         $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
-        $command = $this->command . ' ' . implode(' ', $this->input->getArgument('cmd'));
+        $command = $this->command.' '.implode(' ', $this->input->getArgument('cmd'));
         $process = new Process($command, \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
         $this->info($command);
@@ -42,5 +43,4 @@ class DockerComposeCommand extends Command
             $this->output->write($output);
         });
     }
-
 }

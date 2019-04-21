@@ -21,5 +21,4 @@ class UpCommand extends DockerComposeCommand
      * @var string
      */
     protected $description = 'Runs `docker-compose up -d` with the `laradock-env` loaded in.';
-
 }
