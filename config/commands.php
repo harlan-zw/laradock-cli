@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => NunoMaduro\LaravelConsoleSummary\SummaryCommand::class,
+    'default' => \Laradock\DockerCommands\DefaultCommand::class,
 
     /*
     |--------------------------------------------------------------------------

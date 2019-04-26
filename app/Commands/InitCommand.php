@@ -2,6 +2,7 @@
 
 namespace Laradock\Commands;
 
+use Illuminate\Support\Arr;
 use Spatie\Emoji\Emoji;
 use Laradock\Service\Laradock;
 use Laradock\Tasks\ParseDotEnvFile;
@@ -71,27 +72,54 @@ class InitCommand extends Command
             return $laradock->isValidService($v);
         })->each(function ($v, $k) use ($laradock) {
             if (! $laradock->hasService($v)) {
-                $laradock->addService($v);
-                $this->info(Emoji::heavyCheckMark().' Enabling service '.$v.' because of '.$k.' from .env.');
+                if ($this->confirm('It looks like you are using ' . $v . '. Would you like to enable the ' . $v . ' service?', true)) {
+                    $laradock->addService($v);
+                    $selectedServices[] = $v;
+                    $this->info(Emoji::heavyCheckMark() . ' Enabling service ' . $v . ' because of ' . $k . ' from .env.');
+                }
             }
         });
+        if ($env['QUEUE_CONNECTION'] !== 'sync') {
+            if ($this->confirm('It looks like you are using a queue. Would you like to enable the php-worker service?', true)) {
+                $laradock->addService('php-worker');
+                $selectedServices[] = 'php-worker';
+            }
+        }
+
+        if (!in_array('apache2', $selectedServices) && !in_array('nginx', $selectedServices)) {
+            $selectedService = $this->choice(
+                'Would you like to enable a web server?',
+                [
+                    'apache2',
+                    'nginx',
+                    'No'
+                ]
+            );
+            if ($selectedServices !== 'No thanks') {
+                $selectedServices[] = $selectedService;
+                $laradock->addService($selectedService);
+                $this->info(Emoji::heavyCheckMark().' Added service '.$selectedService);
+            }
+        }
 
         while ($this->confirm('Would you like to add another service?', true)) {
-            $selectedService = $this->choice(
-                'What service would you like to enable?',
+            $selectedService = $this->anticipate(
+                'What service would you like to enable? (leave blank to skip)',
                 $servicesAvailableToAdd
             );
-            $laradock->addService($selectedService);
-            $this->info(Emoji::heavyCheckMark().' Added service '.$selectedService);
-            $selectedServices[] = $selectedService;
-            $this->info(Emoji::notebook().' Selected services: '.implode(', ', $selectedServices));
+            if (!empty($selectedService)) {
+                $laradock->addService($selectedService);
+                $this->info(Emoji::heavyCheckMark() . ' Added service ' . $selectedService);
+                $selectedServices[] = $selectedService;
+                $this->info(Emoji::notebook() . ' Selected services: ' . implode(', ', $selectedServices));
+            }
         }
 
         $this->call('status');
 
         $this->info(Emoji::confettiBall().' Laradock is finished. Get started with:');
 
-        $this->comment('./laradock up');
+        $this->comment('./laradock');
     }
 
     /**
