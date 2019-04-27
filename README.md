@@ -81,8 +81,10 @@ You are welcome to change the context of your laradock folder by setting an envi
 
 Laradock CLI will also move the paths of your environment variables and set any log files to go to a runtime folder.
 
-### Commands
+### Laradock Commands
 
+- `laradock` 
+This will start docker with `docker-compose up -d` and then mount you on the workspace container.
 - `laradock init` 
 This will start laradock and add the default services and guide you through adding more services.
 - `laradock status` 
@@ -93,9 +95,20 @@ List all laradock services
 Add a specific service
 - `laradock remove <service>` 
 Remove a specific service
+- `laradock workspace` 
+Mounts yourself to the workspace container as Laradock user
+
+### DockerCompose Commands
+
 - `laradock up` 
 Runs `docker-compose up -d` with the `laradock-env` loaded in.
 - `laradock down` 
 Runs `docker-compose down` with the `laradock-env` loaded in.
-- `laradock workspace` 
-Mounts yourself to the workspace container as Laradock user
+- `laradock build` 
+Runs `docker-compose build` with the `laradock-env` loaded in.
+- `laradock restart` 
+Runs `docker-compose restart` with the `laradock-env` loaded in.
+- `laradock push` 
+Runs `docker-compose push` with the `laradock-env` loaded in.
+- `laradock exec` 
+Runs `docker-compose exec` with the `laradock-env` loaded in.
