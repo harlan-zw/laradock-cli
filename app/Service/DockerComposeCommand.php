@@ -11,6 +11,8 @@ class DockerComposeCommand extends Command
 {
     public $command;
 
+    public $tty = false;
+
     /**
      * DockerComposeCommand constructor.
      * @param $command
@@ -39,6 +41,7 @@ class DockerComposeCommand extends Command
         $process = new Process($command, \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
         $this->info($command);
+        $process->setTty($this->tty);
         $process->run(function ($response, $output) {
             $this->output->write($output);
         });

@@ -6,7 +6,10 @@ use Laradock\Service\DockerComposeCommand;
 
 class WorkspaceCommand extends DockerComposeCommand
 {
-    public $command = 'docker-compose exec --user=laradock workspace bash';
+
+    public $tty = true;
+
+    public $command = 'docker-compose exec workspace bash';
 
     /**
      * The signature of the command.
