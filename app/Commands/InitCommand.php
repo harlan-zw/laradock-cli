@@ -2,7 +2,6 @@
 
 namespace Laradock\Commands;
 
-use Illuminate\Support\Arr;
 use Spatie\Emoji\Emoji;
 use Laradock\Service\Laradock;
 use Laradock\Tasks\ParseDotEnvFile;
@@ -72,10 +71,10 @@ class InitCommand extends Command
             return $laradock->isValidService($v);
         })->each(function ($v, $k) use ($laradock) {
             if (! $laradock->hasService($v)) {
-                if ($this->confirm('It looks like you are using ' . $v . '. Would you like to enable the ' . $v . ' service?', true)) {
+                if ($this->confirm('It looks like you are using '.$v.'. Would you like to enable the '.$v.' service?', true)) {
                     $laradock->addService($v);
                     $selectedServices[] = $v;
-                    $this->info(Emoji::heavyCheckMark() . ' Enabling service ' . $v . ' because of ' . $k . ' from .env.');
+                    $this->info(Emoji::heavyCheckMark().' Enabling service '.$v.' because of '.$k.' from .env.');
                 }
             }
         });
@@ -86,13 +85,13 @@ class InitCommand extends Command
             }
         }
 
-        if (!in_array('apache2', $selectedServices) && !in_array('nginx', $selectedServices)) {
+        if (! in_array('apache2', $selectedServices) && ! in_array('nginx', $selectedServices)) {
             $selectedService = $this->choice(
                 'Would you like to enable a web server?',
                 [
                     'apache2',
                     'nginx',
-                    'No'
+                    'No',
                 ]
             );
             if ($selectedServices !== 'No thanks') {
@@ -107,11 +106,11 @@ class InitCommand extends Command
                 'What service would you like to enable? (leave blank to skip)',
                 $servicesAvailableToAdd
             );
-            if (!empty($selectedService)) {
+            if (! empty($selectedService)) {
                 $laradock->addService($selectedService);
-                $this->info(Emoji::heavyCheckMark() . ' Added service ' . $selectedService);
+                $this->info(Emoji::heavyCheckMark().' Added service '.$selectedService);
                 $selectedServices[] = $selectedService;
-                $this->info(Emoji::notebook() . ' Selected services: ' . implode(', ', $selectedServices));
+                $this->info(Emoji::notebook().' Selected services: '.implode(', ', $selectedServices));
             }
         }
 
