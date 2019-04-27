@@ -20,7 +20,7 @@ Laradock CLI is built for the people who like tidy projects. Whenever you intera
 
 #### Clean .env*
 
-Moves all Laradock environment variables to their own `laradock-env` file.
+Moves all Laradock environment variables to their own `.laradock-env` file.
 
 #### No configuration
 
@@ -47,9 +47,8 @@ Easily choose where you want to install the files, don't need locked into the la
 ### Phar
 
 ``` bash
-wget https://github.com/loonpwn/laradock-cli/releases/download/0.1.1/laradock
+wget https://github.com/loonpwn/laradock-cli/releases/download/0.2/laradock
 chmod +x ./laradock
-./laradock init
 ```
 
 ### Composer (alternative)
@@ -59,15 +58,15 @@ You'll need your composer bin added to your PATH for this to work.
 
 ``` bash
 composer global require loonpwn/laradock-cli
-laradock init
 ```
 
 ## Usage
 
 1. Make sure your .env file is up to date. Laradock CLI will read this to figure out which services you need out of the box.
 1. Setup files `./laradock init`
-2. Install & Start docker containers. Note that this may take quite a few minutes. `./laradock up`
-3. Once you're up and running you can mount on to workspace with `./laradock workspace`
+2. Configure your services. For this refer to the Laradock instructions and the CLI tool can't automate all configuration.
+2. Install & Start docker containers. Note that this may take quite a few minutes. 
+`./laradock`
 
 ## Documentation
 
@@ -79,7 +78,7 @@ You are welcome to change the context of your laradock folder by setting an envi
 
 `LARADOCK_CLI_PATH=./laradock/`
 
-Laradock CLI will also move the paths of your environment variables and set any log files to go to a runtime folder.
+Laradock CLI will also move the paths of your environment variables and set any log files to go to laravels storage folder.
 
 ### Laradock Commands
 
