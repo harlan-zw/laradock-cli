@@ -6,7 +6,6 @@ use Laradock\Service\DockerComposeCommand;
 
 class WorkspaceCommand extends DockerComposeCommand
 {
-
     public $tty = true;
 
     public $command = 'docker-compose exec workspace bash';
