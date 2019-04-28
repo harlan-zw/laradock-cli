@@ -82,19 +82,22 @@ class SetupCommand extends Command
                     $selectedServices[] = $v;
                     $this->info(Emoji::heavyCheckMark().' Enabling service '.$v.' because of '.$k.' from .env.');
                     if ($v === 'mysql') {
-                        $confFilePath = \Laradock\getServicesPath('mysql') .'/docker-entrypoint-initdb.d/';
-                        $sqlFile = $confFilePath . 'createdb.sql';
-                        File::copy($confFilePath .'createdb.sql.example', $sqlFile);
+                        $confFilePath = \Laradock\getServicesPath('mysql').'/docker-entrypoint-initdb.d/';
+                        $sqlFile = $confFilePath.'createdb.sql';
+                        File::copy($confFilePath.'createdb.sql.example', $sqlFile);
                         file_put_contents($sqlFile, implode('',
-                            array_map(function($data) use ($env) {
-                                if (stristr($data,'#CREATE DATABASE IF NOT EXISTS `dev_db_1` COLLATE \'utf8_general_ci\' ;')) {
-                                    $this->info('Setting mysql DB_DATABASE to ' . $env['DB_DATABASE']);
-                                    return 'CREATE DATABASE IF NOT EXISTS `' .  $env['DB_DATABASE'] .'` COLLATE \'utf8_general_ci\' ; '. "\n";
+                            array_map(function ($data) use ($env) {
+                                if (stristr($data, '#CREATE DATABASE IF NOT EXISTS `dev_db_1` COLLATE \'utf8_general_ci\' ;')) {
+                                    $this->info('Setting mysql DB_DATABASE to '.$env['DB_DATABASE']);
+
+                                    return 'CREATE DATABASE IF NOT EXISTS `'.$env['DB_DATABASE'].'` COLLATE \'utf8_general_ci\' ; '."\n";
                                 }
                                 if (stristr($data, '#GRANT ALL ON `dev_db_1`.*')) {
-                                    $this->info('Setting mysql DB_USERNAME to ' . $env['DB_USERNAME']);
-                                    return 'GRANT ALL ON `' . $env['DB_DATABASE'] . '`.* TO \'' . $env['DB_USERNAME'] .'\'@\'%\' ;';
+                                    $this->info('Setting mysql DB_USERNAME to '.$env['DB_USERNAME']);
+
+                                    return 'GRANT ALL ON `'.$env['DB_DATABASE'].'`.* TO \''.$env['DB_USERNAME'].'\'@\'%\' ;';
                                 }
+
                                 return $data;
                             }, file($sqlFile))
                         ));
@@ -123,19 +126,20 @@ class SetupCommand extends Command
                 $laradock->addService($selectedService);
                 $this->info(Emoji::heavyCheckMark().' Added service '.$selectedService);
                 if ($selectedService === 'apache2') {
-                    $confFile = \Laradock\getServicesPath('apache2') .'/sites/default.apache.conf';
+                    $confFile = \Laradock\getServicesPath('apache2').'/sites/default.apache.conf';
                     $url = str_replace(['http://', 'https://'], '', $env['APP_URL']);
                     file_put_contents($confFile, implode('',
-                        array_map(function($data) use ($url) {
-                            if (stristr($data,'laradock.test')) {
-                                return '  ServerName ' . $url . "\n";
+                        array_map(function ($data) use ($url) {
+                            if (stristr($data, 'laradock.test')) {
+                                return '  ServerName '.$url."\n";
                             }
-                            if (stristr($data,'DocumentRoot /var/www/')) {
-                                return '  DocumentRoot /var/www/public ' . "\n";
+                            if (stristr($data, 'DocumentRoot /var/www/')) {
+                                return '  DocumentRoot /var/www/public '."\n";
                             }
-                            if (stristr($data,'<Directory "/var/www/">')) {
-                                return '  <Directory "/var/www/public"> ' . "\n";
+                            if (stristr($data, '<Directory "/var/www/">')) {
+                                return '  <Directory "/var/www/public"> '."\n";
                             }
+
                             return $data;
                         }, file($confFile))
                     ));
