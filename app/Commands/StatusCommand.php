@@ -31,7 +31,7 @@ class StatusCommand extends Command
         $laradockCompose = \Laradock\invoke(new ParseDockerComposeYaml());
 
         if (empty($laradockCompose)) {
-            $this->info('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock init');
+            $this->info('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock setup');
 
             return;
         }

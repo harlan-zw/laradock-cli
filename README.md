@@ -63,7 +63,7 @@ composer global require loonpwn/laradock-cli
 ## Usage
 
 1. Make sure your .env file is up to date. Laradock CLI will read this to figure out which services you need out of the box.
-1. Setup files `./laradock init`
+1. Setup files `./laradock setup`
 2. Configure your services. For this refer to the Laradock instructions and the CLI tool can't automate all configuration.
 2. Install & Start docker containers. Note that this may take quite a few minutes. 
 `./laradock`

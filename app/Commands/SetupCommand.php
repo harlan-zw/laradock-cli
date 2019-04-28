@@ -11,14 +11,14 @@ use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 use Laradock\Tasks\CheckDockerComposeYamlExists;
 
-class InitCommand extends Command
+class SetupCommand extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'init';
+    protected $signature = 'setup';
 
     /**
      * The description of the command.
@@ -42,6 +42,12 @@ class InitCommand extends Command
             )) {
                 return;
             }
+        }
+        if (! $this->confirm(
+            'Laradock CLI reads your .env file to setup. Is your .env file up to date?',
+            true
+        )) {
+            return;
         }
 
         $envFolder = \Laradock\workingDirectory('env');
@@ -98,6 +104,16 @@ class InitCommand extends Command
                 $selectedServices[] = $selectedService;
                 $laradock->addService($selectedService);
                 $this->info(Emoji::heavyCheckMark().' Added service '.$selectedService);
+                if ($selectedService === 'apache2') {
+                    $confFile = \Laradock\getServicesPath('apache2') .'/sites/default.apache.conf';
+                    $url = str_replace(['http://', 'https://'], '', $env['APP_URL']);
+                    file_put_contents($confFile, implode('',
+                        array_map(function($data) use ($url) {
+                            return stristr($data,'laradock.test') ? ('  ServerName ' . $url . "\n") : $data;
+                        }, file($confFile))
+                    ));
+                    $this->info(Emoji::heavyCheckMark().' Configured apache2 for site '.$url);
+                }
             }
         }
 
@@ -116,9 +132,9 @@ class InitCommand extends Command
 
         $this->call('status');
 
-        $this->info(Emoji::confettiBall().' Laradock is finished. Get started with:');
+        $this->info(Emoji::confettiBall().' Laradock CLI setup is complete. Please note that you may need additional configuration changes based on your application. See the Laradock documentation.');
 
-        $this->comment('./laradock');
+        $this->comment('Get started with: `./laradock`');
     }
 
     /**

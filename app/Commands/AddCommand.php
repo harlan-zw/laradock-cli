@@ -34,7 +34,7 @@ class AddCommand extends Command
         $service = $this->argument('service');
 
         if (empty($laradock->getOurDockerCompose())) {
-            $this->error('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock init');
+            $this->error('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock setup');
 
             return;
         }

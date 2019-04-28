@@ -21,10 +21,10 @@ class DefaultCommand extends DockerComposeCommand
         if (! \Laradock\invoke(new CheckDockerComposeYamlExists)) {
             $this->warn('It looks like you have not setup laradock.');
             if ($this->confirm(
-                'Would you like to run `laradock init` instead?',
+                'Would you like to run `laradock setup` instead?',
                 true
             )) {
-                $this->call('init');
+                $this->call('setup');
 
                 return;
             }
