@@ -75,12 +75,30 @@ class SetupCommand extends Command
             'SESSION_DRIVER',
         ])->filter(function ($v) use ($laradock) {
             return $laradock->isValidService($v);
-        })->each(function ($v, $k) use ($laradock) {
+        })->each(function ($v, $k) use ($laradock, $env) {
             if (! $laradock->hasService($v)) {
                 if ($this->confirm('It looks like you are using '.$v.'. Would you like to enable the '.$v.' service?', true)) {
                     $laradock->addService($v);
                     $selectedServices[] = $v;
                     $this->info(Emoji::heavyCheckMark().' Enabling service '.$v.' because of '.$k.' from .env.');
+                    if ($v === 'mysql') {
+                        $confFilePath = \Laradock\getServicesPath('mysql') .'/docker-entrypoint-initdb.d/';
+                        $sqlFile = $confFilePath . 'createdb.sql';
+                        File::copy($confFilePath .'createdb.sql.example', $sqlFile);
+                        file_put_contents($sqlFile, implode('',
+                            array_map(function($data) use ($env) {
+                                if (stristr($data,'#CREATE DATABASE IF NOT EXISTS `dev_db_1` COLLATE \'utf8_general_ci\' ;')) {
+                                    $this->info('Setting mysql DB_DATABASE to ' . $env['DB_DATABASE']);
+                                    return 'CREATE DATABASE IF NOT EXISTS `' .  $env['DB_DATABASE'] .'` COLLATE \'utf8_general_ci\' ; '. "\n";
+                                }
+                                if (stristr($data, '#GRANT ALL ON `dev_db_1`.*')) {
+                                    $this->info('Setting mysql DB_USERNAME to ' . $env['DB_USERNAME']);
+                                    return 'GRANT ALL ON `' . $env['DB_DATABASE'] . '`.* TO \'' . $env['DB_USERNAME'] .'\'@\'%\' ;';
+                                }
+                                return $data;
+                            }, file($sqlFile))
+                        ));
+                    }
                 }
             }
         });
@@ -109,7 +127,16 @@ class SetupCommand extends Command
                     $url = str_replace(['http://', 'https://'], '', $env['APP_URL']);
                     file_put_contents($confFile, implode('',
                         array_map(function($data) use ($url) {
-                            return stristr($data,'laradock.test') ? ('  ServerName ' . $url . "\n") : $data;
+                            if (stristr($data,'laradock.test')) {
+                                return '  ServerName ' . $url . "\n";
+                            }
+                            if (stristr($data,'DocumentRoot /var/www/')) {
+                                return '  DocumentRoot /var/www/public ' . "\n";
+                            }
+                            if (stristr($data,'<Directory "/var/www/">')) {
+                                return '  <Directory "/var/www/public"> ' . "\n";
+                            }
+                            return $data;
                         }, file($confFile))
                     ));
                     $this->info(Emoji::heavyCheckMark().' Configured apache2 for site '.$url);
