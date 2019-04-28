@@ -47,7 +47,7 @@ Easily choose where you want to install the files, don't need locked into the la
 ### Phar
 
 ``` bash
-wget https://github.com/loonpwn/laradock-cli/releases/download/0.2/laradock
+wget https://github.com/loonpwn/laradock-cli/releases/download/0.3.0/laradock
 chmod +x ./laradock
 ```
 
