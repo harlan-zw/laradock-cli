@@ -105,11 +105,11 @@ class SetupCommand extends Command
                 $laradock->addService($selectedService);
                 $this->info(Emoji::heavyCheckMark().' Added service '.$selectedService);
                 if ($selectedService === 'apache2') {
-                    $confFile = \Laradock\getServicesPath('apache2') .'/sites/default.apache.conf';
+                    $confFile = \Laradock\getServicesPath('apache2').'/sites/default.apache.conf';
                     $url = str_replace(['http://', 'https://'], '', $env['APP_URL']);
                     file_put_contents($confFile, implode('',
-                        array_map(function($data) use ($url) {
-                            return stristr($data,'laradock.test') ? ('  ServerName ' . $url . "\n") : $data;
+                        array_map(function ($data) use ($url) {
+                            return stristr($data, 'laradock.test') ? ('  ServerName '.$url."\n") : $data;
                         }, file($confFile))
                     ));
                     $this->info(Emoji::heavyCheckMark().' Configured apache2 for site '.$url);
