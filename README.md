@@ -64,9 +64,9 @@ composer global require loonpwn/laradock-cli
 
 ## Usage
 
-1. `./laradock setup` Run the setup tool
+1. `laradock setup` Run the setup tool
 2. Check the `.laradock-env` and the files within `./env/docker` has the correct configuration for your project.
-3. `./laradock` Build and run the containers and then mount to the workspace container.
+3. `laradock` Build and run the containers and then mount to the workspace container.
 
 ## Documentation
 
