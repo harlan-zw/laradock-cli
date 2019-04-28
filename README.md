@@ -8,7 +8,6 @@
 [![StyleCI](https://github.styleci.io/repos/174919610/shield?branch=master)](https://github.styleci.io/repos/174919610)
 
 Laradock CLI is an unofficial package built with [Laravel Zero](https://laravel-zero.com/), on top of [Laradock](https://laradock.io/). 
-It's purpose is to make developers life easier
 
 **Mission** Make docker easy and accessible for all Laravel & PHP developers
 
