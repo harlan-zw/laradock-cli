@@ -7,10 +7,12 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/loonpwn/laradock-cli.svg?style=flat)](https://packagist.org/packages/loonpwn/laradock-cli)
 [![StyleCI](https://github.styleci.io/repos/174919610/shield?branch=master)](https://github.styleci.io/repos/174919610)
 
-Laradock CLI is an unofficial package built with [Laravel Zero](https://laravel-zero.com/). It's built on top of [Laradock](https://laradock.io/) to address common issues
-and workflows that you may come accross. 
+Laradock CLI is an unofficial package built with [Laravel Zero](https://laravel-zero.com/), on top of [Laradock](https://laradock.io/). 
+It's purpose is to make developers life easier
 
-_Goal: To be able to setup new and existing Laravel projects with Docker running in 2 minutes.
+**Mission** Make docker easy and accessible for all Laravel & PHP developers
+
+**Goal** To be able to setup Laradock (docker) on new and existing Laravel projects within 2 minutes.
 
 ## Features
 
