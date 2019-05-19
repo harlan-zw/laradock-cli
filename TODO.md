@@ -6,4 +6,8 @@
 - update .env details with docker values
 - update vhost file with SITE_URL 
 - add .git folder to workspace
-- add a `.laradock-env-example` which gets commited?
+- add a `.env.laradock-example` which gets commited?
+
+
+- use zsh in workspace / add eb cli / aws cli
+- exporting composer file with quotes around vars

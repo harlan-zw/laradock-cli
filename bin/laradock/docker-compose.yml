@@ -61,6 +61,8 @@ services:
           - INSTALL_XSL=${WORKSPACE_INSTALL_XSL}
           - INSTALL_LDAP=${WORKSPACE_INSTALL_LDAP}
           - INSTALL_IMAP=${WORKSPACE_INSTALL_IMAP}
+          - INSTALL_AWS_CLI=${WORKSPACE_INSTALL_AWS_CLI}
+          - INSTALL_OH_MY_ZSH=${WORKSPACE_INSTALL_OH_MY_ZSH}
           - INSTALL_MONGO=${WORKSPACE_INSTALL_MONGO}
           - INSTALL_AMQP=${WORKSPACE_INSTALL_AMQP}
           - INSTALL_PHPREDIS=${WORKSPACE_INSTALL_PHPREDIS}
@@ -112,10 +114,12 @@ services:
           - INSTALL_FFMPEG=${WORKSPACE_INSTALL_FFMPEG}
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+        - ~/.gitconfig:/home/laradock/.gitconfig:cached
+        - ~/.ssh:/home/laradock/.ssh:cached
+        - ~/.config/composer:/home/laradock/.config/composer:cached
+        - ~/.aws:/home/laradock/.aws:cached
       extra_hosts:
         - "dockerhost:${DOCKER_HOST_IP}"
-      ports:
-        - "${WORKSPACE_SSH_PORT}:22"
       tty: true
       environment:
         - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}

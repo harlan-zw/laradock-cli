@@ -165,7 +165,7 @@ class SetupCommand extends Command
 
         $this->info(Emoji::confettiBall().' Laradock CLI setup is complete. Please make sure:');
         $this->info('- You update your hosts file `127.0.0.1    '.str_replace(['http://', 'https://'], '', $env['APP_URL']).'`');
-        $this->info('- Make sure all your variables are setup correctly in `.laradock-env`');
+        $this->info('- Make sure all your variables are setup correctly in `.env.laradock`');
         $this->info('- Read the Laradock documentation');
 
         $this->comment('Get started with: `./laradock`');

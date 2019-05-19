@@ -14,7 +14,6 @@ class AddCommand extends Command
      */
     protected $signature = 'add 
     {service : The name of the service to add (required)}
-    {--context= : The location of your docker files (optional)}
     ';
 
     /**
@@ -53,5 +52,8 @@ class AddCommand extends Command
         }
 
         $this->call('status');
+
+        $this->info('The service ' . $service . ' has been added. Please configure the .env.laradock and rebuild.');
+        $this->comment('laradock build');
     }
 }

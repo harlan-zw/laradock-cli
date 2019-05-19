@@ -9,7 +9,7 @@ class DefaultCommand extends DockerComposeCommand
 {
     public $tty = true;
 
-    public $command = 'docker-compose up -d && docker-compose exec --user=laradock workspace bash';
+    public $command = 'docker-compose up -d && docker-compose exec --user=laradock workspace zsh';
 
     /**
      * Execute the console command.

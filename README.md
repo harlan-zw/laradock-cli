@@ -22,7 +22,7 @@ Since it is just a .phar file you only need one laradock CLI installed for all y
 
 #### Clean .env
 
-Moves all Laradock environment variables to their own `.laradock-env` file. No longer have a 300 line .env file.
+Moves all Laradock environment variables to their own `.env.laradock` file. No longer have a 300 line .env file.
 
 #### Zero Configuration Setup
 
@@ -65,7 +65,7 @@ composer global require loonpwn/laradock-cli
 ## Usage
 
 1. `laradock setup` Run the setup tool
-2. Check the `.laradock-env` and the files within `./env/docker` has the correct configuration for your project.
+2. Check the `.env.laradock` and the files within `./env/docker` has the correct configuration for your project.
 3. `laradock` Build and run the containers and then mount to the workspace container.
 
 ## Documentation

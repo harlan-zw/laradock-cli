@@ -8,7 +8,7 @@ class WorkspaceCommand extends DockerComposeCommand
 {
     public $tty = true;
 
-    public $command = 'docker-compose exec workspace bash';
+    public $command = 'docker-compose exec --user=laradock workspace zsh';
 
     /**
      * The signature of the command.

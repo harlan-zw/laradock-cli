@@ -1002,6 +1002,42 @@ RUN if [ ${INSTALL_FFMPEG} = true ]; then \
   apt-get -y install ffmpeg \
 ;fi
 
+#####################################
+# AWS CLI:
+#####################################
+ARG INSTALL_AWS_CLI=false
+ENV INSTALL_AWS_CLI ${INSTALL_AWS_CLI}
+RUN if [ ${INSTALL_AWS_CLI} = true ]; then \
+    pip install awscli && \
+    pip install awsebcli --upgrade --user \
+;fi
+
+RUN echo "" >> ~/.bashrc && \
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+
+#####################################
+# Oh My ZSH
+#####################################
+USER root
+ARG INSTALL_OH_MY_ZSH=true
+ENV INSTALL_OH_MY_ZSH ${INSTALL_OH_MY_ZSH}
+RUN if [ ${INSTALL_OH_MY_ZSH} = true ]; then \
+    # Install the pgsql clint
+    apt-get update && \
+    apt-get -y install zsh wget \
+    && wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true \
+    && chsh -s $(which zsh) $(whoami) \
+    && chsh -s $(which zsh) laradock \
+;fi
+
+USER laradock
+RUN if [ ${INSTALL_OH_MY_ZSH} = true ]; then \
+    # Install the pgsql clint
+    wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true \
+    mv ~/zshrc ~/.zshrc \
+;fi
+
+
 ###########################################################################
 # Check PHP version:
 ###########################################################################

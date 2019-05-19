@@ -62,7 +62,7 @@ class DockerCompose extends OfflineModel
     public function readCurrentEnvFile()
     {
         $this->envAttributes = \Laradock\invoke(new ParseDotEnvFile());
-        $this->laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
+        $this->laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.env.laradock'));
         $this->laradockExampleContents = File::get(getLaradockEnvExamplePath());
         preg_match_all('/\$\{(.*?)\}/m', json_encode([
             'services' => $this->services,
@@ -85,7 +85,7 @@ class DockerCompose extends OfflineModel
             })
             ->implode("\n");
 
-        File::put(getLaradockCLIEnvPath('.laradock-env'), $dotEnv);
+        File::put(getLaradockCLIEnvPath('.env.laradock'), $dotEnv);
     }
 
     public function writeToDockerComposeYaml()
@@ -94,7 +94,7 @@ class DockerCompose extends OfflineModel
         $attrs = array_merge($attrs, collect($this->getAttributes())
             ->only(['services', 'networks', 'volumes'])
             ->toArray());
-        File::put(getDockerComposePath(), Yaml::dump($attrs, 6, 2));
+        File::put(getDockerComposePath(), Yaml::dump($attrs, 6, 2, Yaml::DUMP_OBJECT_AS_MAP));
     }
 
     public function addMissingFoldersForServices()
@@ -107,7 +107,6 @@ class DockerCompose extends OfflineModel
                 return;
             }
             if (
-                ! File::isDirectory(\Laradock\getServicesPath($key)) &&
                 File::isDirectory(\Laradock\getLaradockServicePath($key))
             ) {
                 File::copyDirectory(\Laradock\getLaradockServicePath($key), \Laradock\getServicesPath($key));

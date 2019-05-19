@@ -35,8 +35,8 @@ class DockerComposeCommand extends Command
      */
     public function handle()
     {
-        $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.laradock-env'));
-        $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.laradock-env'));
+        $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.env.laradock'));
+        $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.env.laradock'));
         $command = $this->command.' '.implode(' ', $this->input->getArgument('cmd'));
         $process = new Process($command, \Laradock\workingDirectory(), $laradockAttributes, null, 60000);
 
