@@ -11,3 +11,6 @@
 
 - use zsh in workspace / add eb cli / aws cli
 - exporting composer file with quotes around vars
+
+- change `.laradock-env` to `.env.laradock`
+- remove `dist` phpunit
