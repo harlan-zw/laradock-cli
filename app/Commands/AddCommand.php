@@ -53,7 +53,7 @@ class AddCommand extends Command
 
         $this->call('status');
 
-        $this->info('The service ' . $service . ' has been added. Please configure the .env.laradock and rebuild.');
+        $this->info('The service '.$service.' has been added. Please configure the .env.laradock and rebuild.');
         $this->comment('laradock build');
     }
 }
