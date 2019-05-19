@@ -49,7 +49,7 @@ This project is in early development and has lots of planned updates coming.
 ### Phar
 
 ``` bash
-wget https://github.com/loonpwn/laradock-cli/releases/download/0.3.0/laradock
+wget https://github.com/loonpwn/laradock-cli/releases/download/0.4.0/laradock
 chmod +x ./laradock
 ```
 
