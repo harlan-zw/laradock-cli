@@ -2,13 +2,12 @@
 
 namespace Laradock\Tasks;
 
+use Laradock\Service\Laradock;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
-use Laradock\Service\Laradock;
 
 class SetupMySQL
 {
-
     const USER = 'default';
     const PASSWORD = 'secret';
 
@@ -39,19 +38,22 @@ class SetupMySQL
             array_map(function ($data) use ($env) {
                 if (false !== stripos($data, 'DB_USERNAME')) {
                     Log::info('Setting .env DB_USERNAME to '.self::USER);
-                    return 'DB_USERNAME=' . self::USER . "\n";
+
+                    return 'DB_USERNAME='.self::USER."\n";
                 }
                 if (false !== stripos($data, 'DB_PASSWORD')) {
                     Log::info('Setting .env DB_PASSWORD to '.self::PASSWORD);
-                    return 'DB_PASSWORD=' . self::PASSWORD . "\n";
+
+                    return 'DB_PASSWORD='.self::PASSWORD."\n";
                 }
                 if (false !== stripos($data, 'DB_HOST')) {
                     Log::info('Setting .env DB_HOST to mysql');
-                    return 'DB_HOST=mysql' . "\n";
+
+                    return 'DB_HOST=mysql'."\n";
                 }
+
                 return $data;
             }, file(\Laradock\getDotEnvPath()))
         ));
-
     }
 }

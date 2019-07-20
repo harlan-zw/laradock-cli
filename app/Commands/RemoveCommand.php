@@ -37,7 +37,7 @@ class RemoveCommand extends Command
 
         $this->call('down');
 
-        $this->info('Now removing service ' . $service . '.');
+        $this->info('Now removing service '.$service.'.');
 
         $laradock->removeService($service);
 

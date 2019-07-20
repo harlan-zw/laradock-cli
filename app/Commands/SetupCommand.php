@@ -40,7 +40,7 @@ class SetupCommand extends BaseCommand
         $env = \Laradock\invoke(new ParseDotEnvFile());
 
         if (! $this->confirmContinue(
-            'Laradock CLI will be setup based on app url "' . $env['APP_URL'] . '" and app name "' . $env['APP_NAME'] . '"',
+            'Laradock CLI will be setup based on app url "'.$env['APP_URL'].'" and app name "'.$env['APP_NAME'].'"',
             true
         )) {
             return;
