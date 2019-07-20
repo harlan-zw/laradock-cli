@@ -59,6 +59,17 @@ _Recommended: `sudo mv laradock /usr/bin/laradock`_
 2. Check the `.env.laradock` and the files within `./env/docker` has the correct configuration for your project.
 3. `laradock` Build and run the containers and then mount to the workspace container.
 
+## Alpha Considerations
+
+Currently the following services have been setup to be automatically configured. If you use a service outside this list
+you will need to manually set it up per [Laradock documentation](https://laradock.io/).
+
+- Workspace
+- PHP-FPM
+- Nginx
+- Apache2
+- MySQL
+
 ## Documentation
 
 ### Laradock Commands
