@@ -13,7 +13,7 @@ class InspiringCommandTest extends TestCase
      */
     public function testInspiringCommand()
     {
-        $this->artisan('inspiring')
+        $this->artisan('laradock')
              ->expectsOutput('Simplicity is the ultimate sophistication.')
              ->assertExitCode(0);
     }

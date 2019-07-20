@@ -106,14 +106,14 @@ Mounts yourself to the workspace container as Laradock user
 ### DockerCompose Commands
 
 - `laradock up` 
-Runs `docker-compose up -d` with the `laradock-env` loaded in.
+Runs `docker-compose up -d` with the `.env.laradock` loaded in.
 - `laradock down` 
-Runs `docker-compose down` with the `laradock-env` loaded in.
+Runs `docker-compose down` with the `.env.laradock` loaded in.
 - `laradock build` 
-Runs `docker-compose build` with the `laradock-env` loaded in.
+Runs `docker-compose build` with the `.env.laradock` loaded in.
 - `laradock restart` 
-Runs `docker-compose restart` with the `laradock-env` loaded in.
+Runs `docker-compose restart` with the `.env.laradock` loaded in.
 - `laradock push` 
-Runs `docker-compose push` with the `laradock-env` loaded in.
+Runs `docker-compose push` with the `.env.laradock` loaded in.
 - `laradock exec` 
-Runs `docker-compose exec` with the `laradock-env` loaded in.
+Runs `docker-compose exec` with the `.env.laradock` loaded in.

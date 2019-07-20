@@ -5,9 +5,19 @@ namespace Laradock\Service;
 use Laradock\Models\DockerCompose;
 use Laradock\Tasks\ParseDockerComposeYaml;
 use function Laradock\getLaradockDockerComposePath;
+use Laradock\Tasks\ParseDotEnvFile;
+use Laradock\Tasks\SetupApache2;
+use Laradock\Tasks\SetupMySQL;
+use Laradock\Tasks\SetupNginx;
 
 class Laradock
 {
+    public $serviceConfigTaskMap = [
+        'mysql' => SetupMySQL::class,
+        'apache2' => SetupApache2::class,
+        'nginx' => SetupNginx::class,
+    ];
+
     /**
      * @var DockerCompose
      */
@@ -89,6 +99,12 @@ class Laradock
             $this->ourDockerCompose->volumes = $newVolumes;
         }
         $this->ourDockerCompose->save();
+
+        // run the post add configuration setting
+        $env = \Laradock\invoke(new ParseDotEnvFile());
+        if (isset($this->serviceConfigTaskMap[$service])) {
+            (new $this->serviceConfigTaskMap[$service])($env);
+        }
 
         return true;
     }

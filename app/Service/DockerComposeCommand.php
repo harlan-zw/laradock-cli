@@ -23,7 +23,7 @@ class DockerComposeCommand extends Command
             $this->signature = str_replace('docker-compose ', '', $this->command).' {cmd?* : The docker-compose arguments}';
         }
         if (empty($this->description)) {
-            $this->description = 'Runs `'.$this->command.'` with the `laradock-env` loaded in.';
+            $this->description = 'Runs `'.$this->command.'` with the `.env.laradock` loaded in.';
         }
         parent::__construct();
     }
@@ -35,7 +35,7 @@ class DockerComposeCommand extends Command
      */
     public function handle()
     {
-        $this->line('Loading in laradock-env file at: '.getLaradockCLIEnvPath('.env.laradock'));
+        $this->line('Loading in .env.laradock file at: '.getLaradockCLIEnvPath('.env.laradock'));
         $laradockAttributes = \Laradock\invoke(new ParseDotEnvFile(getLaradockCLIEnvPath(), '.env.laradock'));
         $command = $this->command.' '.implode(' ', $this->input->getArgument('cmd'));
         $process = new Process($command, \Laradock\workingDirectory(), $laradockAttributes, null, 60000);

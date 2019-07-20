@@ -51,7 +51,9 @@
     "scripts": {
         "post-create-project-cmd": [
             "@php application app:rename"
-        ]
+        ],
+      "test": "phpunit",
+      "build": "./laradock app:build"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

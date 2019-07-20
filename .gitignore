@@ -6,8 +6,9 @@
 
 docker-compose.yml
 env
-laradock-env
+.env.laradock
 .env
 
+public
 
 !bin/laradock/**/**
