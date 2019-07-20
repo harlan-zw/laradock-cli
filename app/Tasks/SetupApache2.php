@@ -1,14 +1,13 @@
 <?php
 
-
 namespace Laradock\Tasks;
-
 
 use Illuminate\Support\Facades\Log;
 
-class SetupApache2 {
-
-    public function __invoke($env) {
+class SetupApache2
+{
+    public function __invoke($env)
+    {
         $confFile = \Laradock\getServicesPath('apache2').'/sites/default.apache.conf';
         $url = str_replace(['http://', 'https://'], '', $env['APP_URL']);
         file_put_contents($confFile, implode('',
@@ -26,6 +25,6 @@ class SetupApache2 {
                 return $data;
             }, file($confFile))
         ));
-        Log::info('Configured apache2 for site ' . $url);
+        Log::info('Configured apache2 for site '.$url);
     }
 }

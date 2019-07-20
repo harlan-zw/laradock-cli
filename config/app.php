@@ -1,9 +1,10 @@
-<?php return array (
+<?php
+
+return [
   'name' => 'Laradock',
   'version' => '0.4.0',
   'production' => true,
-  'providers' => 
-  array (
+  'providers' => [
     0 => 'Laradock\\Providers\\AppServiceProvider',
-  ),
-);
+  ],
+];
