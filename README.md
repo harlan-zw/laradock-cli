@@ -25,7 +25,7 @@ Laradock CLI reads your `.env` and makes smart assumptions to reduce a lot of bo
 
 #### Clean project
 
-Laradock tends to have a larger footprint for the amount of code you have to commit to your repository, Laradock CLI 
+Laradock tends to have a larger footprint for the amount of code you use in your repository, Laradock CLI 
 aims to fix this my only including the files for the services you are using.
 
 #### Clean .env
