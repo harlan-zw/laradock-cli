@@ -157,6 +157,6 @@ class SetupCommand extends BaseCommand
         $this->line('- Double check your .env.laradock and .env have the correct configuration.');
         $this->line('- Double check your docker-compose.yml configuration.');
 
-        $this->comment('Get started with: `./laradock`. If you have any docker related issues please refer to https://laradock.io/.');
+        $this->comment('Get started with: `laradock`. If you have any docker related issues please refer to https://laradock.io/.');
     }
 }
