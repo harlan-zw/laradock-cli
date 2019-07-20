@@ -2,9 +2,9 @@
 
 namespace Laradock\Commands;
 
-use Laradock\Service\BaseCommand;
 use Spatie\Emoji\Emoji;
 use Laradock\Service\Laradock;
+use Laradock\Service\BaseCommand;
 use Laradock\Tasks\ParseDotEnvFile;
 use Illuminate\Support\Facades\File;
 use function Laradock\getDockerComposePath;
@@ -33,7 +33,6 @@ class SetupCommand extends BaseCommand
      */
     public function handle()
     {
-
         $this->line('');
         $this->info('Welcome to the Laradock CLI setup tool. This is currently in alpha, please report any issues.');
         $this->line('');
@@ -48,7 +47,7 @@ class SetupCommand extends BaseCommand
             }
         }
 
-        if (!File::exists(\Laradock\workingDirectory('.env'))) {
+        if (! File::exists(\Laradock\workingDirectory('.env'))) {
             $this->warn('No .env file found!');
             if (! $this->confirmContinue(
                 'You are missing an .env file which is required to automatically configure your services',
@@ -73,7 +72,7 @@ class SetupCommand extends BaseCommand
         $selectedServices = config('laradock.default_services');
         foreach ($selectedServices as $service) {
             $laradock->addService($service);
-            $this->success('Added default service ' . $service . '.');
+            $this->success('Added default service '.$service.'.');
         }
 
         // look at the drivers to figure out what services we need
@@ -89,10 +88,10 @@ class SetupCommand extends BaseCommand
             if ($laradock->hasService($v)) {
                 return;
             }
-            if ($this->confirm('The ' . $k . ' is setup for '.$v.'. Would you like to add the '.$v.' service?', true)) {
+            if ($this->confirm('The '.$k.' is setup for '.$v.'. Would you like to add the '.$v.' service?', true)) {
                 $laradock->addService($v);
                 $selectedServices[] = $v;
-                $this->success('Added service ' . $v . '.');
+                $this->success('Added service '.$v.'.');
             }
         });
 
@@ -107,7 +106,7 @@ class SetupCommand extends BaseCommand
         $webserver = false;
         if (! in_array('apache2', $selectedServices) && ! in_array('nginx', $selectedServices)) {
             $selectedService = $this->choice(
-                Emoji::questionMark() .
+                Emoji::questionMark().
                 ' What web server would you like to use?',
                 [
                     'apache2',
@@ -119,7 +118,7 @@ class SetupCommand extends BaseCommand
                 $webserver = $selectedService;
                 $selectedServices[] = $selectedService;
                 $laradock->addService($selectedService);
-                $this->success('Added service ' . $selectedService . '.');
+                $this->success('Added service '.$selectedService.'.');
             }
         }
 
@@ -130,7 +129,7 @@ class SetupCommand extends BaseCommand
             );
             if (! empty($selectedService)) {
                 $laradock->addService($selectedService);
-                $this->success('Added service ' . $selectedService . '.');
+                $this->success('Added service '.$selectedService.'.');
                 $selectedServices[] = $selectedService;
                 $this->info('Selected services: '.implode(', ', $selectedServices));
             } else {
@@ -142,13 +141,12 @@ class SetupCommand extends BaseCommand
 
         $this->bigSuccess('Setup is complete. You will need to complete the following manual steps to finish:');
 
-        if (!empty($webserver)) {
-            $this->line('- Update your hosts file `127.0.0.1    ' . str_replace(['http://', 'https://'], '', $env['APP_URL']) . '`');
+        if (! empty($webserver)) {
+            $this->line('- Update your hosts file `127.0.0.1    '.str_replace(['http://', 'https://'], '', $env['APP_URL']).'`');
         }
         $this->line('- Double check your .env.laradock and .env have the correct configuration.');
         $this->line('- Double check your docker-compose.yml configuration.');
 
         $this->comment('Get started with: `./laradock`. If you have any docker related issues please refer to https://laradock.io/.');
     }
-
 }
