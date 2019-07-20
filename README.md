@@ -7,11 +7,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/loonpwn/laradock-cli.svg?style=flat)](https://packagist.org/packages/loonpwn/laradock-cli)
 [![StyleCI](https://github.styleci.io/repos/174919610/shield?branch=master)](https://github.styleci.io/repos/174919610)
 
-Laradock CLI is a package built with [Laravel Zero](https://laravel-zero.com/), on top of [Laradock](https://laradock.io/). 
+Laradock CLI is a tool for Laravel projects which automates the docker configuration setup for services, amongst other things.
 
-**Mission** Make docker easy and accessible for all Laravel & PHP developers
-
-**Goal** To be able to setup Laradock (docker) on new and existing Laravel projects within 2 minutes.
+It is built with [Laravel Zero](https://laravel-zero.com/), on top of [Laradock](https://laradock.io/). 
 
 ## Features
 
@@ -49,18 +47,11 @@ This project is in early development and has lots of planned updates coming.
 ### Phar
 
 ``` bash
-wget https://github.com/loonpwn/laradock-cli/releases/download/0.4.0/laradock
+wget https://github.com/loonpwn/laradock-cli/releases/download/0.4.1/laradock
 chmod +x ./laradock
 ```
 
 _Recommended: `sudo mv laradock /usr/bin/laradock`_
-
-### Composer (alternative)
-
-
-``` bash
-composer global require loonpwn/laradock-cli
-```
 
 ## Usage
 
@@ -70,38 +61,22 @@ composer global require loonpwn/laradock-cli
 
 ## Documentation
 
-### Environment Configuration
-
-Laradock CLI works slightly different to Laradock in terms of its paths, they can be configured using environment variables.
-
-#### `LARADOCK_CLI_PATH`
-
-_Default: `./env/docker`_
-
-Where Laradock CLI will put the files to build your docker containers.
-
-#### `LARADOCK_CLI_RUNTIME_PATH`
-
-_Default: `./storage/docker`_
-
-Where Laradock CLI will put the runtime files generated from your docker containers.
-
 ### Laradock Commands
 
 - `laradock` 
 This will start docker with `docker-compose up -d` and then mount you on the workspace container.
 - `laradock setup` 
-This will start laradock and add the default services and guide you through adding more services.
+An interactive guide for setting up your project with Laradock CLI.
 - `laradock status` 
 See which services you're currently using
 - `laradock services` 
-List all laradock services
+List all Laradock services
 - `laradock add <service>` 
-Add a specific service
+Add a specific service.
 - `laradock remove <service>` 
-Remove a specific service
+Remove a specific service.
 - `laradock workspace` 
-Mounts yourself to the workspace container as Laradock user
+Mounts yourself to the workspace container as Laradock user.
 
 ### DockerCompose Commands
 
