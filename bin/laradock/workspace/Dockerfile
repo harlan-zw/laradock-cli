@@ -97,17 +97,17 @@ COPY ./aliases.sh /home/laradock/aliases.sh
 RUN sed -i 's/\r//' /root/aliases.sh && \
     sed -i 's/\r//' /home/laradock/aliases.sh && \
     chown laradock:laradock /home/laradock/aliases.sh && \
-    echo "" >> ~/.bashrc && \
-    echo "# Load Custom Aliases" >> ~/.bashrc && \
-    echo "source ~/aliases.sh" >> ~/.bashrc && \
-	  echo "" >> ~/.bashrc
+    echo "" >> ~/.zshrc && \
+    echo "# Load Custom Aliases" >> ~/.zshrc && \
+    echo "source ~/aliases.sh" >> ~/.zshrc && \
+	  echo "" >> ~/.zshrc
 
 USER laradock
 
-RUN echo "" >> ~/.bashrc && \
-    echo "# Load Custom Aliases" >> ~/.bashrc && \
-    echo "source ~/aliases.sh" >> ~/.bashrc && \
-	  echo "" >> ~/.bashrc
+RUN echo "" >> ~/.zshrc && \
+    echo "# Load Custom Aliases" >> ~/.zshrc && \
+    echo "source ~/aliases.sh" >> ~/.zshrc && \
+	  echo "" >> ~/.zshrc
 
 ###########################################################################
 # Composer:
@@ -152,8 +152,8 @@ RUN if [ ${COMPOSER_REPO_PACKAGIST} ]; then \
 ;fi
 
 # Export composer vendor path
-RUN echo "" >> ~/.bashrc && \
-    echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.bashrc
+RUN echo "" >> ~/.zshrc && \
+    echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.zshrc
 
 ###########################################################################
 # Non-root user : PHPUnit path
@@ -162,8 +162,8 @@ RUN echo "" >> ~/.bashrc && \
 # add ./vendor/bin to non-root user's bashrc (needed for phpunit)
 USER laradock
 
-RUN echo "" >> ~/.bashrc && \
-    echo 'export PATH="/var/www/vendor/bin:$PATH"' >> ~/.bashrc
+RUN echo "" >> ~/.zshrc && \
+    echo 'export PATH="/var/www/vendor/bin:$PATH"' >> ~/.zshrc
 
 ###########################################################################
 # Crontab
@@ -311,7 +311,7 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     # Load the xdebug extension only with phpunit commands
     apt-get install -y php${LARADOCK_PHP_VERSION}-xdebug && \
     sed -i 's/^;//g' /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/20-xdebug.ini && \
-    echo "alias phpunit='php -dzend_extension=xdebug.so /var/www/vendor/bin/phpunit'" >> ~/.bashrc \
+    echo "alias phpunit='php -dzend_extension=xdebug.so /var/www/vendor/bin/phpunit'" >> ~/.zshrc \
 ;fi
 
 # ADD for REMOTE debugging
@@ -548,18 +548,18 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
 # Wouldn't execute when added to the RUN statement in the above block
 # Source NVM when loading bash since ~/.profile isn't loaded on non-login shell
 RUN if [ ${INSTALL_NODE} = true ]; then \
-    echo "" >> ~/.bashrc && \
-    echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.bashrc && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
+    echo "" >> ~/.zshrc && \
+    echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.zshrc \
 ;fi
 
-# Add NVM binaries to root's .bashrc
+# Add NVM binaries to root's .zshrc
 USER root
 
 RUN if [ ${INSTALL_NODE} = true ]; then \
-    echo "" >> ~/.bashrc && \
-    echo 'export NVM_DIR="/home/laradock/.nvm"' >> ~/.bashrc && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
+    echo "" >> ~/.zshrc && \
+    echo 'export NVM_DIR="/home/laradock/.nvm"' >> ~/.zshrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.zshrc \
 ;fi
 
 # Add PATH for node
@@ -580,7 +580,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
 ;fi
 
 RUN if [ ${NPM_REGISTRY} ]; then \
-    . ~/.bashrc && npm config set registry ${NPM_REGISTRY} \
+    . ~/.zshrc && npm config set registry ${NPM_REGISTRY} \
 ;fi
 
 ###########################################################################
@@ -600,17 +600,17 @@ RUN if [ ${INSTALL_YARN} = true ]; then \
     else \
         curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version ${YARN_VERSION}; \
     fi && \
-    echo "" >> ~/.bashrc && \
-    echo 'export PATH="$HOME/.yarn/bin:$PATH"' >> ~/.bashrc \
+    echo "" >> ~/.zshrc && \
+    echo 'export PATH="$HOME/.yarn/bin:$PATH"' >> ~/.zshrc \
 ;fi
 
-# Add YARN binaries to root's .bashrc
+# Add YARN binaries to root's .zshrc
 USER root
 
 RUN if [ ${INSTALL_YARN} = true ]; then \
-    echo "" >> ~/.bashrc && \
-    echo 'export YARN_DIR="/home/laradock/.yarn"' >> ~/.bashrc && \
-    echo 'export PATH="$YARN_DIR/bin:$PATH"' >> ~/.bashrc \
+    echo "" >> ~/.zshrc && \
+    echo 'export YARN_DIR="/home/laradock/.yarn"' >> ~/.zshrc && \
+    echo 'export PATH="$YARN_DIR/bin:$PATH"' >> ~/.zshrc \
 ;fi
 
 # Add PATH for YARN
@@ -760,14 +760,14 @@ RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
       libexpat-dev libncurses-dev && \
     # Install the Linuxbrew
     git clone --depth=1 https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew && \
-    echo "" >> ~/.bashrc && \
-    echo 'export PKG_CONFIG_PATH"=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc && \
+    echo "" >> ~/.zshrc && \
+    echo 'export PKG_CONFIG_PATH"=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.zshrc && \
     # Setup linuxbrew
-    echo 'export LINUXBREWHOME="$HOME/.linuxbrew"' >> ~/.bashrc && \
-    echo 'export PATH="$LINUXBREWHOME/bin:$PATH"' >> ~/.bashrc && \
-    echo 'export MANPATH="$LINUXBREWHOME/man:$MANPATH"' >> ~/.bashrc && \
-    echo 'export PKG_CONFIG_PATH="$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc && \
-    echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/.bashrc \
+    echo 'export LINUXBREWHOME="$HOME/.linuxbrew"' >> ~/.zshrc && \
+    echo 'export PATH="$LINUXBREWHOME/bin:$PATH"' >> ~/.zshrc && \
+    echo 'export MANPATH="$LINUXBREWHOME/man:$MANPATH"' >> ~/.zshrc && \
+    echo 'export PKG_CONFIG_PATH="$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.zshrc && \
+    echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/.zshrc \
 ;fi
 
 ###########################################################################
@@ -833,7 +833,7 @@ ARG INSTALL_IMAGE_OPTIMIZERS=false
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
     apt-get install -y jpegoptim optipng pngquant gifsicle && \
     if [ ${INSTALL_NODE} = true ]; then \
-        exec bash && . ~/.bashrc && npm install -g svgo \
+        exec bash && . ~/.zshrc && npm install -g svgo \
     ;fi\
 ;fi
 
@@ -852,11 +852,11 @@ RUN if [ ${INSTALL_SYMFONY} = true ]; then \
   && curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
   && chmod a+x /usr/local/bin/symfony \
   #  Symfony 3 alias
-  && echo 'alias dev="php bin/console -e=dev"' >> ~/.bashrc \
-  && echo 'alias prod="php bin/console -e=prod"' >> ~/.bashrc \
+  && echo 'alias dev="php bin/console -e=dev"' >> ~/.zshrc \
+  && echo 'alias prod="php bin/console -e=prod"' >> ~/.zshrc \
   #  Symfony 2 alias
-  #  && echo 'alias dev="php app/console -e=dev"' >> ~/.bashrc \
-  #  && echo 'alias prod="php app/console -e=prod"' >> ~/.bashrc \
+  #  && echo 'alias dev="php app/console -e=dev"' >> ~/.zshrc \
+  #  && echo 'alias prod="php app/console -e=prod"' >> ~/.zshrc \
 ;fi
 
 ###########################################################################
@@ -881,8 +881,8 @@ ARG INSTALL_POWERLINE=false
 RUN if [ ${INSTALL_POWERLINE} = true ]; then \
     if [ ${INSTALL_PYTHON} = true ]; then \
     python -m pip install --upgrade powerline-status && \
-    echo "" >> /etc/bash.bashrc && \
-    echo ". /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh" >> /etc/bash.bashrc \
+    echo "" >> /etc/bash.zshrc && \
+    echo ". /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh" >> /etc/bash.zshrc \
   ;fi \
 ;fi
 
@@ -1012,8 +1012,8 @@ RUN if [ ${INSTALL_AWS_CLI} = true ]; then \
     pip install awsebcli --upgrade --user \
 ;fi
 
-RUN echo "" >> ~/.bashrc && \
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+RUN echo "" >> ~/.zshrc && \
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 
 #####################################
 # Oh My ZSH
@@ -1038,7 +1038,7 @@ RUN if [ ${INSTALL_OH_MY_ZSH} = true ]; then \
 ;fi
 
 
-RUN echo 'echo "Welcome to your Workspace container - Laradock CLI"' >> ~/.bashrc
+RUN echo 'echo "" && echo "\e[4mWelcome to your Workspace container - Laradock CLI" && echo ""' >> ~/.zshrc
 
 ###########################################################################
 # Check PHP version:
