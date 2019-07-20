@@ -39,5 +39,7 @@ class StatusCommand extends Command
         $this->table(['Service', 'Context'], collect($laradockCompose['services'])->map(function ($service, $key) {
             return [$key, $service['build']['context'] ?? $service['build'] ?? 'Image: '.$service['image']];
         }));
+
+        $this->call('ps');
     }
 }

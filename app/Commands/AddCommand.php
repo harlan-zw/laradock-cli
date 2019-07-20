@@ -41,7 +41,7 @@ class AddCommand extends Command
         // if it already exists within their docker-compose.yaml file we should confirm the re-add
         if (
             $laradock->hasService($service) &&
-            ! $this->confirm('It looks like you already have a '.$service.' service. Would you like to re-add it?')) {
+            ! $this->confirm('It looks like you already have a '.$service.' service')) {
             return;
         }
 
@@ -53,7 +53,7 @@ class AddCommand extends Command
 
         $this->call('status');
 
-        $this->info('The service '.$service.' has been added. Please configure the .env.laradock and rebuild.');
+        $this->info('The service '.$service.' has been added.');
         $this->comment('laradock build');
     }
 }

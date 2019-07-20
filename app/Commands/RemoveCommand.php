@@ -33,6 +33,12 @@ class RemoveCommand extends Command
     {
         $service = $this->argument('service');
 
+        $this->info('Removing a service requires stopping containers, starting shut down.');
+
+        $this->call('down');
+
+        $this->info('Now removing service ' . $service . '.');
+
         $laradock->removeService($service);
 
         $this->call('status');

@@ -37,6 +37,15 @@ class SetupCommand extends BaseCommand
         $this->info('Welcome to the Laradock CLI setup tool. This is currently in alpha, please report any issues.');
         $this->line('');
 
+        $env = \Laradock\invoke(new ParseDotEnvFile());
+
+        if (! $this->confirmContinue(
+            'Laradock CLI will be setup based on app url "' . $env['APP_URL'] . '" and app name "' . $env['APP_NAME'] . '"',
+            true
+        )) {
+            return;
+        }
+
         if (\Laradock\invoke(new CheckDockerComposeYamlExists)) {
             $this->warn('Detected an existing docker-compose.yml file!');
             if (! $this->confirmContinue(
@@ -45,6 +54,8 @@ class SetupCommand extends BaseCommand
             )) {
                 return;
             }
+            $this->info('Continuing with existing setup. Making sure current containers are down.');
+            $this->call('down');
         }
 
         if (! File::exists(\Laradock\workingDirectory('.env'))) {
@@ -76,7 +87,6 @@ class SetupCommand extends BaseCommand
         }
 
         // look at the drivers to figure out what services we need
-        $env = \Laradock\invoke(new ParseDotEnvFile());
         collect($env)->only([
             'DB_CONNECTION',
             'BROADCAST_DRIVER',

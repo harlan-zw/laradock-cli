@@ -1038,6 +1038,8 @@ RUN if [ ${INSTALL_OH_MY_ZSH} = true ]; then \
 ;fi
 
 
+RUN echo 'echo "Welcome to your Workspace container - Laradock CLI"' >> ~/.bashrc
+
 ###########################################################################
 # Check PHP version:
 ###########################################################################
