@@ -1,6 +1,6 @@
 {
     "name": "loonpwn/laradock-cli",
-    "description": "Unofficial Laradock Command Line Tool (CLI).",
+    "description": "Laradock CLI is a tool for Laravel projects which automates the docker configuration setup for services, amongst other things.",
     "keywords": ["framework", "laradock", "laravel", "laravel zero", "console", "cli"],
     "homepage": "https://github.com/loonpwn/laradock-cli",
     "type": "library",
