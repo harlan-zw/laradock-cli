@@ -13,32 +13,32 @@ It is built with [Laravel Zero](https://laravel-zero.com/), on top of [Laradock]
 
 ## Features
 
-#### Clean project
-
-Laradock CLI is built for the people who like tidy projects. Whenever you interact with Laradock CLI it will always try and add the minimal amount of configuration and files required. 
-Since it is just a .phar file you only need one laradock CLI installed for all your projects.
-
-#### Clean .env
-
-Moves all Laradock environment variables to their own `.env.laradock` file. No longer have a 300 line .env file.
-
-#### Zero Configuration Setup
+#### Zero Configuration Docker
 
 Laradock CLI reads your `.env` and makes smart assumptions to reduce a lot of boilerplate configuration. Some examples:
+- Checks your driver settings and recommends which services are applicable
 - Fixes User and Group IDs
 - Checks for package.json before installing node in workspace
 - Checks your CLI php version for which php version to use
-- Modifies the apache2 vhost site URL
+- Modifies the apache2/nginx vhost site URL
 - Sets up your MySQL service with a database
 
-#### Easier Upgrades
+#### Clean project
 
-Simple command to add or remove services, Laradock CLI takes care of all the heavy lifting of copying files and cofiguration.
+Laradock tends to have a larger footprint for the amount of code you have to commit to your repository, Laradock CLI 
+aims to fix this my only including the files for the services you are using.
+
+#### Clean .env
+
+All docker environment variables have been moved to their own `.env.laradock` file. No longer have a 300 line .env file.
+
+#### Easier Maintenance
+
+Simple command to add or remove services, Laradock CLI takes care of all the heavy lifting of setting up files, updating configuration, etc.
 
 #### Much More
 
 This project is in early development and has lots of planned updates coming.
-
 
 ------
 
@@ -47,7 +47,7 @@ This project is in early development and has lots of planned updates coming.
 ### Phar
 
 ``` bash
-wget https://github.com/loonpwn/laradock-cli/releases/download/0.4.1/laradock
+wget https://github.com/loonpwn/laradock-cli/releases/download/0.4.2/laradock
 chmod +x ./laradock
 ```
 
@@ -92,3 +92,5 @@ Runs `docker-compose restart` with the `.env.laradock` loaded in.
 Runs `docker-compose push` with the `.env.laradock` loaded in.
 - `laradock exec` 
 Runs `docker-compose exec` with the `.env.laradock` loaded in.
+- `laradock ps` 
+Runs `docker-compose ps` with the `.env.laradock` loaded in.
