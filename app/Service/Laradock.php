@@ -2,13 +2,13 @@
 
 namespace Laradock\Service;
 
-use Laradock\Models\DockerCompose;
-use Laradock\Tasks\ParseDockerComposeYaml;
-use function Laradock\getLaradockDockerComposePath;
-use Laradock\Tasks\ParseDotEnvFile;
-use Laradock\Tasks\SetupApache2;
 use Laradock\Tasks\SetupMySQL;
 use Laradock\Tasks\SetupNginx;
+use Laradock\Tasks\SetupApache2;
+use Laradock\Models\DockerCompose;
+use Laradock\Tasks\ParseDotEnvFile;
+use Laradock\Tasks\ParseDockerComposeYaml;
+use function Laradock\getLaradockDockerComposePath;
 
 class Laradock
 {

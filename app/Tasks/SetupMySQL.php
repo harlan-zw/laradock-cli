@@ -1,15 +1,14 @@
 <?php
 
-
 namespace Laradock\Tasks;
 
-
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
-class SetupMySQL {
-
-    public function __invoke($env) {
+class SetupMySQL
+{
+    public function __invoke($env)
+    {
         $confFilePath = \Laradock\getServicesPath('mysql').'/docker-entrypoint-initdb.d/';
         $sqlFile = $confFilePath.'createdb.sql';
         File::copy($confFilePath.'createdb.sql.example', $sqlFile);
