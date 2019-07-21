@@ -2,6 +2,7 @@
 
 namespace Laradock\Service;
 
+use Laradock\Tasks\SetupMariaDB;
 use Laradock\Tasks\SetupMySQL;
 use Laradock\Tasks\SetupNginx;
 use Laradock\Tasks\SetupApache2;
@@ -18,8 +19,7 @@ class Laradock
 {
     public $serviceConfigTaskMap = [
         'mysql' => SetupMySQL::class,
-        // mariadb has the same syntax
-        'mariadb' => SetupMySQL::class,
+        'mariadb' => SetupMariaDB::class,
         'apache2' => SetupApache2::class,
         'nginx' => SetupNginx::class,
         'php-worker' => SetupPHPWorker::class,
