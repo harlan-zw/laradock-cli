@@ -2,9 +2,9 @@
 
 namespace Laradock\DockerCommands;
 
+use Laradock\Tasks\ParseDotEnvFile;
 use Laradock\Service\DockerComposeCommand;
 use Laradock\Tasks\CheckDockerComposeYamlExists;
-use Laradock\Tasks\ParseDotEnvFile;
 
 class DefaultCommand extends DockerComposeCommand
 {
@@ -35,7 +35,7 @@ class DefaultCommand extends DockerComposeCommand
 
         $env = \Laradock\invoke(new ParseDotEnvFile());
 
-        $this->title('Starting ' . $env['APP_NAME'] . ' ' . $env['APP_URL']);
+        $this->title('Starting '.$env['APP_NAME'].' '.$env['APP_URL']);
 
         parent::handle();
     }

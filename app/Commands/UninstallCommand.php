@@ -2,8 +2,8 @@
 
 namespace Laradock\Commands;
 
-use Laradock\Service\BaseCommand;
 use Laradock\Service\Laradock;
+use Laradock\Service\BaseCommand;
 
 class UninstallCommand extends BaseCommand
 {
@@ -28,7 +28,7 @@ class UninstallCommand extends BaseCommand
      */
     public function handle(Laradock $laradock)
     {
-        if (!$this->confirmContinue('This will remove all Laradock CLI files')) {
+        if (! $this->confirmContinue('This will remove all Laradock CLI files')) {
             return;
         }
 
