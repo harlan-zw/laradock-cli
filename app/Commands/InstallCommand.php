@@ -43,6 +43,7 @@ class InstallCommand extends BaseCommand
             'DB_CONNECTION',
             'BROADCAST_DRIVER',
             'CACHE_DRIVER',
+            'QUEUE_CONNECTION',
             'SESSION_DRIVER',
         ];
         $lines = [];
@@ -60,6 +61,7 @@ class InstallCommand extends BaseCommand
             return;
         }
 
+        $didReinstall = false;
         if (\Laradock\invoke(new CheckDockerComposeYamlExists)) {
             $this->warn('Detected an existing docker-compose.yml file!');
             if (! $this->confirmContinue(
@@ -70,6 +72,7 @@ class InstallCommand extends BaseCommand
             }
             $this->info('Continuing with existing setup. Making sure current containers are down.');
             $this->call('down');
+            $didReinstall = true;
         }
 
         if (! File::exists(\Laradock\workingDirectory('.env'))) {
@@ -169,14 +172,16 @@ class InstallCommand extends BaseCommand
 
         $this->call('status');
 
-        $this->bigSuccess('Install is complete. You will need to complete the following manual steps to finish:');
+        $this->bigSuccess('Install is complete! Get started with: `laradock`.');
 
         if (! empty($webserver)) {
-            $this->line('- Update your hosts file `127.0.0.1    '.str_replace(['http://', 'https://'], '', $env['APP_URL']).'`');
+            $this->warn('Remember to update your hosts file `127.0.0.1    '.str_replace(['http://', 'https://'], '', $env['APP_URL']).'`');
         }
-        $this->line('- Double check your .env.laradock and .env have the correct configuration.');
-        $this->line('- Double check your docker-compose.yml configuration.');
 
-        $this->comment('Get started with: `laradock`. If you have any docker related issues please refer to https://laradock.io/.');
+        if ($didReinstall) {
+            $this->warn('Since you reinstalled its a good idea to rebuild the containers with `laradock build`');
+        }
+
+        $this->info('If you have any docker related issues please refer to https://laradock.io/.');
     }
 }
