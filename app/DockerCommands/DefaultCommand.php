@@ -35,7 +35,7 @@ class DefaultCommand extends DockerComposeCommand
 
         $env = \Laradock\invoke(new ParseDotEnvFile());
 
-        $this->title('Starting '.$env['APP_NAME'].' '.$env['APP_URL']);
+        $this->title('Starting '.$env['APP_NAME'].' '.$env['APP_URL'] . ' with Laradock CLI ' . app('git.version'));
 
         parent::handle();
     }

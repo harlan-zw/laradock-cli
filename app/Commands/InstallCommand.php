@@ -33,7 +33,7 @@ class InstallCommand extends BaseCommand
      */
     public function handle()
     {
-        $this->title('Welcome to the Laradock CLI install tool.');
+        $this->title('Welcome to the Laradock CLI ' . app('git.version'));
 
         $env = \Laradock\invoke(new ParseDotEnvFile());
 
