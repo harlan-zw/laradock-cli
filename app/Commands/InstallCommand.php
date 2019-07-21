@@ -46,16 +46,17 @@ class InstallCommand extends BaseCommand
             'SESSION_DRIVER',
         ];
         $lines = [];
-        foreach($envs as $key) {
+        foreach ($envs as $key) {
             $lines[] = [$key, $env[$key]];
         }
-        $this->table([Emoji::wrench() . ' Key', 'Value'], $lines);
+        $this->table([Emoji::wrench().' Key', 'Value'], $lines);
 
         if (! $this->confirmContinue(
             'Laradock CLI will be setup based on the above configuration',
             true
         )) {
             $this->info('Please update your .env file for the correct configuration.');
+
             return;
         }
 
@@ -85,12 +86,12 @@ class InstallCommand extends BaseCommand
 
         $envFolder = \Laradock\workingDirectory('env');
         // delete existing folders and files
-        if (!$laradock->cleanup()) {
+        if (! $laradock->cleanup()) {
             $this->error('Failed to remove old Laradock files. Please delete them manually before continuing.');
+
             return;
         } else {
             $this->success('Removed old Laradock files.');
-
         }
         // create new files
         touch(getDockerComposePath());
@@ -98,7 +99,7 @@ class InstallCommand extends BaseCommand
 
         // add the default services
         $servicesAvailableToAdd = collect($laradock->services())->filter(function ($v) {
-            return !in_array($v, config('laradock.default_services'));
+            return ! in_array($v, config('laradock.default_services'));
         })->toArray();
         $selectedServices = config('laradock.default_services');
         foreach ($selectedServices as $service) {
@@ -160,7 +161,7 @@ class InstallCommand extends BaseCommand
                 $laradock->addService($selectedService);
                 $this->success('Added service '.$selectedService.'.');
                 $selectedServices[] = $selectedService;
-                $this->info('Selected services: ' . implode(', ', $selectedServices));
+                $this->info('Selected services: '.implode(', ', $selectedServices));
             } else {
                 break;
             }

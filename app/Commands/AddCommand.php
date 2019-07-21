@@ -2,8 +2,8 @@
 
 namespace Laradock\Commands;
 
-use Laradock\Service\BaseCommand;
 use Laradock\Service\Laradock;
+use Laradock\Service\BaseCommand;
 use LaravelZero\Framework\Commands\Command;
 
 class AddCommand extends BaseCommand
@@ -42,7 +42,7 @@ class AddCommand extends BaseCommand
         // if it already exists within their docker-compose.yaml file we should confirm the re-add
         if (
             $laradock->hasService($service) &&
-            ! $this->confirmContinue('You already have a ' . $service . ' service. Continuing will change your existing configuration')) {
+            ! $this->confirmContinue('You already have a '.$service.' service. Continuing will change your existing configuration')) {
             return;
         }
 

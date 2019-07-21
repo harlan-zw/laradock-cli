@@ -2,17 +2,17 @@
 
 namespace Laradock\Service;
 
-use Illuminate\Support\Facades\File;
-use function Laradock\getDockerComposePath;
-use function Laradock\getLaradockCLIEnvPath;
 use Laradock\Tasks\SetupMySQL;
 use Laradock\Tasks\SetupNginx;
 use Laradock\Tasks\SetupApache2;
 use Laradock\Models\DockerCompose;
-use Laradock\Tasks\ParseDotEnvFile;
-use Laradock\Tasks\ParseDockerComposeYaml;
-use function Laradock\getLaradockDockerComposePath;
 use Laradock\Tasks\SetupPHPWorker;
+use Laradock\Tasks\ParseDotEnvFile;
+use Illuminate\Support\Facades\File;
+use Laradock\Tasks\ParseDockerComposeYaml;
+use function Laradock\getDockerComposePath;
+use function Laradock\getLaradockCLIEnvPath;
+use function Laradock\getLaradockDockerComposePath;
 
 class Laradock
 {
@@ -136,23 +136,25 @@ class Laradock
         $this->ourDockerCompose->save();
     }
 
-    public function cleanup() {
+    public function cleanup()
+    {
         $envFolder = \Laradock\workingDirectory('env');
         if (File::exists($envFolder)) {
-            if (!File::deleteDirectory($envFolder, false)) {
+            if (! File::deleteDirectory($envFolder, false)) {
                 return false;
             }
         }
         if (File::exists(getDockerComposePath())) {
-            if (!File::delete(getDockerComposePath())) {
+            if (! File::delete(getDockerComposePath())) {
                 return false;
             }
         }
-        if (File::exists(getLaradockCLIEnvPath() . '.env.laradock')) {
-            if (!File::delete(getLaradockCLIEnvPath() . '.env.laradock')) {
+        if (File::exists(getLaradockCLIEnvPath().'.env.laradock')) {
+            if (! File::delete(getLaradockCLIEnvPath().'.env.laradock')) {
                 return false;
             }
         }
+
         return true;
     }
 }
