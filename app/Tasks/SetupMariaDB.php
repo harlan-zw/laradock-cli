@@ -50,7 +50,7 @@ class SetupMariaDB
                 if (false !== stripos($data, 'DB_HOST')) {
                     Log::info('Setting .env DB_HOST to mysql');
 
-                    return 'DB_HOST=mysql'."\n";
+                    return 'DB_HOST=mariadb'."\n";
                 }
 
                 return $data;

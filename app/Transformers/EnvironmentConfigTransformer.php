@@ -68,6 +68,9 @@ class EnvironmentConfigTransformer
         if ($key === 'MYSQL_ENTRYPOINT_INITDB') {
             $value = config('laradock.context').'/mysql/docker-entrypoint-initdb.d';
         }
+        if ($key === 'MARIADB_ENTRYPOINT_INITDB') {
+            $value = config('laradock.context').'/mariadb/docker-entrypoint-initdb.d';
+        }
         if ($key === 'WORKSPACE_INSTALL_YARN') {
             $value = File::exists(workingDirectory('yarn.lock')) ? 'true' : 'false';
         }
