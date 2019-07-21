@@ -52,7 +52,7 @@ class EnvironmentConfigTransformer
 
         $value = substr($line, strpos($line, '=') + 1);
         if ($key === 'APP_CODE_PATH_HOST') {
-            $value = $attributes['APP_URL'] ?? './';
+            $value = './';
         }
         if (Str::contains($key, 'PUID') && getmyuid() >= 1000) {
             $value = getmyuid();

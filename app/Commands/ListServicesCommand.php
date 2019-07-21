@@ -2,10 +2,10 @@
 
 namespace Laradock\Commands;
 
+use Laradock\Service\BaseCommand;
 use Laradock\Service\Laradock;
-use LaravelZero\Framework\Commands\Command;
 
-class ListServicesCommand extends Command
+class ListServicesCommand extends BaseCommand
 {
     /**
      * The signature of the command.

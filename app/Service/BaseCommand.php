@@ -39,6 +39,20 @@ class BaseCommand extends Command
 
     public function info($line, $verosity = null)
     {
-        parent::info(Emoji::notebook().' '.$line, $verosity);
+        parent::line(Emoji::notebook().' '.$line, $verosity);
     }
+
+    public function title(string $title): Command {
+        parent::getOutput()->title($title);
+        return $this;
+    }
+
+    public function br() {
+        parent::line('');
+    }
+
+    public function hint($hint) {
+        parent::line(Emoji::exclamationQuestionMark() . '\e[36m' . $hint);
+    }
+
 }

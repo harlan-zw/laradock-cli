@@ -4,6 +4,7 @@ namespace Laradock\DockerCommands;
 
 use Laradock\Service\DockerComposeCommand;
 use Laradock\Tasks\CheckDockerComposeYamlExists;
+use Laradock\Tasks\ParseDotEnvFile;
 
 class DefaultCommand extends DockerComposeCommand
 {
@@ -21,16 +22,20 @@ class DefaultCommand extends DockerComposeCommand
         if (! \Laradock\invoke(new CheckDockerComposeYamlExists)) {
             $this->warn('It looks like you have not setup laradock.');
             if ($this->confirm(
-                'Would you like to run `laradock setup` instead?',
+                'Would you like to run `laradock install` instead?',
                 true
             )) {
-                $this->call('setup');
+                $this->call('install');
 
                 return;
             }
         }
 
         $this->call('status');
+
+        $env = \Laradock\invoke(new ParseDotEnvFile());
+
+        $this->title('Starting ' . $env['APP_NAME'] . ' ' . $env['APP_URL']);
 
         parent::handle();
     }

@@ -2,6 +2,9 @@
 
 namespace Laradock\Service;
 
+use Illuminate\Support\Facades\File;
+use function Laradock\getDockerComposePath;
+use function Laradock\getLaradockCLIEnvPath;
 use Laradock\Tasks\SetupMySQL;
 use Laradock\Tasks\SetupNginx;
 use Laradock\Tasks\SetupApache2;
@@ -9,13 +12,17 @@ use Laradock\Models\DockerCompose;
 use Laradock\Tasks\ParseDotEnvFile;
 use Laradock\Tasks\ParseDockerComposeYaml;
 use function Laradock\getLaradockDockerComposePath;
+use Laradock\Tasks\SetupPHPWorker;
 
 class Laradock
 {
     public $serviceConfigTaskMap = [
         'mysql' => SetupMySQL::class,
+        // mariadb has the same syntax
+        'mariadb' => SetupMySQL::class,
         'apache2' => SetupApache2::class,
         'nginx' => SetupNginx::class,
+        'php-worker' => SetupPHPWorker::class,
     ];
 
     /**
@@ -127,5 +134,25 @@ class Laradock
             $this->ourDockerCompose->volumes = $newVolumes;
         }
         $this->ourDockerCompose->save();
+    }
+
+    public function cleanup() {
+        $envFolder = \Laradock\workingDirectory('env');
+        if (File::exists($envFolder)) {
+            if (!File::deleteDirectory($envFolder, false)) {
+                return false;
+            }
+        }
+        if (File::exists(getDockerComposePath())) {
+            if (!File::delete(getDockerComposePath())) {
+                return false;
+            }
+        }
+        if (File::exists(getLaradockCLIEnvPath() . '.env.laradock')) {
+            if (!File::delete(getLaradockCLIEnvPath() . '.env.laradock')) {
+                return false;
+            }
+        }
+        return true;
     }
 }

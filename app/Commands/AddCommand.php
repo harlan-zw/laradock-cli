@@ -2,10 +2,11 @@
 
 namespace Laradock\Commands;
 
+use Laradock\Service\BaseCommand;
 use Laradock\Service\Laradock;
 use LaravelZero\Framework\Commands\Command;
 
-class AddCommand extends Command
+class AddCommand extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -33,7 +34,7 @@ class AddCommand extends Command
         $service = $this->argument('service');
 
         if (empty($laradock->getOurDockerCompose())) {
-            $this->error('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock setup');
+            $this->error('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock install');
 
             return;
         }
@@ -41,7 +42,7 @@ class AddCommand extends Command
         // if it already exists within their docker-compose.yaml file we should confirm the re-add
         if (
             $laradock->hasService($service) &&
-            ! $this->confirm('It looks like you already have a '.$service.' service')) {
+            ! $this->confirmContinue('You already have a ' . $service . ' service. Continuing will change your existing configuration')) {
             return;
         }
 
@@ -53,7 +54,7 @@ class AddCommand extends Command
 
         $this->call('status');
 
-        $this->info('The service '.$service.' has been added.');
-        $this->comment('laradock build');
+        $this->success('The service '.$service.' has been added.');
+        $this->comment('Please run: laradock build');
     }
 }

@@ -86,30 +86,6 @@ ENV TZ ${TZ}
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ###########################################################################
-# User Aliases
-###########################################################################
-
-USER root
-
-COPY ./aliases.sh /root/aliases.sh
-COPY ./aliases.sh /home/laradock/aliases.sh
-
-RUN sed -i 's/\r//' /root/aliases.sh && \
-    sed -i 's/\r//' /home/laradock/aliases.sh && \
-    chown laradock:laradock /home/laradock/aliases.sh && \
-    echo "" >> ~/.zshrc && \
-    echo "# Load Custom Aliases" >> ~/.zshrc && \
-    echo "source ~/aliases.sh" >> ~/.zshrc && \
-	  echo "" >> ~/.zshrc
-
-USER laradock
-
-RUN echo "" >> ~/.zshrc && \
-    echo "# Load Custom Aliases" >> ~/.zshrc && \
-    echo "source ~/aliases.sh" >> ~/.zshrc && \
-	  echo "" >> ~/.zshrc
-
-###########################################################################
 # Composer:
 ###########################################################################
 
@@ -123,6 +99,10 @@ COPY ./auth.json /home/laradock/.composer/auth.json
 
 # Make sure that ~/.composer belongs to laradock
 RUN chown -R laradock:laradock /home/laradock/.composer
+
+# Export composer vendor path
+RUN echo "" >> ~/..zshrc && \
+    echo 'export PATH="$HOME/.composer/vendor/bin:$PATH"' >> ~/..zshrc
 
 USER laradock
 
@@ -152,18 +132,18 @@ RUN if [ ${COMPOSER_REPO_PACKAGIST} ]; then \
 ;fi
 
 # Export composer vendor path
-RUN echo "" >> ~/.zshrc && \
-    echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/.zshrc
+RUN echo "" >> ~/..zshrc && \
+    echo 'export PATH="~/.composer/vendor/bin:$PATH"' >> ~/..zshrc
 
 ###########################################################################
 # Non-root user : PHPUnit path
 ###########################################################################
 
-# add ./vendor/bin to non-root user's bashrc (needed for phpunit)
+# add ./vendor/bin to non-root user's .zshrc (needed for phpunit)
 USER laradock
 
-RUN echo "" >> ~/.zshrc && \
-    echo 'export PATH="/var/www/vendor/bin:$PATH"' >> ~/.zshrc
+RUN echo "" >> ~/..zshrc && \
+    echo 'export PATH="/var/www/vendor/bin:$PATH"' >> ~/..zshrc
 
 ###########################################################################
 # Crontab
@@ -311,7 +291,7 @@ RUN if [ ${INSTALL_XDEBUG} = true ]; then \
     # Load the xdebug extension only with phpunit commands
     apt-get install -y php${LARADOCK_PHP_VERSION}-xdebug && \
     sed -i 's/^;//g' /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/20-xdebug.ini && \
-    echo "alias phpunit='php -dzend_extension=xdebug.so /var/www/vendor/bin/phpunit'" >> ~/.zshrc \
+    echo "alias phpunit='php -dzend_extension=xdebug.so /var/www/vendor/bin/phpunit'" >> ~/..zshrc \
 ;fi
 
 # ADD for REMOTE debugging
@@ -345,7 +325,7 @@ ARG BLACKFIRE_CLIENT_TOKEN
 ENV BLACKFIRE_CLIENT_TOKEN ${BLACKFIRE_CLIENT_TOKEN}
 
 RUN if [ ${INSTALL_XDEBUG} = false -a ${INSTALL_BLACKFIRE} = true ]; then \
-    curl -L https://packagecloud.io/gpg.key | apt-key add - && \
+    curl -L https://packages.blackfire.io/gpg.key | apt-key add - && \
     echo "deb http://packages.blackfire.io/debian any main" | tee /etc/apt/sources.list.d/blackfire.list && \
     apt-get update -yqq && \
     apt-get install blackfire-agent \
@@ -433,6 +413,22 @@ RUN if [ ${INSTALL_SWOOLE} = true ]; then \
     echo "extension=swoole.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/swoole.ini && \
     ln -s /etc/php/${LARADOCK_PHP_VERSION}/mods-available/swoole.ini /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/20-swoole.ini \
     && php -m | grep -q 'swoole' \
+;fi
+
+###########################################################################
+# Taint EXTENSION
+###########################################################################
+
+ARG INSTALL_TAINT=false
+
+RUN if [ "${INSTALL_TAINT}" = true ]; then \
+    # Install Php TAINT Extension
+    if [ $(php -r "echo PHP_MAJOR_VERSION;") = "7" ]; then \
+      pecl install taint && \
+      echo "extension=taint.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/taint.ini && \
+      ln -s /etc/php/${LARADOCK_PHP_VERSION}/mods-available/taint.ini /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/20-taint.ini && \
+      php -m | grep -q 'taint'; \
+    fi \
 ;fi
 
 ###########################################################################
@@ -548,18 +544,18 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
 # Wouldn't execute when added to the RUN statement in the above block
 # Source NVM when loading bash since ~/.profile isn't loaded on non-login shell
 RUN if [ ${INSTALL_NODE} = true ]; then \
-    echo "" >> ~/.zshrc && \
-    echo 'export NVM_DIR="$HOME/.nvm"' >> ~/.zshrc && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.zshrc \
+    echo "" >> ~/..zshrc && \
+    echo 'export NVM_DIR="$HOME/.nvm"' >> ~/..zshrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/..zshrc \
 ;fi
 
-# Add NVM binaries to root's .zshrc
+# Add NVM binaries to root's ..zshrc
 USER root
 
 RUN if [ ${INSTALL_NODE} = true ]; then \
-    echo "" >> ~/.zshrc && \
-    echo 'export NVM_DIR="/home/laradock/.nvm"' >> ~/.zshrc && \
-    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.zshrc \
+    echo "" >> ~/..zshrc && \
+    echo 'export NVM_DIR="/home/laradock/.nvm"' >> ~/..zshrc && \
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/..zshrc \
 ;fi
 
 # Add PATH for node
@@ -580,7 +576,7 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
 ;fi
 
 RUN if [ ${NPM_REGISTRY} ]; then \
-    . ~/.zshrc && npm config set registry ${NPM_REGISTRY} \
+    . ~/..zshrc && npm config set registry ${NPM_REGISTRY} \
 ;fi
 
 ###########################################################################
@@ -600,17 +596,17 @@ RUN if [ ${INSTALL_YARN} = true ]; then \
     else \
         curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version ${YARN_VERSION}; \
     fi && \
-    echo "" >> ~/.zshrc && \
-    echo 'export PATH="$HOME/.yarn/bin:$PATH"' >> ~/.zshrc \
+    echo "" >> ~/..zshrc && \
+    echo 'export PATH="$HOME/.yarn/bin:$PATH"' >> ~/..zshrc \
 ;fi
 
-# Add YARN binaries to root's .zshrc
+# Add YARN binaries to root's ..zshrc
 USER root
 
 RUN if [ ${INSTALL_YARN} = true ]; then \
-    echo "" >> ~/.zshrc && \
-    echo 'export YARN_DIR="/home/laradock/.yarn"' >> ~/.zshrc && \
-    echo 'export PATH="$YARN_DIR/bin:$PATH"' >> ~/.zshrc \
+    echo "" >> ~/..zshrc && \
+    echo 'export YARN_DIR="/home/laradock/.yarn"' >> ~/..zshrc && \
+    echo 'export PATH="$YARN_DIR/bin:$PATH"' >> ~/..zshrc \
 ;fi
 
 # Add PATH for YARN
@@ -699,6 +695,15 @@ RUN if [ ${INSTALL_LARAVEL_ENVOY} = true ]; then \
 
 USER laradock
 
+ARG INSTALL_LARAVEL_INSTALLER=false
+
+RUN if [ ${INSTALL_LARAVEL_INSTALLER} = true ]; then \
+    # Install the Laravel Installer
+	composer global require "laravel/installer" \
+;fi
+
+USER root
+
 ARG COMPOSER_REPO_PACKAGIST
 ENV COMPOSER_REPO_PACKAGIST ${COMPOSER_REPO_PACKAGIST}
 
@@ -760,14 +765,14 @@ RUN if [ ${INSTALL_LINUXBREW} = true ]; then \
       libexpat-dev libncurses-dev && \
     # Install the Linuxbrew
     git clone --depth=1 https://github.com/Homebrew/linuxbrew.git ~/.linuxbrew && \
-    echo "" >> ~/.zshrc && \
-    echo 'export PKG_CONFIG_PATH"=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.zshrc && \
+    echo "" >> ~/..zshrc && \
+    echo 'export PKG_CONFIG_PATH"=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig:$PKG_CONFIG_PATH"' >> ~/..zshrc && \
     # Setup linuxbrew
-    echo 'export LINUXBREWHOME="$HOME/.linuxbrew"' >> ~/.zshrc && \
-    echo 'export PATH="$LINUXBREWHOME/bin:$PATH"' >> ~/.zshrc && \
-    echo 'export MANPATH="$LINUXBREWHOME/man:$MANPATH"' >> ~/.zshrc && \
-    echo 'export PKG_CONFIG_PATH="$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.zshrc && \
-    echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/.zshrc \
+    echo 'export LINUXBREWHOME="$HOME/.linuxbrew"' >> ~/..zshrc && \
+    echo 'export PATH="$LINUXBREWHOME/bin:$PATH"' >> ~/..zshrc && \
+    echo 'export MANPATH="$LINUXBREWHOME/man:$MANPATH"' >> ~/..zshrc && \
+    echo 'export PKG_CONFIG_PATH="$LINUXBREWHOME/lib64/pkgconfig:$LINUXBREWHOME/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/..zshrc && \
+    echo 'export LD_LIBRARY_PATH="$LINUXBREWHOME/lib64:$LINUXBREWHOME/lib:$LD_LIBRARY_PATH"' >> ~/..zshrc \
 ;fi
 
 ###########################################################################
@@ -833,7 +838,7 @@ ARG INSTALL_IMAGE_OPTIMIZERS=false
 RUN if [ ${INSTALL_IMAGE_OPTIMIZERS} = true ]; then \
     apt-get install -y jpegoptim optipng pngquant gifsicle && \
     if [ ${INSTALL_NODE} = true ]; then \
-        exec bash && . ~/.zshrc && npm install -g svgo \
+        exec bash && . ~/..zshrc && npm install -g svgo \
     ;fi\
 ;fi
 
@@ -852,11 +857,11 @@ RUN if [ ${INSTALL_SYMFONY} = true ]; then \
   && curl -LsS https://symfony.com/installer -o /usr/local/bin/symfony \
   && chmod a+x /usr/local/bin/symfony \
   #  Symfony 3 alias
-  && echo 'alias dev="php bin/console -e=dev"' >> ~/.zshrc \
-  && echo 'alias prod="php bin/console -e=prod"' >> ~/.zshrc \
+  && echo 'alias dev="php bin/console -e=dev"' >> ~/..zshrc \
+  && echo 'alias prod="php bin/console -e=prod"' >> ~/..zshrc \
   #  Symfony 2 alias
-  #  && echo 'alias dev="php app/console -e=dev"' >> ~/.zshrc \
-  #  && echo 'alias prod="php app/console -e=prod"' >> ~/.zshrc \
+  #  && echo 'alias dev="php app/console -e=dev"' >> ~/..zshrc \
+  #  && echo 'alias prod="php app/console -e=prod"' >> ~/..zshrc \
 ;fi
 
 ###########################################################################
@@ -881,8 +886,8 @@ ARG INSTALL_POWERLINE=false
 RUN if [ ${INSTALL_POWERLINE} = true ]; then \
     if [ ${INSTALL_PYTHON} = true ]; then \
     python -m pip install --upgrade powerline-status && \
-    echo "" >> /etc/bash.zshrc && \
-    echo ". /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh" >> /etc/bash.zshrc \
+    echo "" >> /etc/bash..zshrc && \
+    echo ". /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh" >> /etc/bash..zshrc \
   ;fi \
 ;fi
 
@@ -991,6 +996,32 @@ RUN if [ ${INSTALL_MYSQL_CLIENT} = true ]; then \
 ;fi
 
 ###########################################################################
+# ping:
+###########################################################################
+
+USER root
+
+ARG INSTALL_PING=false
+
+RUN if [ ${INSTALL_PING} = true ]; then \
+    apt-get update -yqq && \
+    apt-get -y install inetutils-ping \
+;fi
+
+###########################################################################
+# sshpass:
+###########################################################################
+
+USER root
+
+ARG INSTALL_SSHPASS=false
+
+RUN if [ ${INSTALL_SSHPASS} = true ]; then \
+    apt-get update -yqq && \
+    apt-get -y install sshpass \
+;fi
+
+###########################################################################
 # FFMpeg:
 ###########################################################################
 
@@ -1002,25 +1033,24 @@ RUN if [ ${INSTALL_FFMPEG} = true ]; then \
   apt-get -y install ffmpeg \
 ;fi
 
-#####################################
-# AWS CLI:
-#####################################
-ARG INSTALL_AWS_CLI=false
-ENV INSTALL_AWS_CLI ${INSTALL_AWS_CLI}
-RUN if [ ${INSTALL_AWS_CLI} = true ]; then \
-    pip install awscli && \
-    pip install awsebcli --upgrade --user \
+###########################################################################
+# GNU Parallel:
+###########################################################################
+
+USER root
+
+ARG INSTALL_GNU_PARALLEL=false
+
+RUN if [ ${INSTALL_GNU_PARALLEL} = true ]; then \
+  apt-get -y install parallel \
 ;fi
 
-RUN echo "" >> ~/.zshrc && \
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 
 #####################################
 # Oh My ZSH
 #####################################
 USER root
 ARG INSTALL_OH_MY_ZSH=true
-ENV INSTALL_OH_MY_ZSH ${INSTALL_OH_MY_ZSH}
 RUN if [ ${INSTALL_OH_MY_ZSH} = true ]; then \
     # Install the pgsql clint
     apt-get update && \
@@ -1037,7 +1067,9 @@ RUN if [ ${INSTALL_OH_MY_ZSH} = true ]; then \
     mv ~/zshrc ~/.zshrc \
 ;fi
 
-
+#####################################
+# Welcome Message
+#####################################
 RUN echo 'echo "" && echo "\e[4mWelcome to your Workspace container - Laradock CLI" && echo ""' >> ~/.zshrc
 
 ###########################################################################

@@ -55,7 +55,7 @@ _Recommended: `sudo mv laradock /usr/bin/laradock`_
 
 ## Usage
 
-1. `laradock setup` Run the setup tool
+1. `laradock install` Run the setup tool
 2. Check the `.env.laradock` and the files within `./env/docker` has the correct configuration for your project.
 3. `laradock` Build and run the containers and then mount to the workspace container.
 
@@ -76,7 +76,7 @@ you will need to manually set it up per [Laradock documentation](https://laradoc
 
 - `laradock` 
 This will start docker with `docker-compose up -d` and then mount you on the workspace container.
-- `laradock setup` 
+- `laradock install` 
 An interactive guide for setting up your project with Laradock CLI.
 - `laradock status` 
 See which services you're currently using
@@ -88,6 +88,8 @@ Add a specific service.
 Remove a specific service.
 - `laradock workspace` 
 Mounts yourself to the workspace container as Laradock user.
+- `laradock uninstall` 
+Remove the Laradock CLI files from your project.
 
 ### DockerCompose Commands
 

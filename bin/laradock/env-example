@@ -5,7 +5,7 @@
 ### Paths #################################################
 
 # Point to the path of your applications code on your host
-APP_CODE_PATH_HOST=../
+APP_CODE_PATH_HOST=./
 
 # Point to where the `APP_CODE_PATH_HOST` should be in the container
 APP_CODE_PATH_CONTAINER=/var/www
@@ -14,7 +14,10 @@ APP_CODE_PATH_CONTAINER=/var/www
 APP_CODE_CONTAINER_FLAG=:cached
 
 # Choose storage path on your machine. For all storage systems
-DATA_PATH_HOST=~/.laradock/data
+DATA_PATH_HOST=./storage/docker
+
+# Where the docker files are relative to the current directory
+DOCKER_CONTAINER_FILES=./env/docker
 
 ### Drivers ################################################
 
@@ -38,7 +41,7 @@ COMPOSE_PROJECT_NAME=laradock
 ### PHP Version ###########################################
 
 # Select a PHP version of the Workspace and PHP-FPM containers (Does not apply to HHVM). Accepted values: 7.3 - 7.2 - 7.1 - 7.0 - 5.6
-PHP_VERSION=7.2
+PHP_VERSION=7.3
 
 ### Phalcon Version ###########################################
 
@@ -95,8 +98,6 @@ WORKSPACE_INSTALL_NPM_VUE_CLI=true
 WORKSPACE_INSTALL_NPM_ANGULAR_CLI=false
 WORKSPACE_INSTALL_PHPREDIS=false
 WORKSPACE_INSTALL_WORKSPACE_SSH=false
-WORKSPACE_INSTALL_AWS_CLI=false
-WORKSPACE_INSTALL_OH_MY_ZSH=true
 WORKSPACE_INSTALL_SUBVERSION=false
 WORKSPACE_INSTALL_XDEBUG=false
 WORKSPACE_INSTALL_PHPDBG=false
@@ -131,9 +132,12 @@ WORKSPACE_INSTALL_DUSK_DEPS=false
 WORKSPACE_INSTALL_PG_CLIENT=false
 WORKSPACE_INSTALL_PHALCON=false
 WORKSPACE_INSTALL_SWOOLE=false
+WORKSPACE_INSTALL_TAINT=false
 WORKSPACE_INSTALL_LIBPNG=false
 WORKSPACE_INSTALL_IONCUBE=false
-WORKSPACE_INSTALL_MYSQL_CLIENT=false
+WORKSPACE_INSTALL_MYSQL_CLIENT=true
+WORKSPACE_INSTALL_PING=false
+WORKSPACE_INSTALL_SSHPASS=false
 WORKSPACE_INSTALL_INOTIFY=false
 WORKSPACE_INSTALL_FSWATCH=false
 WORKSPACE_PUID=1000
@@ -142,6 +146,7 @@ WORKSPACE_CHROME_DRIVER_VERSION=2.42
 WORKSPACE_TIMEZONE=UTC
 WORKSPACE_SSH_PORT=2222
 WORKSPACE_INSTALL_FFMPEG=false
+WORKSPACE_INSTALL_GNU_PARALLEL=false
 
 ### PHP_FPM ###############################################
 
@@ -200,6 +205,10 @@ PHP_WORKER_INSTALL_MYSQL_CLIENT=false
 PHP_WORKER_INSTALL_AMQP=false
 PHP_WORKER_INSTALL_GHOSTSCRIPT=false
 PHP_WORKER_INSTALL_SWOOLE=false
+PHP_WORKER_INSTALL_TAINT=false
+PHP_WORKER_INSTALL_FFMPEG=false
+PHP_WORKER_INSTALL_GMP=false
+
 PHP_WORKER_PUID=1000
 PHP_WORKER_PGID=1000
 
@@ -263,6 +272,7 @@ MSSQL_PORT=1433
 
 ### MARIADB ###############################################
 
+MARIADB_VERSION=latest
 MARIADB_DATABASE=default
 MARIADB_USER=default
 MARIADB_PASSWORD=secret
@@ -369,9 +379,29 @@ JENKINS_HOST_HTTP_PORT=8090
 JENKINS_HOST_SLAVE_AGENT_PORT=50000
 JENKINS_HOME=./jenkins/jenkins_home
 
+### CONFLUENCE ###############################################
+CONFLUENCE_POSTGRES_INIT=true
+CONFLUENCE_VERSION=6.13-ubuntu-18.04-adoptopenjdk8
+CONFLUENCE_POSTGRES_DB=laradock_confluence
+CONFLUENCE_POSTGRES_USER=laradock_confluence
+CONFLUENCE_POSTGRES_PASSWORD=laradock_confluence
+CONFLUENCE_HOST_HTTP_PORT=8090
+
 ### GRAFANA ###############################################
 
 GRAFANA_PORT=3000
+
+### GRAYLOG ###############################################
+
+# password must be 16 characters long
+GRAYLOG_PASSWORD=somesupersecretpassword
+# sha256 representation of the password
+GRAYLOG_SHA256_PASSWORD=b1cb6e31e172577918c9e7806c572b5ed8477d3f57aa737bee4b5b1db3696f09
+GRAYLOG_PORT=9000
+GRAYLOG_SYSLOG_TCP_PORT=514
+GRAYLOG_SYSLOG_UDP_PORT=514
+GRAYLOG_GELF_TCP_PORT=12201
+GRAYLOG_GELF_UDP_PORT=12201
 
 ### BLACKFIRE #############################################
 
@@ -388,6 +418,9 @@ AEROSPIKE_SERVICE_PORT=3000
 AEROSPIKE_FABRIC_PORT=3001
 AEROSPIKE_HEARTBEAT_PORT=3002
 AEROSPIKE_INFO_PORT=3003
+AEROSPIKE_STORAGE_GB=1
+AEROSPIKE_MEM_GB=1
+AEROSPIKE_NAMESPACE=test
 
 ### RETHINKDB #############################################
 
@@ -685,3 +718,19 @@ MANTICORE_HTTP_PORT=9308
 PGADMIN_PORT=5050
 PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
 PGADMIN_DEFAULT_PASSWORD=admin
+
+### SONARQUBE ################################################
+## docker-compose up -d sonarqube
+## (If you encounter a database error)
+## docker-compose exec --user=root postgres
+## source docker-entrypoint-initdb.d/init_sonarqube_db.sh
+## (If you encounter logs error)
+## docker-compose run --user=root --rm sonarqube chown sonarqube:sonarqube /opt/sonarqube/logs
+
+SONARQUBE_HOSTNAME=sonar.example.com
+SONARQUBE_PORT=9000
+SONARQUBE_POSTGRES_INIT=true
+SONARQUBE_POSTGRES_HOST=postgres
+SONARQUBE_POSTGRES_DB=sonar
+SONARQUBE_POSTGRES_USER=sonar
+SONARQUBE_POSTGRES_PASSWORD=sonarPass

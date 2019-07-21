@@ -2,10 +2,11 @@
 
 namespace Laradock\Commands;
 
+use Laradock\Service\BaseCommand;
 use Laradock\Tasks\ParseDockerComposeYaml;
 use LaravelZero\Framework\Commands\Command;
 
-class StatusCommand extends Command
+class StatusCommand extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -31,7 +32,7 @@ class StatusCommand extends Command
         $laradockCompose = \Laradock\invoke(new ParseDockerComposeYaml());
 
         if (empty($laradockCompose)) {
-            $this->info('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock setup');
+            $this->info('Looks like you don\'t have a docker-compose.yml setup. Please run ./laradock install');
 
             return;
         }

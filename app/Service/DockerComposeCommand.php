@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 use LaravelZero\Framework\Commands\Command;
 use function Laradock\getLaradockCLIEnvPath;
 
-class DockerComposeCommand extends Command
+class DockerComposeCommand extends BaseCommand
 {
     public $command;
 
