@@ -2,10 +2,10 @@
 
 namespace Laradock\Service;
 
-use Laradock\Tasks\SetupMariaDB;
 use Laradock\Tasks\SetupMySQL;
 use Laradock\Tasks\SetupNginx;
 use Laradock\Tasks\SetupApache2;
+use Laradock\Tasks\SetupMariaDB;
 use Laradock\Models\DockerCompose;
 use Laradock\Tasks\SetupPHPWorker;
 use Laradock\Tasks\ParseDotEnvFile;
