@@ -47,7 +47,7 @@ This project is in early development and has lots of planned updates coming.
 ### Phar
 
 ``` bash
-wget https://github.com/loonpwn/laradock-cli/releases/download/0.4.4/laradock
+wget https://github.com/loonpwn/laradock-cli/releases/download/0.4.5/laradock
 chmod +x ./laradock
 ```
 
@@ -71,6 +71,8 @@ you will need to manually set it up per [Laradock documentation](https://laradoc
 - MySQL
 - MariaDB
 - PHPMyAdmin
+- Postgres
+- PGAdmin
 
 ## Documentation
 

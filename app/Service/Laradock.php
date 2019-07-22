@@ -14,6 +14,7 @@ use Laradock\Tasks\ParseDockerComposeYaml;
 use function Laradock\getDockerComposePath;
 use function Laradock\getLaradockCLIEnvPath;
 use function Laradock\getLaradockDockerComposePath;
+use Laradock\Tasks\SetupPostgres;
 
 class Laradock
 {
@@ -23,6 +24,7 @@ class Laradock
         'apache2' => SetupApache2::class,
         'nginx' => SetupNginx::class,
         'php-worker' => SetupPHPWorker::class,
+        'postgres' => SetupPostgres::class,
     ];
 
     /**

@@ -117,12 +117,16 @@ class InstallCommand extends BaseCommand
             'CACHE_DRIVER',
             'SESSION_DRIVER',
         ])->filter(function ($v) use ($laradock) {
-            return $laradock->isValidService($v);
+            return $laradock->isValidService($v) || $v === 'pgsql';
         })->each(function ($v, $k) use ($laradock, $env) {
-            if ($this->confirm('The '.$k.' is setup for '.$v.'. Would you like to add the '.$v.' service?', true)) {
-                $laradock->addService($v);
-                $selectedServices[] = $v;
-                $this->success('Added service '.$v.'.');
+            $serviceName = $v;
+            if ($v === 'pgsql') {
+                $serviceName = 'postgres';
+            }
+            if ($this->confirm('The '.$k.' is setup for '.$v.'. Would you like to add the '.$serviceName.' service?', true)) {
+                $laradock->addService($serviceName);
+                $selectedServices[] = $serviceName;
+                $this->success('Added service '.$serviceName.'.');
             }
         });
 

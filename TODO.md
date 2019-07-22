@@ -1,4 +1,8 @@
 ## Laradock CLI - To Do
+- Support Redis
+- Toggling other container environment variables
+- Docker-compose value runtime modifications
+
 - Support more services and having them talk to each other better
 
 - Create some tests

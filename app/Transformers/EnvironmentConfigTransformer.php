@@ -39,6 +39,7 @@ class EnvironmentConfigTransformer
                 }
             }
         }
+
         // strip everything else
         if (! Str::contains($line, '=')) {
             return false;
@@ -70,6 +71,9 @@ class EnvironmentConfigTransformer
         }
         if ($key === 'MARIADB_ENTRYPOINT_INITDB') {
             $value = config('laradock.context').'/mariadb/docker-entrypoint-initdb.d';
+        }
+        if ($key === 'POSTGRES_ENTRYPOINT_INITDB') {
+            $value = config('laradock.context').'/postgres/docker-entrypoint-initdb.d';
         }
         if ($key === 'WORKSPACE_INSTALL_YARN') {
             $value = File::exists(workingDirectory('yarn.lock')) ? 'true' : 'false';
