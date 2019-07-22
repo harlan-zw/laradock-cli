@@ -19,9 +19,9 @@ class SetupPostgres
         File::copy($confFilePath.'createdb.sh.example', $sqlFile);
         file_put_contents($sqlFile, '
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
-    CREATE USER ' . self::USER .' WITH ENCRYPTED PASSWORD \'' . self::PASSWORD . '\';
-    CREATE DATABASE "' . $env['DB_DATABASE'] .'";
-    GRANT ALL PRIVILEGES ON DATABASE ' . $env['DB_DATABASE'] .' TO ' . self::USER . ';
+    CREATE USER '.self::USER.' WITH ENCRYPTED PASSWORD \''.self::PASSWORD.'\';
+    CREATE DATABASE "'.$env['DB_DATABASE'].'";
+    GRANT ALL PRIVILEGES ON DATABASE '.$env['DB_DATABASE'].' TO '.self::USER.';
 EOSQL
 ');
         // modify the .env file

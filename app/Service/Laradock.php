@@ -6,6 +6,7 @@ use Laradock\Tasks\SetupMySQL;
 use Laradock\Tasks\SetupNginx;
 use Laradock\Tasks\SetupApache2;
 use Laradock\Tasks\SetupMariaDB;
+use Laradock\Tasks\SetupPostgres;
 use Laradock\Models\DockerCompose;
 use Laradock\Tasks\SetupPHPWorker;
 use Laradock\Tasks\ParseDotEnvFile;
@@ -14,7 +15,6 @@ use Laradock\Tasks\ParseDockerComposeYaml;
 use function Laradock\getDockerComposePath;
 use function Laradock\getLaradockCLIEnvPath;
 use function Laradock\getLaradockDockerComposePath;
-use Laradock\Tasks\SetupPostgres;
 
 class Laradock
 {
