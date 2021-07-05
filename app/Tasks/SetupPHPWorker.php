@@ -2,7 +2,6 @@
 
 namespace Laradock\Tasks;
 
-use Laradock\Service\Laradock;
 use Illuminate\Support\Facades\File;
 
 class SetupPHPWorker

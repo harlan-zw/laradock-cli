@@ -2,8 +2,8 @@
 
 namespace Laradock\Providers;
 
-use Laradock\Service\Laradock;
 use Illuminate\Support\ServiceProvider;
+use Laradock\Service\Laradock;
 
 class AppServiceProvider extends ServiceProvider
 {
