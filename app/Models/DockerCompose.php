@@ -2,13 +2,13 @@
 
 namespace Laradock\Models;
 
-use Symfony\Component\Yaml\Yaml;
-use Laradock\Tasks\ParseDotEnvFile;
 use Illuminate\Support\Facades\File;
 use function Laradock\getDockerComposePath;
 use function Laradock\getLaradockCLIEnvPath;
 use function Laradock\getLaradockEnvExamplePath;
+use Laradock\Tasks\ParseDotEnvFile;
 use Laradock\Transformers\EnvironmentConfigTransformer;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @property array services

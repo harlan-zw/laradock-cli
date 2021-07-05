@@ -2,13 +2,13 @@
 
 namespace Laradock\Commands;
 
-use Spatie\Emoji\Emoji;
-use Laradock\Service\Laradock;
-use Laradock\Service\BaseCommand;
-use Laradock\Tasks\ParseDotEnvFile;
 use Illuminate\Support\Facades\File;
 use function Laradock\getDockerComposePath;
+use Laradock\Service\BaseCommand;
+use Laradock\Service\Laradock;
 use Laradock\Tasks\CheckDockerComposeYamlExists;
+use Laradock\Tasks\ParseDotEnvFile;
+use Spatie\Emoji\Emoji;
 
 class InstallCommand extends BaseCommand
 {
@@ -118,7 +118,7 @@ class InstallCommand extends BaseCommand
             'SESSION_DRIVER',
         ])->filter(function ($v) use ($laradock) {
             return $laradock->isValidService($v) || $v === 'pgsql';
-        })->each(function ($v, $k) use ($laradock, $env) {
+        })->each(function ($v, $k) use ($laradock) {
             $serviceName = $v;
             if ($v === 'pgsql') {
                 $serviceName = 'postgres';

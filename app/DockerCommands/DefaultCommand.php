@@ -2,9 +2,9 @@
 
 namespace Laradock\DockerCommands;
 
-use Laradock\Tasks\ParseDotEnvFile;
 use Laradock\Service\DockerComposeCommand;
 use Laradock\Tasks\CheckDockerComposeYamlExists;
+use Laradock\Tasks\ParseDotEnvFile;
 
 class DefaultCommand extends DockerComposeCommand
 {

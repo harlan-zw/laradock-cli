@@ -2,9 +2,8 @@
 
 namespace Laradock\Tasks;
 
-use Laradock\Service\Laradock;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class SetupMySQL
 {
@@ -36,7 +35,7 @@ class SetupMySQL
         ));
         // modify the .env file
         file_put_contents(\Laradock\getDotEnvPath(), implode('',
-            array_map(function ($data) use ($env) {
+            array_map(function ($data) {
                 if (false !== stripos($data, 'DB_USERNAME')) {
                     Log::info('Setting .env DB_USERNAME to '.self::USER);
 

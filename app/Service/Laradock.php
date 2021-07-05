@@ -2,19 +2,19 @@
 
 namespace Laradock\Service;
 
-use Laradock\Tasks\SetupMySQL;
-use Laradock\Tasks\SetupNginx;
-use Laradock\Tasks\SetupApache2;
-use Laradock\Tasks\SetupMariaDB;
-use Laradock\Tasks\SetupPostgres;
-use Laradock\Models\DockerCompose;
-use Laradock\Tasks\SetupPHPWorker;
-use Laradock\Tasks\ParseDotEnvFile;
 use Illuminate\Support\Facades\File;
-use Laradock\Tasks\ParseDockerComposeYaml;
 use function Laradock\getDockerComposePath;
 use function Laradock\getLaradockCLIEnvPath;
 use function Laradock\getLaradockDockerComposePath;
+use Laradock\Models\DockerCompose;
+use Laradock\Tasks\ParseDockerComposeYaml;
+use Laradock\Tasks\ParseDotEnvFile;
+use Laradock\Tasks\SetupApache2;
+use Laradock\Tasks\SetupMariaDB;
+use Laradock\Tasks\SetupMySQL;
+use Laradock\Tasks\SetupNginx;
+use Laradock\Tasks\SetupPHPWorker;
+use Laradock\Tasks\SetupPostgres;
 
 class Laradock
 {

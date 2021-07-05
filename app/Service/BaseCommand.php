@@ -2,8 +2,8 @@
 
 namespace Laradock\Service;
 
-use Spatie\Emoji\Emoji;
 use LaravelZero\Framework\Commands\Command;
+use Spatie\Emoji\Emoji;
 
 class BaseCommand extends Command
 {

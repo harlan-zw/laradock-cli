@@ -2,8 +2,8 @@
 
 namespace Laradock\Commands;
 
-use Laradock\Service\Laradock;
 use Laradock\Service\BaseCommand;
+use Laradock\Service\Laradock;
 
 class UninstallCommand extends BaseCommand
 {

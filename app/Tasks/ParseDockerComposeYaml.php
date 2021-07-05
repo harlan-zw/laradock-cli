@@ -2,8 +2,8 @@
 
 namespace Laradock\Tasks;
 
-use Symfony\Component\Yaml\Yaml;
 use Laradock\Models\DockerCompose;
+use Symfony\Component\Yaml\Yaml;
 
 class ParseDockerComposeYaml
 {
