@@ -12,7 +12,8 @@ class ParseDotEnvFile
 
     /**
      * ParseDockerComposeYaml constructor.
-     * @param bool|string $path
+     *
+     * @param  bool|string  $path
      */
     public function __construct($path = null, $file = null)
     {

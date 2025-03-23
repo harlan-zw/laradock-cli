@@ -12,7 +12,8 @@ class CheckDockerComposeYamlExists
 
     /**
      * ParseDockerComposeYaml constructor.
-     * @param bool $path
+     *
+     * @param  bool  $path
      */
     public function __construct($path = false)
     {

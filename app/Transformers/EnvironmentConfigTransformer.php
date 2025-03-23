@@ -5,6 +5,7 @@ namespace Laradock\Transformers;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Laradock\Models\DockerCompose;
+
 use function Laradock\workingDirectory;
 
 class EnvironmentConfigTransformer
