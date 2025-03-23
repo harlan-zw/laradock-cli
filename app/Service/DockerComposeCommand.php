@@ -2,10 +2,11 @@
 
 namespace Laradock\Service;
 
-use function Laradock\getLaradockCLIEnvPath;
 use Laradock\Tasks\ParseDotEnvFile;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Process\Process;
+
+use function Laradock\getLaradockCLIEnvPath;
 
 class DockerComposeCommand extends BaseCommand
 {
@@ -15,7 +16,8 @@ class DockerComposeCommand extends BaseCommand
 
     /**
      * DockerComposeCommand constructor.
-     * @param $command
+     *
+     * @param  $command
      */
     public function __construct()
     {

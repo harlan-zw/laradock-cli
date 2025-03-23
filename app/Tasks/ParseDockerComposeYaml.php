@@ -13,7 +13,8 @@ class ParseDockerComposeYaml
 
     /**
      * ParseDockerComposeYaml constructor.
-     * @param bool|string $path
+     *
+     * @param  bool|string  $path
      */
     public function __construct($path = false)
     {

@@ -3,9 +3,6 @@
 namespace Laradock\Service;
 
 use Illuminate\Support\Facades\File;
-use function Laradock\getDockerComposePath;
-use function Laradock\getLaradockCLIEnvPath;
-use function Laradock\getLaradockDockerComposePath;
 use Laradock\Models\DockerCompose;
 use Laradock\Tasks\ParseDockerComposeYaml;
 use Laradock\Tasks\ParseDotEnvFile;
@@ -15,6 +12,10 @@ use Laradock\Tasks\SetupMySQL;
 use Laradock\Tasks\SetupNginx;
 use Laradock\Tasks\SetupPHPWorker;
 use Laradock\Tasks\SetupPostgres;
+
+use function Laradock\getDockerComposePath;
+use function Laradock\getLaradockCLIEnvPath;
+use function Laradock\getLaradockDockerComposePath;
 
 class Laradock
 {
