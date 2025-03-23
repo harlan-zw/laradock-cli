@@ -3,12 +3,13 @@
 namespace Laradock\Commands;
 
 use Illuminate\Support\Facades\File;
-use function Laradock\getDockerComposePath;
 use Laradock\Service\BaseCommand;
 use Laradock\Service\Laradock;
 use Laradock\Tasks\CheckDockerComposeYamlExists;
 use Laradock\Tasks\ParseDotEnvFile;
 use Spatie\Emoji\Emoji;
+
+use function Laradock\getDockerComposePath;
 
 class InstallCommand extends BaseCommand
 {

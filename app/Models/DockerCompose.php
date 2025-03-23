@@ -3,12 +3,13 @@
 namespace Laradock\Models;
 
 use Illuminate\Support\Facades\File;
-use function Laradock\getDockerComposePath;
-use function Laradock\getLaradockCLIEnvPath;
-use function Laradock\getLaradockEnvExamplePath;
 use Laradock\Tasks\ParseDotEnvFile;
 use Laradock\Transformers\EnvironmentConfigTransformer;
 use Symfony\Component\Yaml\Yaml;
+
+use function Laradock\getDockerComposePath;
+use function Laradock\getLaradockCLIEnvPath;
+use function Laradock\getLaradockEnvExamplePath;
 
 /**
  * @property array services
@@ -22,7 +23,8 @@ class DockerCompose extends OfflineModel
 
     /**
      * DockerCompose constructor.
-     * @param $attributes
+     *
+     * @param  $attributes
      */
     public function __construct($attributes = [])
     {
